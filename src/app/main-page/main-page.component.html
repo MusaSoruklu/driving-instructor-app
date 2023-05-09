@@ -1,0 +1,7 @@
+<form [formGroup]="searchForm" (submit)="onSearchInstructors()">
+  <div class="form-group">
+    <label for="postcode">Postcode:</label>
+    <input type="text" class="form-control" id="postcode" formControlName="postcode">
+  </div>
+  <button type="submit">Search</button>
+</form>

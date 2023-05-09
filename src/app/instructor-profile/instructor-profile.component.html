@@ -1,0 +1,19 @@
+<div class="instructor-profile">
+    <img [src]="instructor.imageUrl" alt="{{instructor.name}}" />
+    <h2>{{instructor.name}}</h2>
+    <p>Price: £{{instructor.price}} per hour</p>
+    <p>Gender: {{instructor.gender}}</p>
+    <p>Experience: {{instructor.experience}} years</p>
+    <div class="reviews">
+      <h3>Reviews</h3>
+      <ul>
+        <li *ngFor="let review of instructor.reviews">
+          <p>Rating: {{review.rating}}/5</p>
+          <p>{{review.comment}}</p>
+        </li>
+      </ul>
+    </div>
+    <button (click)="viewAvailability()">View Availability</button>
+    <button (click)="bookLesson()">Book a Lesson</button>
+  </div>
+  

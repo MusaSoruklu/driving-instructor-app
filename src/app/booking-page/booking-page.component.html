@@ -1,0 +1,24 @@
+<form (ngSubmit)="onSubmit()" #bookingForm="ngForm">
+    <div>
+      <label for="instructor">Select Instructor</label>
+      <select [(ngModel)]="booking.instructorId" name="instructor" id="instructor" required>
+        <option *ngFor="let instructor of instructors" [value]="instructor.id">{{ instructor.name }}</option>
+      </select>
+    </div>
+    <div>
+      <input type="radio" [(ngModel)]="booking.bookingType" value="immediate" name="bookingType" id="immediate" required />
+      <label for="immediate">Book Immediately</label>
+    </div>
+    <div>
+      <input type="radio" [(ngModel)]="booking.bookingType" value="scheduled" name="bookingType" id="scheduled" required />
+      <label for="scheduled">Book for a specific date and time</label>
+    </div>
+    <div *ngIf="booking.bookingType === 'scheduled'">
+      <label for="date">Date</label>
+      <input type="date" [(ngModel)]="booking.date" name="date" id="date" required />
+      <label for="time">Time</label>
+      <input type="time" [(ngModel)]="booking.time" name="time" id="time" required />
+    </div>
+    <button type="submit" [disabled]="!bookingForm.form.valid">Book Lesson</button>
+  </form>
+  

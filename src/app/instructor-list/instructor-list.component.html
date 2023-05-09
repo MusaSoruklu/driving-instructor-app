@@ -1,0 +1,7 @@
+<div class="instructor-card" *ngFor="let instructor of instructors">
+    <h3>{{ instructor.name }}</h3>
+    <p>Rating: {{ instructor.rating }}</p>
+    <p>Price: {{ instructor.price }}</p>
+    <!-- Add more details as needed -->
+    <button (click)="viewInstructorProfile(instructor.id)">View Profile</button>
+  </div>
