@@ -19,7 +19,7 @@ export class InstructorListComponent {
       });
   }
 
-  viewInstructorProfile(instructorId: number): void {
+  viewInstructorProfile(instructorId: string): void {
     // Add logic to handle the view profile action.
   }
 }

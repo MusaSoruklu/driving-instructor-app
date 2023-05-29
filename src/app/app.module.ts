@@ -11,6 +11,8 @@ import { BookingPageComponent } from './booking-page/booking-page.component';
 import { InstructorService } from './instructor.service';
 import { HttpClientModule } from '@angular/common/http';
 import { BookingService } from './booking.service';
+import { CalendarModule, DateAdapter } from 'angular-calendar';
+import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 
 @NgModule({
   declarations: [
@@ -25,7 +27,11 @@ import { BookingService } from './booking.service';
     AppRoutingModule,
     FormsModule,
     ReactiveFormsModule,
-    HttpClientModule
+    HttpClientModule,
+    CalendarModule.forRoot({
+      provide: DateAdapter,
+      useFactory: adapterFactory,
+    }),
   ],
   providers: [InstructorService, BookingService],
   bootstrap: [AppComponent]

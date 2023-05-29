@@ -2,7 +2,7 @@
     <div>
       <label for="instructor">Select Instructor</label>
       <select [(ngModel)]="booking.instructorId" name="instructor" id="instructor" required>
-        <option *ngFor="let instructor of instructors" [value]="instructor.id">{{ instructor.name }}</option>
+        <option *ngFor="let instructor of instructors" [value]="instructor._id">{{ instructor.name }}</option>
       </select>
     </div>
     <div>

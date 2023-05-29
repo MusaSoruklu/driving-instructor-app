@@ -1,7 +1,24 @@
-<form [formGroup]="searchForm" (submit)="onSearchInstructors()">
-  <div class="form-group">
-    <label for="postcode">Postcode:</label>
-    <input type="text" class="form-control" id="postcode" formControlName="postcode">
+<div class="container">
+  <form [formGroup]="searchForm" (ngSubmit)="onSearchInstructors()" [ngClass]="{ 'search-form': true, 'search-form-initial': !searched, 'search-form-top': searched }">
+    <div class="form-group">
+      <label for="postcode">Postcode:</label>
+      <input type="text" class="form-control" id="postcode" formControlName="postcode">
+    </div>
+    <button (click)="onSearchInstructors()">Search</button>
+  </form>
+
+  <!-- Add this code to display the list of instructors -->
+  <div *ngFor="let instructor of instructors" class="instructor-card">
+    <!-- ... -->
+    <p>Distance: {{ instructor.distance }} miles</p>
+    <div class="availability">
+      <h4>Availability:</h4>
+      <mwl-calendar-week-view
+        [viewDate]="viewDate"
+        [events]="getAvailabilityEvents(instructor)">
+      </mwl-calendar-week-view>
+    </div>
+    <!-- ... -->
+    <button (click)="onBookInstructor(instructor._id)">Book</button>
   </div>
-  <button type="submit">Search</button>
-</form>
+</div>
