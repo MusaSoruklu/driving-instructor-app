@@ -77,13 +77,13 @@ button:hover {
   box-shadow: 0 0 10px rgba(0,0,0,0.1);
   padding: 1em;
   width: 100%;
-  max-width: 300px;
-  margin-bottom: 1em;
+  max-width: 350px; /* Adjust the max-width as per your preference */
+  margin-bottom: 2em; /* Increase the margin-bottom for more spacing */
 }
 
 .instructor-image {
-  width: 80px;
-  height: 80px;
+  width: 120px; /* Increase the width for larger instructor images */
+  height: 120px; /* Increase the height for larger instructor images */
   border-radius: 50%;
   overflow: hidden;
   margin-bottom: 1em;
@@ -96,13 +96,14 @@ button:hover {
 }
 
 .instructor-name {
-  font-size: 1.2em;
+  font-size: 1.4em; /* Increase the font-size for larger instructor names */
   font-weight: 600;
   color: #212121;
+  margin-bottom: 0.5em; /* Add margin-bottom for spacing */
 }
 
 .instructor-details {
-  font-size: 0.9em;
+  font-size: 1em; /* Increase the font-size for larger instructor details */
   color: #424242;
   margin: 0.5em 0;
 }

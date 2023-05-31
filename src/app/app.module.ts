@@ -13,6 +13,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { BookingService } from './booking.service';
 import { CalendarModule, DateAdapter } from 'angular-calendar';
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
+import { CommonModule, DatePipe } from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -32,8 +33,9 @@ import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
       provide: DateAdapter,
       useFactory: adapterFactory,
     }),
+    CommonModule
   ],
-  providers: [InstructorService, BookingService],
+  providers: [InstructorService, BookingService, DatePipe],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
