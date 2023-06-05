@@ -4,6 +4,7 @@ import { InstructorService } from '../instructor.service';
 import { Instructor } from '../models/instructor';
 import { CalendarEvent } from 'angular-calendar';
 import { DatePipe } from '@angular/common';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-main-page',
@@ -20,6 +21,7 @@ export class MainPageComponent implements OnInit {
   endDateTime: Date = new Date();
 
   constructor(
+    private router: Router,
     private instructorService: InstructorService,
     private datepipe: DatePipe
   ) {
@@ -46,23 +48,29 @@ export class MainPageComponent implements OnInit {
     }
   }
 
-  onBookInstructor(instructorId: string): void {
-    // Prepare your booking details
-    const bookingDetails = {
-      studentId: '123', // This should be your student id
-      date: new Date(), // This should be the date chosen by the student
-      time: '10:00', // This should be the time chosen by the student
-    };
-
-    this.instructorService.bookInstructor(instructorId, bookingDetails).subscribe(
-      (response) => {
-        console.log('Booking successful:', response);
-      },
-      (error) => {
-        console.error('Error occurred during booking:', error);
-      }
-    );
+ onBookInstructor(instructor: Instructor | undefined): void {
+  if (instructor) {
+    this.router.navigate(['/booking', instructor._id]);
   }
+}
+
+  // onBookInstructor(instructorId: string): void {
+  //   // Prepare your booking details
+  //   const bookingDetails = {
+  //     studentId: '123', // This should be your student id
+  //     date: new Date(), // This should be the date chosen by the student
+  //     time: '10:00', // This should be the time chosen by the student
+  //   };
+
+  //   this.instructorService.bookInstructor(instructorId, bookingDetails).subscribe(
+  //     (response) => {
+  //       console.log('Booking successful:', response);
+  //     },
+  //     (error) => {
+  //       console.error('Error occurred during booking:', error);
+  //     }
+  //   );
+  // }
 
   updateCalendarEvents(): void {
     this.calendarEvents = [];

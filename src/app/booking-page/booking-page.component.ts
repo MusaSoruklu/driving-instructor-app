@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { Booking } from '../models/booking';
+import { ActivatedRoute } from '@angular/router';
+import { CalendarEvent } from 'angular-calendar';
 import { Instructor } from '../models/instructor';
 import { InstructorService } from '../instructor.service';
-import { BookingService } from '../booking.service';
 
 @Component({
   selector: 'app-booking-page',
@@ -10,29 +10,33 @@ import { BookingService } from '../booking.service';
   styleUrls: ['./booking-page.component.scss']
 })
 export class BookingPageComponent implements OnInit {
-  instructors: Instructor[] = [];
-  booking: Booking = new Booking();
+  selectedInstructor: Instructor | undefined; // Define the selectedInstructor property
+  viewDate: Date = new Date(); // Define the viewDate property
 
   constructor(
-    private instructorService: InstructorService,
-    private bookingService: BookingService
-  ) {}
+    private route: ActivatedRoute,
+    private instructorService: InstructorService
+  ) { }
 
-  ngOnInit(): void {
-    this.getInstructors();
-  }
-
-  getInstructors(): void {
-    this.instructorService.getInstructors().subscribe((data: Instructor[]) => {
-      this.instructors = data;
+  ngOnInit() {
+    this.route.paramMap.subscribe(params => {
+      const instructorId = params.get('instructorId');
+      if (instructorId) {
+        this.instructorService.fetchInstructorById(instructorId).subscribe(
+          (instructor) => {
+            this.selectedInstructor = instructor;
+          },
+          (error) => {
+            console.error('Error occurred while fetching instructor:', error);
+          }
+        );
+      }
     });
   }
 
-  onSubmit(): void {
-    this.bookingService.createBooking(this.booking).subscribe((data: Booking) => {
-      // Handle successful booking (e.g., show a success message or navigate to another page)
-    }, (error) => {
-      // Handle booking error
-    });
+  getAvailabilityEvents(instructor: Instructor | undefined): CalendarEvent[] {
+    // Implement the logic to retrieve the availability events for the instructor
+    // Return the availability events as an array
+    return [];
   }
 }
