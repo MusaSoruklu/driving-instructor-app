@@ -8,7 +8,12 @@
     <h4>Availability:</h4>
     <mwl-calendar-week-view
       [viewDate]="viewDate"
-      [events]="getAvailabilityEvents(selectedInstructor)">
+      [events]="getAvailabilityEvents(selectedInstructor)"
+      (eventClicked)="onEventClicked($event)">
     </mwl-calendar-week-view>
+    <div *ngIf="selectedTimeslot">
+      <p>Selected Timeslot: {{ selectedTimeslot.start | date: 'medium' }} - {{ selectedTimeslot.end | date: 'medium' }}</p>
+      <button (click)="bookTimeslot()">Book</button>
+    </div>
   </div>
 </div>

@@ -39,7 +39,6 @@ export class MainPageComponent implements OnInit {
         (instructors) => {
           this.instructors = instructors;
           this.searched = true;
-          this.updateCalendarEvents();
         },
         (error) => {
           console.error('Error occurred while fetching instructors:', error);
@@ -72,61 +71,4 @@ export class MainPageComponent implements OnInit {
   //   );
   // }
 
-  updateCalendarEvents(): void {
-    this.calendarEvents = [];
-    for (const instructor of this.instructors) {
-      const instructorEvents: CalendarEvent[] = this.getAvailabilityEvents(instructor);
-      this.calendarEvents = this.calendarEvents.concat(instructorEvents);
-    }
-  }
-
-  getAvailabilityEvents(instructor: Instructor): CalendarEvent[] {                      
-    const availabilityEvents: CalendarEvent[] = [];
-
-    // Add weekly availability events
-    for (const day in instructor.availability.weekly) {
-      const dayAvailability = instructor.availability.weekly[day];
-      for (const availability of dayAvailability) {
-        const startDateTime = new Date(this.viewDate);
-        startDateTime.setHours(Number(availability.start.substr(0, 2)));
-        startDateTime.setMinutes(Number(availability.start.substr(3, 2)));
-
-        const endDateTime = new Date(this.viewDate);
-        endDateTime.setHours(Number(availability.end.substr(0, 2)));
-        endDateTime.setMinutes(Number(availability.end.substr(3, 2)));
-
-        const availabilityEvent: CalendarEvent = {
-          title: 'Availability',
-          start: startDateTime,
-          end: endDateTime,
-          allDay: false,
-        };
-        availabilityEvents.push(availabilityEvent);
-      }
-    }
-
-    // Add specific date availability events
-    for (const date in instructor.availability.specificDates) {
-      const dateAvailability = instructor.availability.specificDates[date];
-      for (const availability of dateAvailability) {
-        const startDateTime = new Date(date);
-        startDateTime.setHours(Number(availability.start.substr(0, 2)));
-        startDateTime.setMinutes(Number(availability.start.substr(3, 2)));
-
-        const endDateTime = new Date(date);
-        endDateTime.setHours(Number(availability.end.substr(0, 2)));
-        endDateTime.setMinutes(Number(availability.end.substr(3, 2)));
-
-        const availabilityEvent: CalendarEvent = {
-          title: 'Availability',
-          start: startDateTime,
-          end: endDateTime,
-          allDay: false,
-        };
-        availabilityEvents.push(availabilityEvent);
-      }
-    }
-
-    return availabilityEvents;
-  }
 }
