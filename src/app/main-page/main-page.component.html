@@ -7,16 +7,25 @@
     <button (click)="onSearchInstructors()">Search</button>
   </form>
 
-  <div *ngFor="let instructor of instructors" class="instructor-card">
-    <div class="instructor-info">
-      <div class="instructor-image">
-        <img [src]="instructor.imageUrl" alt="Instructor Image">
+  <div class="instructor-container" *ngIf="searched">
+    <div *ngFor="let instructor of instructors" class="instructor-card">
+      <div class="instructor-info">
+        <div class="instructor-image">
+          <img [src]="instructor.imageUrl" alt="Instructor Image">
+        </div>
+        <div class="instructor-details">
+          <h3 class="instructor-name">{{ instructor.name }}</h3>
+          <p class="instructor-price">Price: £{{ instructor.price }}/hour</p>
+          <p class="instructor-rating">Rating: {{ instructor.rating }}/5</p>
+          <div class="instructor-reviews" (click)="showReviewsPopup(instructor)">
+            <span class="review-stars">
+              <ng-container *ngFor="let star of reviewRatingStars(instructor.rating)">&#9733;</ng-container>
+            </span>
+            <span class="review-count">({{ instructor.reviews.length }})</span>
+          </div>
+        </div>
       </div>
-      <div class="instructor-details">
-        <h3 class="instructor-name">{{ instructor.name }}</h3>
-        <p class="instructor-distance">Distance: {{ instructor.distance }} miles</p>
-      </div>
+      <button class="book-button" (click)="onBookInstructor(instructor)">View Profile</button>
     </div>
-    <button (click)="onBookInstructor(instructor)">Book</button>
   </div>
 </div>

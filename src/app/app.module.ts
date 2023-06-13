@@ -10,10 +10,18 @@ import { InstructorProfileComponent } from './instructor-profile/instructor-prof
 import { BookingPageComponent } from './booking-page/booking-page.component';
 import { InstructorService } from './instructor.service';
 import { HttpClientModule } from '@angular/common/http';
-import { BookingService } from './booking.service';
+import { CommonModule, DatePipe } from '@angular/common';
+import { FullCalendarModule } from '@fullcalendar/angular'; // Import the FullCalendar module
+
 import { CalendarModule, DateAdapter } from 'angular-calendar';
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
-import { CommonModule, DatePipe } from '@angular/common';
+
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatInputModule } from '@angular/material/input';
+import { MatNativeDateModule } from '@angular/material/core';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MAT_DATE_LOCALE } from '@angular/material/core';
+
 
 @NgModule({
   declarations: [
@@ -29,13 +37,18 @@ import { CommonModule, DatePipe } from '@angular/common';
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
+    CommonModule,
+    FullCalendarModule, // Add the FullCalendarModule to the imports
     CalendarModule.forRoot({
       provide: DateAdapter,
       useFactory: adapterFactory,
     }),
-    CommonModule
+    MatDatepickerModule,
+    MatInputModule,
+    MatNativeDateModule,
+    BrowserAnimationsModule
   ],
-  providers: [InstructorService, BookingService, DatePipe],
+  providers: [InstructorService, DatePipe, { provide: MAT_DATE_LOCALE, useValue: 'en-GB' }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -6,14 +6,21 @@
   </div>
   <div class="availability">
     <h4>Availability:</h4>
-    <mwl-calendar-week-view
-      [viewDate]="viewDate"
-      [events]="getAvailabilityEvents(selectedInstructor)"
-      (eventClicked)="onEventClicked($event)">
-    </mwl-calendar-week-view>
-    <div *ngIf="selectedTimeslot">
-      <p>Selected Timeslot: {{ selectedTimeslot.start | date: 'medium' }} - {{ selectedTimeslot.end | date: 'medium' }}</p>
-      <button (click)="bookTimeslot()">Book</button>
+    <ng-container *ngIf="availabilitySlots$ | async as availabilitySlots">
+      <full-calendar
+        [options]="calendarOptions"
+        defaultView="dayGridMonth"
+        header="true"
+        [events]="availabilitySlots"
+      ></full-calendar>
+    </ng-container>
+    <div *ngIf="selectedSlot">
+      <p>Selected Timeslot:
+        <ng-container *ngIf="selectedSlot.start && selectedSlot.end">
+          {{ selectedSlot.start | date: 'mediumTime' }} - {{ selectedSlot.end | date: 'mediumTime' }}
+        </ng-container>
+      </p>
+      <button id="bookButton" (click)="bookSlot()" style="display: none;">Book</button>
     </div>
   </div>
 </div>

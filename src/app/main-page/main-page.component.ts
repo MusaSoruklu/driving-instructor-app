@@ -1,24 +1,21 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { InstructorService } from '../instructor.service';
-import { Instructor } from '../models/instructor';
-import { CalendarEvent } from 'angular-calendar';
+import { Instructor, Review } from '../models/instructor';
 import { DatePipe } from '@angular/common';
 import { Router } from '@angular/router';
+
 
 @Component({
   selector: 'app-main-page',
   templateUrl: './main-page.component.html',
-  styleUrls: ['./main-page.component.scss']
+  styleUrls: ['./main-page.component.scss'],
 })
 export class MainPageComponent implements OnInit {
   searchForm: FormGroup;
   instructors: Instructor[] = [];
   searched: boolean = false;
-  viewDate: Date = new Date();
-  calendarEvents: CalendarEvent[] = [];
-  startDateTime: Date = new Date();
-  endDateTime: Date = new Date();
+  selectedInstructor: Instructor | null = null;
 
   constructor(
     private router: Router,
@@ -38,6 +35,7 @@ export class MainPageComponent implements OnInit {
       this.instructorService.fetchInstructorsByPostcode(postcode).subscribe(
         (instructors) => {
           this.instructors = instructors;
+          console.log(this.instructors);
           this.searched = true;
         },
         (error) => {
@@ -47,28 +45,28 @@ export class MainPageComponent implements OnInit {
     }
   }
 
- onBookInstructor(instructor: Instructor | undefined): void {
-  if (instructor) {
-    this.router.navigate(['/booking', instructor._id]);
+  onBookInstructor(instructor: Instructor | undefined): void {
+    if (instructor) {
+      this.router.navigate(['/instructor', instructor._id]);
+    }
   }
-}
 
-  // onBookInstructor(instructorId: string): void {
-  //   // Prepare your booking details
-  //   const bookingDetails = {
-  //     studentId: '123', // This should be your student id
-  //     date: new Date(), // This should be the date chosen by the student
-  //     time: '10:00', // This should be the time chosen by the student
-  //   };
+  instructorRatingStars(rating: number): number[] {
+    return Array(Math.floor(rating)).fill(0);
+  }
 
-  //   this.instructorService.bookInstructor(instructorId, bookingDetails).subscribe(
-  //     (response) => {
-  //       console.log('Booking successful:', response);
-  //     },
-  //     (error) => {
-  //       console.error('Error occurred during booking:', error);
-  //     }
-  //   );
-  // }
+  showReviewsPopup(instructor: Instructor): void {
+    this.selectedInstructor = instructor;
+  }
 
+  closeReviewsPopup(): void {
+    this.selectedInstructor = null;
+  }
+
+  reviewRatingStars(rating: number): number[] {
+    if (isNaN(rating) || rating <= 0) {
+      return [];
+    }
+    return Array(Math.floor(rating)).fill(0);
+  }
 }

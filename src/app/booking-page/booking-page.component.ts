@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { CalendarEvent } from 'angular-calendar';
+import { Observable, of } from 'rxjs';
 import { Instructor } from '../models/instructor';
 import { InstructorService } from '../instructor.service';
+import { CalendarOptions, EventClickArg } from '@fullcalendar/core';
+import dayGridPlugin from '@fullcalendar/daygrid';
 
 @Component({
   selector: 'app-booking-page',
@@ -11,8 +13,21 @@ import { InstructorService } from '../instructor.service';
 })
 export class BookingPageComponent implements OnInit {
   selectedInstructor: Instructor | undefined;
-  viewDate: Date = new Date();
-  selectedTimeslot: CalendarEvent | undefined;
+  selectedSlot: { start: Date, end: Date } | undefined;
+  availabilitySlots$: Observable<any[]> = of([]);
+  
+  calendarOptions: CalendarOptions = {
+    initialView: 'dayGridMonth',
+    plugins: [dayGridPlugin],
+    events: [],
+    eventClick: this.onCalendarEventClick.bind(this),
+    eventContent: this.customEventContent.bind(this)
+  };
+  
+  customEventContent(info: any) {
+    return { html: info.event.title };
+  }
+  
 
   constructor(
     private route: ActivatedRoute,
@@ -27,6 +42,7 @@ export class BookingPageComponent implements OnInit {
         this.instructorService.fetchInstructorById(instructorId).subscribe(
           (instructor) => {
             this.selectedInstructor = instructor;
+            this.updateAvailabilitySlots();
           },
           (error) => {
             console.error('Error occurred while fetching instructor:', error);
@@ -36,66 +52,80 @@ export class BookingPageComponent implements OnInit {
     });
   }
 
-  getAvailabilityEvents(instructor: Instructor | undefined): CalendarEvent[] {
-    const availabilityEvents: CalendarEvent[] = [];
+  private updateAvailabilitySlots(): void {
+    if (this.selectedInstructor) {
+      this.availabilitySlots$ = of(this.getAvailabilitySlots(this.selectedInstructor));
+    }
+  }
+
+  private getAvailabilitySlots(instructor: Instructor): any[] {
+    const availabilitySlots: any[] = [];
   
-    if (instructor) {
-      // Retrieve the availability events for the selected instructor and populate the availabilityEvents array
+    if (instructor.availability && instructor.availability.weekly) {
+      for (const day of Object.keys(instructor.availability.weekly)) {
+        const dayAvailability = instructor.availability.weekly[day];
   
-      // Example: Fetch availability events from the selected instructor
-      const availability = instructor.availability;
+        for (const slot of dayAvailability) {
+          const startDateTime = this.parseDateTime(day, slot.start);
+          const endDateTime = this.parseDateTime(day, slot.end);
   
-      // Iterate over weekly availability
-      for (const day of Object.keys(availability.weekly)) {
-        const dayAvailability = availability.weekly[day];
-  
-        for (const event of dayAvailability) {
-          const startDateTime = new Date(`${day}T${event.start}`);
-          const endDateTime = new Date(`${day}T${event.end}`);
-  
-          const availabilityEvent: CalendarEvent = {
-            title: 'Availability',
+          const availabilitySlot = {
+            title: this.formatEventTime(startDateTime, endDateTime), // Displayed text on the calendar
             start: startDateTime,
             end: endDateTime,
-            allDay: false
+            color: 'lightgreen' // Customize the background color for available slots
           };
   
-          availabilityEvents.push(availabilityEvent);
-        }
-      }
-  
-      // Iterate over specific date availability
-      for (const date of Object.keys(availability.specificDates)) {
-        const dateAvailability = availability.specificDates[date];
-  
-        for (const event of dateAvailability) {
-          const startDateTime = new Date(`${date}T${event.start}`);
-          const endDateTime = new Date(`${date}T${event.end}`);
-  
-          const availabilityEvent: CalendarEvent = {
-            title: 'Availability',
-            start: startDateTime,
-            end: endDateTime,
-            allDay: false
-          };
-  
-          availabilityEvents.push(availabilityEvent);
+          availabilitySlots.push(availabilitySlot);
         }
       }
     }
   
-    return availabilityEvents;
+    return availabilitySlots;
+  }
+  
+  private formatEventTime(startDateTime: Date, endDateTime: Date): string {
+    const startTime = startDateTime.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit', hour12: true });
+    const endTime = endDateTime.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit', hour12: true });
+    return `${startTime} - ${endTime}`;
+  }
+  
+
+  private parseDateTime(day: string, timeString: string): Date {
+    const [hours, minutes] = timeString.split(':');
+    
+    const currentDate = new Date();
+    const currentDayOfWeek = currentDate.getDay();
+    
+    const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    const targetDayOfWeek = daysOfWeek.indexOf(day);
+    
+    const differenceInDays = targetDayOfWeek - currentDayOfWeek;
+    currentDate.setDate(currentDate.getDate() + differenceInDays);
+    
+    const [year, month, date] = currentDate.toISOString().split('T')[0].split('-');
+    
+    return new Date(Number(year), Number(month) - 1, Number(date), Number(hours), Number(minutes));
   }
 
-  onEventClicked(event: { event: CalendarEvent }): void {
-    this.selectedTimeslot = event.event;
-  }  
+  onCalendarEventClick(arg: EventClickArg): void {
+    this.selectedSlot = {
+      start: arg.event.start as Date,
+      end: arg.event.end as Date
+    };
+    this.showBookButton();
+  }
 
-  bookTimeslot(): void {
-    if (this.selectedTimeslot) {
-      // Perform the booking based on the selected timeslot
-      // You can implement the necessary logic to book the timeslot here
-      console.log('Booking timeslot:', this.selectedTimeslot);
+  showBookButton(): void {
+    const bookButton = document.getElementById('bookButton');
+    if (bookButton) {
+      bookButton.style.display = 'block';
+    }
+  }
+
+  bookSlot(): void {
+    if (this.selectedSlot) {
+      console.log('Booking slot:', this.selectedSlot);
 
       // After the booking is successfully completed, you can navigate to a confirmation page or perform any other necessary actions
       // For example, navigate to the root page:

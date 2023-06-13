@@ -1,19 +1,50 @@
-<div class="instructor-profile">
-    <img [src]="instructor.imageUrl" alt="{{instructor.name}}" />
-    <h2>{{instructor.name}}</h2>
-    <p>Price: £{{instructor.price}} per hour</p>
-    <p>Gender: {{instructor.gender}}</p>
-    <p>Experience: {{instructor.experience}} years</p>
-    <div class="reviews">
-      <h3>Reviews</h3>
+<div class="container">
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a [routerLink]="['/']">Home</a></li>
+      <li class="breadcrumb-item"><a [routerLink]="['/instructors']">Nearby Instructors</a></li>
+      <li class="breadcrumb-item active" aria-current="page">Instructor Profile</li>
+    </ol>
+  </nav>
+  <div class="instructor-profile-card" *ngIf="instructor">
+    <div class="instructor-info">
+      <div class="instructor-image">
+        <img [src]="instructor.imageUrl" alt="Instructor Image">
+      </div>
+      <div class="instructor-details">
+        <h3 class="instructor-name">{{ instructor.name }}</h3>
+        <p class="instructor-price">Price: £{{ instructor.price }}/hour</p>
+        <p class="instructor-rating">Rating: {{ instructor.rating }}/5</p>
+        <div class="review-item" *ngFor="let review of instructor.reviews">
+          <div class="review-rating">
+            <ng-container *ngFor="let star of reviewRatingStars(review.rating)">&#9733;</ng-container>
+          </div>
+          <p class="review-comment">{{ review.comment }}</p>
+        </div>
+        <div class="instructor-reviews">
+          <span class="review-stars">
+            <ng-container *ngFor="let star of reviewRatingStars(instructor.rating)">&#9733;</ng-container>
+          </span>
+          <span class="review-count">({{ instructor.reviews.length }})</span>
+        </div>
+      </div>
+    </div>
+    <div class="selected-slots" *ngIf="selectedSlots.length > 0">
+      <h2>Selected Slots</h2>
       <ul>
-        <li *ngFor="let review of instructor.reviews">
-          <p>Rating: {{review.rating}}/5</p>
-          <p>{{review.comment}}</p>
+        <li *ngFor="let slot of selectedSlots">
+          {{ slot.start }} - {{ slot.end }}
         </li>
       </ul>
     </div>
-    <button (click)="viewAvailability()">View Availability</button>
-    <button (click)="bookLesson()">Book a Lesson</button>
+    <div>
+      <h3>Select a Date</h3>
+      <mat-form-field>
+        <input matInput [matDatepicker]="datepicker" placeholder="Choose a date" [(ngModel)]="selectedDate">
+        <mat-datepicker-toggle matSuffix [for]="datepicker"></mat-datepicker-toggle>
+        <mat-datepicker #datepicker></mat-datepicker>
+      </mat-form-field>
+    </div> 
+    <button class="book-button" (click)="onBookInstructor()">Book Instructor</button>
   </div>
-  
+</div>
