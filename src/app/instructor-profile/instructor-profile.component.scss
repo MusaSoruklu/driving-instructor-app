@@ -1,208 +1,194 @@
 .container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 2em;
-    height: 100%;
-    background-color: #fafafa;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2em;
+  height: 100%;
+  background-color: #fafafa;
 
-    .calendar-container {
-        margin-top: 2em;
-    
-        ::ng-deep .cal-cell-top {
-          cursor: pointer;
-          transition: background-color 0.3s ease;
-    
-          &.disabled {
-            cursor: default;
-            background-color: #f5f5f5;
-          }
-    
-          &.green {
-            background-color: green;
-          }
-    
-          &.orange {
-            background-color: orange;
-          }
-        }
-        ::ng-deep .cal-day-badge {
-            display: none !important;
-          }
-      }
+  .calendar-container {
+    margin-top: 2em;
 
-  }
-  
-  .instructor-profile-card {
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    padding: 2em;
-    width: 100%;
-    max-width: 800px;
-    margin-bottom: 2em;
-  }
-  
-  .instructor-info {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    margin-bottom: 1em;
-  }
-  
-  .instructor-image {
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
-    overflow: hidden;
-    margin-right: 1em;
-  }
-  
-  .instructor-image img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-  
-  .instructor-details {
-    font-size: 1em;
-    color: #424242;
-    margin: 0.5em 0;
-  }
-  
-  .instructor-name {
-    font-size: 1.4em;
-    font-weight: 600;
-    color: #212121;
-    margin-bottom: 0.5em;
-  }
-  
-  .instructor-price {
-    font-size: 1em;
-    color: #757575;
-    margin: 0.5em 0;
-  }
-  
-  .instructor-rating {
-    font-size: 1em;
-    color: #757575;
-    margin: 0.5em 0;
-  }
-  
-  .instructor-reviews {
-    display: flex;
-    align-items: center;
-    margin-top: 0.5em;
-  }
-  
-  .review-stars {
-    margin-right: 4px;
-    color: #FFC107;
-  }
-  
-  .review-count {
-    font-size: 1em;
-    color: #757575;
-  }
-  
-  .popup-title {
-    font-size: 1.2em;
-    font-weight: 600;
-    color: #212121;
-    margin-bottom: 1em;
-  }
-  
-  .review-item {
-    display: flex;
-    align-items: center;
-    margin-bottom: 0.5em;
-  }
-  
-  .review-rating {
-    display: flex;
-    align-items: center;
-    margin-right: 0.5em;
-  }
-  
-  .review-comment {
-    font-size: 1em;
-    color: #424242;
-  }
-  
-  .book-button {
-    padding: 1em;
-    border: none;
-    border-radius: 4px;
-    background-color: #1976d2;
-    color: white;
-    font-size: 1em;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    outline: none;
-    margin-top: 1em;
-  }
-  
-  .book-button:hover {
-    background-color: #1565c0;
+
+    :ng-deep button.mat-calendar-body-cell.green {
+      background-color: green;
+    }
+
+    :ng-deep .yellow.mat-calendar-body-cell {
+      background-color: yellow;
+    }
+
+    :ng-deep .red.mat-calendar-body-cell {
+      background-color: red;
+    }
+
+    ::ng-deep .cal-day-badge {
+      display: none !important;
+    }
   }
 
-  .slot-buttons {
-    display: flex;
-    flex-wrap: wrap;
-    margin-top: 1em;
-  }
-  
-  .slot-button {
-    padding: 0.5em 1em;
-    margin-right: 1em;
-    margin-bottom: 1em;
-    border: none;
-    border-radius: 4px;
-    background-color: #8cb1d4;
-    color: white;
-    font-size: 1em;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    outline: none;
+}
+
+.instructor-profile-card {
+  position: relative; // Add this line to establish a positioning context
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  padding: 2em;
+  width: 100%;
+  max-width: 800px;
+  margin-bottom: 2em;
+
+  .button-container {
+    position: absolute;
+    bottom: 1em;
+    right: 1em;
   }
 
-  .slot-button.selected {
-    background-color: #1565c0;
-    border: 2px solid #1976d2;
-  }
-  
-  .slot-button:hover {
-    background-color: #1565c0;
-  }
+}
 
-  .breadcrumb {
-    padding: 15px 0;
-    list-style: none;
-    background-color: transparent;
-  }
-  
-  .breadcrumb-item {
-    display: inline-block;
-  }
-  
-  .breadcrumb-item + .breadcrumb-item::before {
-    content: "/";
-    padding: 0 10px;
-    color: #6c757d;
-  }
-  
-  .breadcrumb-item a {
-    color: #007bff;
-    text-decoration: none;
-  }
-  
-  .breadcrumb-item a:hover {
-    color: #0056b3;
-    text-decoration: underline;
-  }
-  
-  .breadcrumb-item.active {
-    color: #6c757d;
-  }
-  
+.instructor-info {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-bottom: 1em;
+}
+
+.instructor-image {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  overflow: hidden;
+  margin-right: 1em;
+}
+
+.instructor-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.instructor-details {
+  font-size: 1em;
+  color: #424242;
+  margin: 0.5em 0;
+}
+
+.instructor-name {
+  font-size: 1.4em;
+  font-weight: 600;
+  color: #212121;
+  margin-bottom: 0.5em;
+}
+
+.instructor-price {
+  font-size: 1em;
+  color: #757575;
+  margin: 0.5em 0;
+}
+
+.instructor-rating {
+  font-size: 1em;
+  color: #757575;
+  margin: 0.5em 0;
+}
+
+.instructor-reviews {
+  display: flex;
+  align-items: center;
+  margin-top: 0.5em;
+}
+
+.review-stars {
+  margin-right: 4px;
+  color: #FFC107;
+}
+
+.review-count {
+  font-size: 1em;
+  color: #757575;
+}
+
+.popup-title {
+  font-size: 1.2em;
+  font-weight: 600;
+  color: #212121;
+  margin-bottom: 1em;
+}
+
+.review-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.5em;
+}
+
+.review-rating {
+  display: flex;
+  align-items: center;
+  margin-right: 0.5em;
+}
+
+.review-comment {
+  font-size: 1em;
+  color: #424242;
+}
+
+.slot-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 1em;
+}
+
+.slot-button {
+  padding: 0.5em 1em;
+  margin-right: 1em;
+  margin-bottom: 1em;
+  border: none;
+  border-radius: 4px;
+  background-color: #8cb1d4;
+  color: white;
+  font-size: 1em;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  outline: none;
+}
+
+.slot-button.selected {
+  background-color: #1565c0;
+  border: 2px solid #1976d2;
+}
+
+.slot-button:hover {
+  background-color: #1565c0;
+}
+
+.breadcrumb {
+  padding: 15px 0;
+  list-style: none;
+  background-color: transparent;
+}
+
+.breadcrumb-item {
+  display: inline-block;
+}
+
+.breadcrumb-item+.breadcrumb-item::before {
+  content: "/";
+  padding: 0 10px;
+  color: #6c757d;
+}
+
+.breadcrumb-item a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.breadcrumb-item a:hover {
+  color: #0056b3;
+  text-decoration: underline;
+}
+
+.breadcrumb-item.active {
+  color: #6c757d;
+}

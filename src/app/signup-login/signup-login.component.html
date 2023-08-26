@@ -1,0 +1,91 @@
+<mat-card class="auth-container">
+    <mat-card-header class="login-header">
+        <button class="back-button" *ngIf="showPasswordInput || isSignupMode" mat-icon-button (click)="goBack()">
+            <mat-icon>arrow_back</mat-icon>
+        </button>
+        <mat-card-title>
+            {{ getTitle() }}
+        </mat-card-title>
+        <button mat-icon-button class="close-button" (click)="closeDialog()">
+            <mat-icon>close</mat-icon>
+        </button>
+    </mat-card-header>
+    <mat-card-content class="login-content">
+        <form [formGroup]="form" (ngSubmit)="onSubmit()">
+            <ng-container *ngIf="!showPasswordInput && !isSignupMode">
+              <mat-form-field appearance="fill" class="form-group">
+                <mat-label>Email</mat-label>
+                <input matInput formControlName="email" required>
+                <mat-icon matSuffix>email</mat-icon>
+                <mat-error *ngIf="email.invalid && (email.dirty || email.touched)">
+                  {{ getEmailErrorMessage() }}
+                </mat-error>
+              </mat-form-field>
+              <button mat-raised-button class="continue-button" color="primary" type="submit">
+                Continue with Email
+              </button>
+            </ng-container>
+
+            <ng-container *ngIf="showPasswordInput">
+                <mat-form-field appearance="fill" class="form-group">
+                    <mat-label>Password</mat-label>
+                    <input matInput [type]="hide ? 'password' : 'text'">
+                    <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'"
+                        [attr.aria-pressed]="hide">
+                        <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                    </button>
+                </mat-form-field>
+                <button mat-raised-button class="continue-button" color="primary" type="submit">
+                    Login
+                </button>
+            </ng-container>
+            <ng-container *ngIf="isSignupMode">
+                <mat-form-field appearance="fill" class="form-group">
+                    <mat-label>Email</mat-label>
+                    <input matInput type="email" [(ngModel)]="user.email" name="email" required #email="ngModel">
+                    <mat-icon matSuffix>email</mat-icon>
+                    <mat-error *ngIf="email.invalid && (email.dirty || email.touched)">
+                        Please enter a valid email.
+                    </mat-error>
+                </mat-form-field>
+                
+                <mat-form-field appearance="fill" class="form-group">
+                    <mat-label>Name</mat-label>
+                    <input matInput type="text" [(ngModel)]="user.name" name="name" required #name="ngModel">
+                    <mat-icon matSuffix>person</mat-icon>
+                    <mat-error *ngIf="name.invalid && (name.dirty || name.touched)">
+                        Name is required.
+                    </mat-error>
+                </mat-form-field>
+                
+                <mat-form-field appearance="fill" class="form-group">
+                    <mat-label>Phone Number</mat-label>
+                    <input matInput type="tel" [(ngModel)]="user.phone" name="phone" required pattern="[0-9]*" #phone="ngModel">
+                    <mat-icon matSuffix>phone</mat-icon>
+                    <mat-error *ngIf="phone.invalid && (phone.dirty || phone.touched)">
+                        Please enter a valid phone number.
+                    </mat-error>
+                </mat-form-field>
+                
+                <mat-form-field appearance="fill" class="form-group">
+                    <mat-label>Password</mat-label>
+                    <input matInput [type]="hide ? 'password' : 'text'" [(ngModel)]="user.password" name="password" required #password="ngModel">
+                    <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'"
+                        [attr.aria-pressed]="hide">
+                        <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                    </button>
+                    <mat-error *ngIf="password.invalid && (password.dirty || password.touched)">
+                        Password is required.
+                    </mat-error>
+                </mat-form-field>
+                <button mat-raised-button class="continue-button" color="primary" type="submit">
+                    Sign Up
+                </button>
+            </ng-container>
+        </form>
+    </mat-card-content>
+    <mat-card-footer class="login-footer" *ngIf="!showPasswordInput && !isSignupMode">
+        Still haven't signed up?&nbsp;
+        <button mat-button (click)="switchToSignup()">Sign Up</button>
+    </mat-card-footer>
+</mat-card>

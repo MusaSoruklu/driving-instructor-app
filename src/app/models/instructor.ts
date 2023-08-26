@@ -10,17 +10,20 @@ export interface Instructor {
   location: { type: string, coordinates: number[] };
   bookings: { studentId: string, date: Date, time: string }[];
   availability: {
-    weekly: {
-      [day: string]: { start: string, end: string }[],
-    },
-    specificDates: {
-      [date: string]: { start: string, end: string }[],
-    },
+    [dayOrDate: string]: Slot[],
   };
-  distance: number; // Add the distance property
+  distance: number;
+  transmission: string [];
+  lessonDuration: number [];
 }
 
 export interface Review {
   rating: number;
   comment: string;
+}
+
+export interface Slot {
+  start: string;
+  end: string;
+  type: 'available' | 'unavailable';
 }

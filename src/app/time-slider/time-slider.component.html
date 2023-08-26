@@ -1,0 +1,13 @@
+<div class="slider-container" [style.background]="getSliderBackground()" #sliderContainer
+    (mousedown)="startSlide($event)" (mousemove)="onSlide($event)" (mouseup)="endSlide($event)">
+    <div class="slider-thumb" #sliderThumb [style.left.px]="thumbPosition"></div>
+    <div class="time-tooltip">{{ getTimeRange() }}</div>
+</div>
+<div class="hourly-markers">
+    <div class="markers-container">
+        <div *ngFor="let marker of hourlyMarkers; let i = index" class="hour-marker" [class.visible]="shouldShowMarker(i)">
+            <div class="line"></div>
+            <div class="label">{{ marker.label }}</div>
+        </div>
+    </div>
+</div>

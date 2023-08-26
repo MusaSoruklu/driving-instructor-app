@@ -5,6 +5,8 @@ import { Instructor, Review } from '../models/instructor';
 import { CalendarEvent, CalendarMonthViewDay } from 'angular-calendar';
 import { DatePipe } from '@angular/common';
 import { MatDatepicker, MatDatepickerInputEvent } from '@angular/material/datepicker';
+import { MatCalendarCellClassFunction, MatCalendarCellCssClasses } from '@angular/material/datepicker';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-instructor-profile',
@@ -20,13 +22,14 @@ export class InstructorProfileComponent implements OnInit {
   monthViewDays: CalendarMonthViewDay[] = [];
   selectedSlots: { start: string, end: string }[] = [];
   selectedDate: Date | null = null;
+  isBookButtonDisabled: boolean = true;
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private instructorService: InstructorService,
     private datePipe: DatePipe
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.route.params.subscribe(params => {
@@ -35,6 +38,8 @@ export class InstructorProfileComponent implements OnInit {
         this.fetchInstructor(instructorId);
       }
     });
+    // Call the method to initialize the book button state
+    this.updateBookButtonState();
   }
 
   fetchInstructor(instructorId: string): void {
@@ -53,82 +58,82 @@ export class InstructorProfileComponent implements OnInit {
   fetchInstructorAvailability(instructor: Instructor): void {
     const bookings = instructor.bookings;
     const events: CalendarEvent[] = [];
-  
+
     bookings.forEach((booking) => {
       const start = new Date(booking.date);
       const end = new Date(booking.date);
       end.setHours(end.getHours() + 1);
-  
+
       const event: CalendarEvent = {
         start,
         end,
         title: 'Booked',
         color: { primary: 'blue', secondary: 'lightblue' },
       };
-  
+
       events.push(event);
     });
-  
+
     const startOfMonth = new Date(this.viewDate.getFullYear(), this.viewDate.getMonth(), 1);
     const endOfMonth = new Date(this.viewDate.getFullYear(), this.viewDate.getMonth() + 1, 0);
-  
+
     for (let i = startOfMonth.getDate(); i <= endOfMonth.getDate(); i++) {
       const currentDate = new Date(this.viewDate.getFullYear(), this.viewDate.getMonth(), i);
       const availableSlots = this.getAvailableSlots(currentDate);
-  
+
       let availabilityColor = 'green';
-  
+
       if (availableSlots.length <= 1) {
         availabilityColor = 'yellow';
       }
-  
+
       if (availableSlots.length === 0) {
         availabilityColor = 'red';
       }
-  
+
       const day = this.monthViewDays.find((viewDay) => viewDay.date.getDate() === i);
       if (day) {
         day.cssClass = `cal-cell-top ${availabilityColor}`;
       }
     }
-  
+
     this.calendarEvents = events;
   }
-  
-  
-  
+
+
+
   setCalendarDayCssClass(): void {
     const daysWithAvailability = new Set<string>();
-  
+
     this.calendarEvents.forEach((event) => {
       const eventDate = event.start.toISOString().split('T')[0];
       daysWithAvailability.add(eventDate);
     });
-  
+
     const startOfMonth = new Date(this.viewDate.getFullYear(), this.viewDate.getMonth(), 1);
     const endOfMonth = new Date(this.viewDate.getFullYear(), this.viewDate.getMonth() + 1, 0);
-  
+
     for (let i = startOfMonth.getDate(); i <= endOfMonth.getDate(); i++) {
       const currentDate = new Date(this.viewDate.getFullYear(), this.viewDate.getMonth(), i);
       const dateString = currentDate.toISOString().split('T')[0];
-  
+
       const cssClass = daysWithAvailability.has(dateString)
         ? 'green'
         : 'disabled';
-  
+
       const day = this.monthViewDays.find((viewDay) => viewDay.date.getDate() === i);
       if (day) {
         day.cssClass = `cal-cell-top ${cssClass}`;
       }
     }
   }
-  
+
   createMonthViewDays(): CalendarMonthViewDay[] {
     const startOfMonth = new Date(this.viewDate.getFullYear(), this.viewDate.getMonth(), 1);
     const endOfMonth = new Date(this.viewDate.getFullYear(), this.viewDate.getMonth() + 1, 0);
-  
+
     const days: CalendarMonthViewDay[] = [];
-  
+
     for (let i = startOfMonth.getDate(); i <= endOfMonth.getDate(); i++) {
       const currentDate = new Date(this.viewDate.getFullYear(), this.viewDate.getMonth(), i);
       const day: CalendarMonthViewDay = {
@@ -143,16 +148,16 @@ export class InstructorProfileComponent implements OnInit {
         isFuture: currentDate > new Date(),
         isWeekend: [0, 6].includes(currentDate.getDay()),
       };
-  
+
       days.push(day);
     }
-  
+
     this.monthViewDays = days;
     this.setCalendarDayCssClass(); // Update cell colors
     return days;
   }
-    
-  
+
+
   onBookInstructor(): void {
     if (this.instructor && this.selectedDate) {
       // Perform booking logic using this.selectedDate
@@ -190,21 +195,8 @@ export class InstructorProfileComponent implements OnInit {
   // Method to fetch available slots for the selected day
   getAvailableSlots(day: Date): { start: string, end: string }[] {
     const selectedDate = this.formatDate(day);
-    const specificDateAvailability = this.instructor?.availability.specificDates;
-    const weeklyAvailability = this.instructor?.availability.weekly;
 
     let availableSlots: { start: string, end: string }[] = [];
-
-    if (specificDateAvailability && specificDateAvailability[selectedDate]) {
-      const specificSlots = specificDateAvailability[selectedDate];
-      availableSlots = [...availableSlots, ...specificSlots];
-    }
-
-    if (weeklyAvailability) {
-      const selectedDay = this.getDayOfWeek(day);
-      const weeklySlots = weeklyAvailability[selectedDay] || [];
-      availableSlots = [...availableSlots, ...weeklySlots];
-    }
 
     // Sort the available slots based on their start time in ascending order
     availableSlots.sort((a, b) => (a.start > b.start ? 1 : -1));
@@ -234,10 +226,67 @@ export class InstructorProfileComponent implements OnInit {
       // Slot is already selected, so remove it from the selectedSlots array
       this.selectedSlots.splice(index, 1);
     }
-  }
-  
+    
+    this.updateBookButtonState(); // Add this line to update the book button state
+  }  
+
   isSlotSelected(slot: { start: string, end: string }): boolean {
-    return this.selectedSlots.some(selectedSlot => selectedSlot.start === slot.start && selectedSlot.end === slot.end);
+    return this.selectedSlots.some(
+      selectedSlot => selectedSlot.start === slot.start && selectedSlot.end === slot.end
+    );
   }
+
+  updateBookButtonState(): void {
+    // Enable/disable the "Book Instructor" button based on slot selection
+    this.isBookButtonDisabled = this.selectedSlots.length === 0;
+  }     
+
+  dateClass: MatCalendarCellClassFunction<Date> = (date: Date, view: string): MatCalendarCellCssClasses => {
+    const dateWithoutTime = this.datePipe.transform(date, 'yyyy-MM-dd');
+    if (view === 'month') {
+      const day: Date = new Date(date);
+      const availableSlots = this.getAvailableSlots(day);
+
+      if (date < new Date() || availableSlots.length === 0) {
+        return 'disabled';
+      }
+
+      if (availableSlots.length > 1) {
+        return 'green';
+      }
+      if (availableSlots.length === 1) {
+        return 'yellow';
+      }
+    }
+
+    return '';
+  };
+
+
+
+  dateFilter: (date: Date | null) => boolean = (date: Date | null): boolean => {
+    if (!date) {
+      return false;
+    }
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const selectedDay = new Date(date);
+    selectedDay.setHours(0, 0, 0, 0);
+    const availableSlots = this.getAvailableSlots(selectedDay);
+    return date >= today && availableSlots.length !== 0;
+  };
+
+
+  isDateAvailable(date: Date): boolean {
+    if (!date) {
+      return false;
+    }
+
+    const selectedDay = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+    const availableSlots = this.getAvailableSlots(selectedDay);
+
+    return availableSlots.length > 0;
+  }
+
 
 }

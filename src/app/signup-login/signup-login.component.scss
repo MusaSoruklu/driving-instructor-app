@@ -1,0 +1,59 @@
+.auth-container {
+    max-width: 400px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    position: relative;
+
+    .close-button {
+        position: absolute;
+        top: 5px;
+        right: 5px;
+    }
+
+    .back-button {
+        position: absolute;
+        left: 5px;
+        top: 5px;
+    }
+
+    .login-header {
+        justify-content: center;
+    }
+
+    .login-content {
+        padding: 32px 32px 32px 32px;
+    }
+
+    .form-group {
+        width: 100%;
+        margin-bottom: 15px;
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        mat-card-footer {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+    }
+
+    .continue-button {
+        width: 100%;
+    }
+
+    .login-footer {
+        padding-bottom: 16px;
+        display: flex;
+        padding-top: 16px;
+        justify-content: center;
+        flex-direction: row;
+        align-items: center;
+    }
+
+}

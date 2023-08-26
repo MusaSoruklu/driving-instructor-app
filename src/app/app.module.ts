@@ -21,6 +21,26 @@ import { MatInputModule } from '@angular/material/input';
 import { MatNativeDateModule } from '@angular/material/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MAT_DATE_LOCALE } from '@angular/material/core';
+import { MatButtonModule } from '@angular/material/button';
+import { InstructorCardComponent } from './instructor-card/instructor-card.component';
+import { CartComponent } from './cart/cart.component';
+import { MatIconModule } from '@angular/material/icon';
+import { MatBadgeModule } from '@angular/material/badge';
+import { OverlayModule } from '@angular/cdk/overlay';
+import { LoadingOverlayComponent } from './loading-overlay/loading-overlay.component';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectModule } from '@angular/material/select';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatSliderModule } from '@angular/material/slider';
+import { TimeSliderComponent } from './time-slider/time-slider.component';
+import {MatCardModule} from '@angular/material/card';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { SignupLoginComponent } from './signup-login/signup-login.component';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatStepperModule } from '@angular/material/stepper';
+import { MatListModule } from '@angular/material/list';
 
 
 @NgModule({
@@ -29,7 +49,12 @@ import { MAT_DATE_LOCALE } from '@angular/material/core';
     MainPageComponent,
     InstructorListComponent,
     InstructorProfileComponent,
-    BookingPageComponent
+    BookingPageComponent,
+    InstructorCardComponent,
+    CartComponent,
+    LoadingOverlayComponent,
+    TimeSliderComponent,
+    SignupLoginComponent,
   ],
   imports: [
     BrowserModule,
@@ -46,7 +71,22 @@ import { MAT_DATE_LOCALE } from '@angular/material/core';
     MatDatepickerModule,
     MatInputModule,
     MatNativeDateModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    MatButtonModule,
+    MatIconModule,
+    MatBadgeModule,
+    OverlayModule,
+    MatProgressSpinnerModule,
+    MatFormFieldModule,
+    MatSelectModule,
+    MatSidenavModule,
+    MatCheckboxModule,
+    MatSliderModule,
+    MatCardModule,
+    FontAwesomeModule,
+    MatDialogModule,
+    MatStepperModule,
+    MatListModule
   ],
   providers: [InstructorService, DatePipe, { provide: MAT_DATE_LOCALE, useValue: 'en-GB' }],
   bootstrap: [AppComponent]

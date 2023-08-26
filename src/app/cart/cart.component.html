@@ -1,0 +1,47 @@
+<div class="shopping-cart-container">
+  <div class="shopping-cart-card">
+    <h5 class="cart-title">Lesson Basket</h5>
+    <div class="cart-content-wrapper">
+      <div class="cart-content" *ngIf="(items$ | async)?.length === 0">
+        <figure class="cart-empty-icon">
+          <img
+            src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNzIiIGhlaWdodD0iODYiIHZpZXdCb3g9IjAgMCA3MiA4NiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGcgY2xpcC1wYXRoPSJ1cmwoI2NsaXAwKSI+CjxwYXRoIGQ9Ik0wLjUgMjVINzAuNzc1NlY4NS4yMzQ3SDAuNVYyNVoiIGZpbGw9IiNEQkRCRkYiLz4KPHBhdGggZD0iTTIzLjA4MzggMC4zMzMwMDhINDcuOTg3TDUyLjk3NTQgNS4zODlWMjUuNDMxNkw0Ny41NzgxIDI1LjQxNzRWNS4zNzgzNEgyMy41MjQ3VjI1LjQxNzRMMTguMDI3OCAyNS40MzE2VjUuMzc4MzRMMjMuMDgzOCAwLjMzMzAwOFoiIGZpbGw9IiNEQkRCRkYiLz4KPC9nPgo8ZGVmcz4KPGNsaXBQYXRoIGlkPSJjbGlwMCI+CjxyZWN0IHdpZHRoPSI3MSIgaGVpZ2h0PSI4NiIgZmlsbD0id2hpdGUiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDAuNSkiLz4KPC9jbGlwUGF0aD4KPC9kZWZzPgo8L3N2Zz4K"
+            alt="Empty Cart">
+        </figure>
+        <div class="cart-description">
+          <span class="cart-text">Your basket is empty</span>
+          <p class="cart-paragraph">Add Driving lessons(s) to your basket to make a booking</p>
+        </div>
+      </div>
+      <div *ngFor="let item of items$ | async" class="cart-item">
+        <h6 class="item-title">{{ item.instructor.name }}</h6>
+        <div class="item-details">
+          <div>
+            <mat-icon aria-hidden="false" aria-label="Lesson Time Icon">access_time</mat-icon>
+            <span>Time: {{ item.start }} - {{ item.end }}</span>
+          </div>
+          <div>
+            <mat-icon aria-hidden="false" aria-label="Lesson Date Icon">today</mat-icon>
+            <span>Date: {{ item.date | date }}</span>
+          </div>
+          <div>
+            <mat-icon aria-hidden="false" aria-label="Lesson Duration Icon">timer</mat-icon>
+            <span>Duration: {{ item.duration }} Hour(s)</span>
+          </div>
+          <div>
+            <mat-icon aria-hidden="false" aria-label="Transmission Icon">drive_eta</mat-icon>
+            <span>Transmission: {{ item.transmission }}</span>
+          </div>
+          <div>
+            <fa-icon [icon]="faSterlingSign"></fa-icon>
+            <span class="item-price">Price: £{{ item.price }}</span>
+          </div>
+        </div>
+        <mat-icon class="delete-icon" (click)="removeFromCart(item)">delete_outline</mat-icon>
+      </div>
+      <div class="checkout-button-container" *ngIf="((items$ | async)?.length ?? 0) > 0">
+        <button mat-raised-button color="primary" class="checkout-button" (click)="openSignUpLoginDialog()">Book Now</button>
+      </div>
+    </div>
+  </div>
+</div>

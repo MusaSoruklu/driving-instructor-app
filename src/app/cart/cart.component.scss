@@ -1,0 +1,101 @@
+.shopping-cart-container {
+  position: -webkit-sticky; // For Safari
+  position: sticky;
+  top: 20px; // Adjust this value based on your preference
+}
+
+.cart-description {
+  display: flex;
+  flex-direction: column;
+  -webkit-box-align: center;
+  align-items: center;
+  text-align: center;
+  padding-top: 48px;
+}
+
+.cart-content {
+  display: flex;
+  flex-direction: column;
+  -webkit-box-align: center;
+  align-items: center;
+  padding-top: 56px;
+  padding-bottom: 40px;
+}
+
+.cart-content-wrapper {
+  border: 2px solid #2068b9;
+  border-radius: 8px;
+  background-color: rgb(255, 255, 255);
+  padding: 8px 24px 24px;
+  width: 90%;
+}
+
+.cart-title {
+  font-size: 16px; // Increased font size
+  color: rgb(25, 25, 25);
+  line-height: 24px; // Increased line height
+}
+
+.cart-item {
+  border: 1px solid #e0e0e0;
+  border-radius: 5px;
+  padding: 15px 20px; // Increased padding
+  margin: 15px 0; // Increased margin
+  background-color: #f9f9f9;
+  position: relative;
+
+  .item-title {
+    font-weight: bold;
+    margin-bottom: 15px; // Increased margin
+    color: #333;
+    font-size: 18px; // Increased font size
+  }
+
+  .item-details {
+    display: flex;
+    flex-direction: column;
+    gap: 10px; // Increased gap
+
+    span {
+      font-size: 14px; // Increased font size
+      color: #555;
+    }
+
+    .item-price {
+      font-weight: bold;
+      color: #2068b9;
+      font-size: 16px; // Increased font size
+    }
+
+    mat-icon {
+      margin-right: 10px;
+    }
+
+    fa-icon {
+      margin-right: 18px;
+      margin-left: 7px;
+    }
+  }
+
+  .delete-icon {
+    cursor: pointer;
+    position: absolute; // This will position the icon relative to the cart item
+    top: 10px; // Adjust this value to position the icon from the top
+    right: 10px; // Adjust this value to position the icon from the right
+
+    &:hover {
+      opacity: 0.8;
+    }
+  }
+}
+
+.checkout-button-container {
+  margin-top: 25px; // Increased margin
+  display: flex;
+  justify-content: center;
+
+  .checkout-button {
+    padding: 12px 35px; // Increased padding
+    font-size: 18px; // Increased font size
+  }
+}

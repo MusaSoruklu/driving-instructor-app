@@ -1,26 +1,36 @@
-<div class="container">
-  <h2>Booking Page</h2>
-  <div class="instructor-details">
-    <h3 class="instructor-name">{{ selectedInstructor?.name }}</h3>
-    <p class="instructor-distance">Distance: {{ selectedInstructor?.distance }} miles</p>
-  </div>
-  <div class="availability">
-    <h4>Availability:</h4>
-    <ng-container *ngIf="availabilitySlots$ | async as availabilitySlots">
-      <full-calendar
-        [options]="calendarOptions"
-        defaultView="dayGridMonth"
-        header="true"
-        [events]="availabilitySlots"
-      ></full-calendar>
-    </ng-container>
-    <div *ngIf="selectedSlot">
-      <p>Selected Timeslot:
-        <ng-container *ngIf="selectedSlot.start && selectedSlot.end">
-          {{ selectedSlot.start | date: 'mediumTime' }} - {{ selectedSlot.end | date: 'mediumTime' }}
-        </ng-container>
-      </p>
-      <button id="bookButton" (click)="bookSlot()" style="display: none;">Book</button>
+<mat-vertical-stepper linear>
+  <mat-step [stepControl]="lessonForm">
+    <form [formGroup]="lessonForm">
+      <ng-template matStepLabel>Lesson Details</ng-template>
+      <mat-list>
+        <mat-list-item *ngFor="let lesson of lessonsInCart">
+          <h3 matLine>{{ lesson.name }}</h3>
+          <p matLine>{{ lesson.description }}</p>
+        </mat-list-item>
+      </mat-list>
+      <div>
+        <button mat-button matStepperNext>Next</button>
+      </div>
+    </form>
+  </mat-step>
+
+  <mat-step [stepControl]="paymentForm">
+    <form [formGroup]="paymentForm">
+      <ng-template matStepLabel>Payment</ng-template>
+      <!-- Add your payment form fields here -->
+      <div>
+        <button mat-button matStepperPrevious>Back</button>
+        <button mat-button matStepperNext>Next</button>
+      </div>
+    </form>
+  </mat-step>
+
+  <mat-step>
+    <ng-template matStepLabel>Confirm Booking</ng-template>
+    <p>Review and confirm your booking.</p>
+    <div>
+      <button mat-button matStepperPrevious>Back</button>
+      <button mat-button (click)="confirmBooking()">Confirm</button>
     </div>
-  </div>
-</div>
+  </mat-step>
+</mat-vertical-stepper>

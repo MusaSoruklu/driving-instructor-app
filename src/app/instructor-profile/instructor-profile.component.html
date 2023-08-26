@@ -40,11 +40,25 @@
     <div>
       <h3>Select a Date</h3>
       <mat-form-field>
-        <input matInput [matDatepicker]="datepicker" placeholder="Choose a date" [(ngModel)]="selectedDate">
+        <input matInput [matDatepicker]="datepicker" placeholder="Choose a date" [(ngModel)]="selectedDate"
+          [matDatepickerFilter]="dateFilter">
         <mat-datepicker-toggle matSuffix [for]="datepicker"></mat-datepicker-toggle>
-        <mat-datepicker #datepicker></mat-datepicker>
+        <mat-datepicker #datepicker [dateClass]="dateClass"></mat-datepicker>
       </mat-form-field>
-    </div> 
-    <button class="book-button" (click)="onBookInstructor()">Book Instructor</button>
+
+    </div>
+
+    <!-- Display time slot buttons when a valid date is selected -->
+    <div class="slot-buttons" *ngIf="selectedDate && isDateAvailable(selectedDate)">
+      <button class="slot-button" [class.selected]="isSlotSelected(slot)"
+        *ngFor="let slot of getAvailableSlots(selectedDate)" (click)="toggleSlot(slot)">
+        {{ slot.start }} - {{ slot.end }}
+      </button>
+    </div>
+    <div class="button-container">
+      <button mat-raised-button color="primary" (click)="onBookInstructor()"
+        [disabled]="selectedSlots.length === 0">Book
+        Instructor</button>
+    </div>
   </div>
 </div>
