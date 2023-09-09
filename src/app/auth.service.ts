@@ -12,10 +12,10 @@ export class AuthService {
   private readonly TOKEN_KEY = 'auth_token';
   private apiUrl = 'http://localhost:3000/auth';
   private _isLoggedIn = new BehaviorSubject<boolean>(false);
+  private _token: string | null = null;
 
   constructor(private http: HttpClient) {
-    const token = localStorage.getItem(this.TOKEN_KEY);
-    if (token) {
+    if (this._token) {
       this._isLoggedIn.next(true);
     }
   }
@@ -27,7 +27,7 @@ export class AuthService {
   login(email: string, password: string) {
     return this.http.post<{ token: string }>(`${this.apiUrl}/login`, { email, password }).pipe(
       tap(response => {
-        localStorage.setItem(this.TOKEN_KEY, response.token);
+        this._token = response.token; // Store token in in-memory variable
         this._isLoggedIn.next(true);
       })
     );
@@ -43,7 +43,7 @@ export class AuthService {
   }
 
   logout() {
-    localStorage.removeItem(this.TOKEN_KEY);
+    this._token = null; // Clear the in-memory token
     this._isLoggedIn.next(false);
   }
 
@@ -54,9 +54,8 @@ export class AuthService {
   }
 
   getUser(): User | null {
-    const token = localStorage.getItem(this.TOKEN_KEY);
-    if (token) {
-      const decodedToken = jwt_decode(token) as User;
+    if (this._token) {
+      const decodedToken = jwt_decode(this._token) as User;
       return decodedToken;
     }
     return null;
