@@ -22,7 +22,7 @@ export interface CartItem {
 export class CartService {
   private items: CartItem[] = [];
   private itemsSubject = new BehaviorSubject<CartItem[]>(this.items);
-  private API_URL = 'https://your-backend-url/api/cart';
+  private API_URL = 'http://localhost:3000/cart/items';
   constructor(private http: HttpClient) {
     // Load saved cart state from localStorage
     const savedCart = JSON.parse(localStorage.getItem('cart') ?? '[]');

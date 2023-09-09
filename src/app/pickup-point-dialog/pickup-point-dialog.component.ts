@@ -51,7 +51,7 @@ export class PickupPointDialogComponent {
   async confirmSelection() {
     if (this.marker) {
       try {
-        const url = `http://localhost:3000/reverse-geocode?key=${this.apiKey}&lat=${this.marker.lat}&lng=${this.marker.lng}`;
+        const url = `http://localhost:3000/utils/reverse-geocode?key=${this.apiKey}&lat=${this.marker.lat}&lng=${this.marker.lng}`;
         const response: any = await this.http.get(url).toPromise();
         console.log('Response from server:', response);
         if (!response || !response.results || response.results.length === 0) {

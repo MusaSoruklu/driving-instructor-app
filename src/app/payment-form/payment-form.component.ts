@@ -24,7 +24,7 @@ export class PaymentFormComponent implements AfterViewInit {
   }
 
   async initialize() {
-    const response = await fetch("http://localhost:3000/create-payment-intent", {
+    const response = await fetch("http://localhost:3000/payment/create-payment-intent", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ items: this.items }),

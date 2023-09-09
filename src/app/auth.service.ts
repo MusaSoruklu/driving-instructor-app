@@ -10,7 +10,7 @@ import { User } from './models/user';
 })
 export class AuthService {
   private readonly TOKEN_KEY = 'auth_token';
-  private apiUrl = 'http://localhost:3000';
+  private apiUrl = 'http://localhost:3000/auth';
   private _isLoggedIn = new BehaviorSubject<boolean>(false);
 
   constructor(private http: HttpClient) {

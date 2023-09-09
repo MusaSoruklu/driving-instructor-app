@@ -48,7 +48,7 @@ export class BookingPageComponent implements OnInit {
       items.forEach(item => {
         this.searchFormControls[item._id] = new FormControl(''); // Assuming _id is a unique identifier for the item
       });
-    });    
+    });
   }
   searchQuery: string = '';
   suggestions: any[] = [];
@@ -68,7 +68,7 @@ export class BookingPageComponent implements OnInit {
   onSearch() {
     const query = this.searchFormControl.value;
     if (query) {
-      this.http.get(`http://localhost:3000/autocomplete?key=${this.apiKey}&input=${query}`)
+      this.http.get(`http://localhost:3000/utils/autocomplete?key=${this.apiKey}&input=${query}`)
         .subscribe((response: any) => {
           if (response.predictions) {
             console.log("Current recentSearches:", this.recentSearches);
@@ -98,7 +98,7 @@ export class BookingPageComponent implements OnInit {
   }
 
   onSelectSuggestion(suggestion: any) {
-    this.http.get(`http://localhost:3000/geocode?key=${this.apiKey}&address=${suggestion.description}`)
+    this.http.get(`http://localhost:3000/utils/geocode?key=${this.apiKey}&address=${suggestion.description}`)
       .subscribe((response: any) => {
         if (response.results && response.results.length > 0 && response.results[0].geometry && response.results[0].geometry.location) {
           const location = response.results[0].geometry.location;
@@ -159,20 +159,10 @@ export class BookingPageComponent implements OnInit {
         }
         // this.autoCompleteRef._keyManager.setActiveItem(0);
         this.selectedAddress = displayAddress;
-        if (this.pickupPoints.length === 1) {
-          this.selectPickupPoint(result.marker);
-        }
+
       }
     });
   }
-
-
-  selectedPickupPoint: any;
-
-  selectPickupPoint(item: CartItem, point: any) {
-    item.pickupPoint = point;
-  }
-
 }
 
 interface Prediction {
