@@ -1,36 +1,95 @@
-<mat-vertical-stepper linear>
-  <mat-step [stepControl]="lessonForm">
-    <form [formGroup]="lessonForm">
-      <ng-template matStepLabel>Lesson Details</ng-template>
-      <mat-list>
-        <mat-list-item *ngFor="let lesson of lessonsInCart">
-          <h3 matLine>{{ lesson.name }}</h3>
-          <p matLine>{{ lesson.description }}</p>
-        </mat-list-item>
-      </mat-list>
-      <div>
-        <button mat-button matStepperNext>Next</button>
-      </div>
-    </form>
-  </mat-step>
+<app-header></app-header>
+<div class="container">
+  <mat-horizontal-stepper linear>
+    <mat-step label="Review Cart">
+      <!-- <div class="expansion-panels-container">
+        
+        <mat-expansion-panel class="small-width">
+          <mat-expansion-panel-header>
+            <mat-panel-title class="custom-title">
+              <mat-icon class="title-icon">place</mat-icon>
+              <span class="title-text">Pickup points</span>
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <mat-card *ngFor="let point of pickupPoints" [class.selected]="point === selectedPickupPoint"
+            class="pickup-point-container" (click)="selectPickupPoint(point)">
+            <mat-card-content>
+              <div>{{ point.location.doorNumber }} {{ point.location.roadName }}</div>
+              <div>{{ point.location.postcode }}</div>
+            </mat-card-content>
+            <mat-card-actions>
+              <button mat-icon-button aria-label="Delete" (click)="deletePickupPoint(point)">
+                <mat-icon>delete_outline</mat-icon>
+              </button>
+            </mat-card-actions>
+          </mat-card>
+          <div>
+            <button class="add-pickup-point" mat-button color="basic" (click)="openDialog()">
+              <mat-icon>add</mat-icon>
+              Add Pickup Point
+            </button>
+          </div>
+        </mat-expansion-panel>
 
-  <mat-step [stepControl]="paymentForm">
-    <form [formGroup]="paymentForm">
-      <ng-template matStepLabel>Payment</ng-template>
-      <!-- Add your payment form fields here -->
-      <div>
-        <button mat-button matStepperPrevious>Back</button>
-        <button mat-button matStepperNext>Next</button>
-      </div>
-    </form>
-  </mat-step>
+        <mat-expansion-panel class="small-width" [disabled]="!meetingPoints.length">
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              <mat-icon class="title-icon">person_pin</mat-icon>
+              <span class="title-text">Meeting Points</span>
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+        </mat-expansion-panel>
+      </div> -->
 
-  <mat-step>
-    <ng-template matStepLabel>Confirm Booking</ng-template>
-    <p>Review and confirm your booking.</p>
-    <div>
-      <button mat-button matStepperPrevious>Back</button>
-      <button mat-button (click)="confirmBooking()">Confirm</button>
-    </div>
-  </mat-step>
-</mat-vertical-stepper>
+      <ng-scrollbar class="scrollable-container">
+        <div *ngFor="let group of groupedItems$ | async">
+          <mat-card>
+            <mat-card-header>
+              <img mat-card-avatar class="example-header-image" [src]="group.instructor.imageUrl"
+                alt="Instructor's image">
+              <mat-card-title>{{ group.instructor.name }}</mat-card-title>
+              <mat-card-subtitle>Items: {{ group.items.length }}</mat-card-subtitle>
+            </mat-card-header>
+            <mat-card-content>
+              <div *ngFor="let item of group.items">
+                <mat-expansion-panel>
+                  <mat-expansion-panel-header>
+                    <mat-panel-description>
+                      <mat-icon>event</mat-icon>
+                      {{ item.date | date:'EEEE'}} {{ item.date | date:'d' | ordinal }} {{ item.date | date:'MMMM,
+                      yyyy'}}<mat-icon>schedule</mat-icon>{{ item.start }} to {{ item.end }}
+                      <span style="margin-left: 10px;"></span>
+                      <strong class="item-price">£{{ item.price }}</strong>
+                    </mat-panel-description>
+                  </mat-expansion-panel-header>
+                  <mat-form-field>
+                    <mat-icon matPrefix>place</mat-icon>
+                    <mat-label>Pickup point</mat-label>
+                    <input matInput type="text" placeholder="Enter address or postcode"
+                    [formControl]="searchFormControls[item._id]"
+                    #autoCompleteTrigger="matAutocompleteTrigger"
+                      (input)="onSearch()" [matAutocomplete]="auto">
+                  </mat-form-field>
+                  <mat-autocomplete #auto="matAutocomplete">
+                    <mat-option *ngFor="let suggestion of suggestions" [value]="suggestion.description"
+                      (click)="onSelectSuggestion(suggestion)">
+                      <span *ngIf="isRecentSearch(suggestion.description)">[Recent]</span> {{ suggestion.description }}
+                    </mat-option>
+                  </mat-autocomplete>
+                </mat-expansion-panel>
+              </div>
+            </mat-card-content>
+          </mat-card>
+        </div>
+      </ng-scrollbar>
+      <div class="button-container">
+        <button mat-button color="primary" matStepperNext>Next</button>
+      </div>
+    </mat-step>
+    <mat-step label="Payment">
+      <app-payment-form></app-payment-form>
+    </mat-step>
+    <mat-step label="Confirmation">
+    </mat-step>
+  </mat-horizontal-stepper>
+</div>

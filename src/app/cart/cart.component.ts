@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { SignupLoginComponent } from '../signup-login/signup-login.component';
 import { AuthService } from '../auth.service';
+import { take } from 'rxjs/operators';
 
 @Component({
   selector: 'app-cart',
@@ -21,17 +22,27 @@ export class CartComponent implements OnInit {
   }
 
   openSignUpLoginDialog(): void {
-    const dialogRef = this.dialog.open(SignupLoginComponent, {
-      width: '400px',
-      // other configurations if needed
-    });
-  
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
-      // Navigate to the booking page if the user is authenticated
-      // this.router.navigate(['/booking']);
+    this.authService.isLoggedIn.pipe(take(1)).subscribe(isLoggedIn => {
+      if (isLoggedIn) {
+        // Navigate to the booking page if the user is authenticated
+        this.router.navigate(['/booking']);
+      } else {
+        const dialogRef = this.dialog.open(SignupLoginComponent, {
+          width: '400px',
+          // other configurations if needed
+        });
+    
+        dialogRef.afterClosed().subscribe(() => {
+          console.log('The dialog was closed');
+          // Navigate to the booking page if the user is authenticated
+          if (isLoggedIn) {
+            this.router.navigate(['/booking']);
+          }
+        });
+      }
     });
   }
+  
 
   ngOnInit(): void {
     this.items$ = this.cartService.getItems();

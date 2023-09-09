@@ -1,68 +1,141 @@
 .container {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 64px;
+  padding: 20px;
+}
+
+mat-expansion-panel {
+  margin: 10px;
+}
+
+.small-width {
+  width: 46%;
+}
+
+.custom-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.title-text {
+  width: 100%;
+  text-align: center;
+}
+
+.add-pickup-point {
+  left: -5px;
+
+}
+
+.pickup-point-container {
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 10px;
+  justify-content: space-between;
+  border: 2px solid transparent;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.pickup-point-container.selected {
+  border-color: #3f51b5;
+  /* or any other color */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.scrollable-container {
+  height: 400px;
+}
+
+/* Custom scrollbar */
+.ng-scroll-bar {
+  background: #f0f0f0;
+}
+
+.ng-scroll-bar .ng-thumb {
+  background: #888;
+
+}
+
+.button-container {
+  text-align: right;
+}
+
+mat-accordion {
+  display: flex;
+  flex-direction: row;
+}
+
+.expansion-panels-container {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 25px;
+}
+
+.item-details {
+  display: flex;
+  flex-wrap: wrap;
+
+  div {
+    display: flex;
+    align-items: center;
+    margin: 5px 0;
+
+    mat-icon,
+    fa-icon {
+      margin-right: 5px;
+    }
   }
-  
-  h2 {
-    font-size: 24px;
-    margin-bottom: 10px;
+
+  .item-price {
+    font-weight: bold;
   }
-  
-  .instructor-details {
-    margin-bottom: 20px;
-  }
-  
-  .instructor-name {
-    font-size: 18px;
-    margin-bottom: 5px;
-  }
-  
-  .instructor-distance {
-    font-size: 14px;
-    color: gray;
-  }
-  
-  .availability {
-    margin-bottom: 20px;
-  }
-  
-  h4 {
-    font-size: 16px;
-    margin-bottom: 10px;
-  }
-  
-  .timeslot {
-    display: inline-block;
-    padding: 10px;
-    margin: 5px;
-    background-color: lightgray;
-    border-radius: 4px;
-    cursor: pointer;
-  }
-  
-  .timeslot:hover {
-    background-color: gray;
-    color: white;
-  }
-  
-  .selected {
-    background-color: darkblue;
-    color: white;
-  }
-  
-  button {
-    display: block;
-    margin-top: 10px;
-    padding: 8px 12px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-  }
-  
-  button:hover {
-    background-color: #0056b3;
-  }
-  
+}
+
+.delete-icon {
+  margin-top: 10px;
+  cursor: pointer;
+}
+
+.item-details div span {
+  font-size: 24px;
+}
+
+.item-details div {
+  margin: 10px;
+  margin-right: 20px;
+}
+
+.icon {
+  width: 24px;
+  height: 24px;
+}
+
+mat-form-field {
+  width: 45%;
+}
+
+
+
+mat-icon {
+  font-size: 24px; // This sets the icon size to match the typical text size.
+  height: 24px;
+  width: 24px;
+  line-height: 24px;
+  vertical-align: middle; // to vertically center the icon with the text
+}
+
+mat-panel-description mat-icon:first-child {
+  margin-right: 3px;
+  /* Adjust as necessary */
+}
+
+mat-panel-description mat-icon:nth-child(2) {
+  margin-right: 3px;
+  margin-left: 15px;
+  /* Adjust as necessary */
+}
+

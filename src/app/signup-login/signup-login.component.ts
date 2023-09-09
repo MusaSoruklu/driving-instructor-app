@@ -34,9 +34,12 @@ export class SignupLoginComponent {
       name: new FormControl('', [Validators.required]),
       phone: new FormControl('', [Validators.required, Validators.pattern('[0-9]+')])
     });
+    this.form.valueChanges.subscribe(value => {
+      this.user = value;
+    });
   }
 
-  get email() { return this.form.get('email'); }
+  get email() { return this.form.get('email')!; }
   get password() { return this.form.get('password'); }
   get name() { return this.form.get('name'); }
   get phone() { return this.form.get('phone'); }
@@ -101,6 +104,11 @@ export class SignupLoginComponent {
   }
 
   signup() {
+    console.log(this.user.email);
+    console.log(this.user.password);
+    console.log(this.user.name);
+    console.log(this.user.phone);
+
     this.authService.signup(this.user.email, this.user.password, this.user.name, this.user.phone).subscribe(
       () => {
         console.log('User signed up:', this.user.email);
@@ -113,7 +121,8 @@ export class SignupLoginComponent {
   }
 
   checkEmail() {
-    this.authService.checkEmail(this.user.email).subscribe(exists => {
+    const email = this.form.get('email')!.value;
+    this.authService.checkEmail(email).subscribe(exists => {
       if (exists) {
         this.showPasswordInput = true;
       } else {

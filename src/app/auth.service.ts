@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject } from 'rxjs';
 import { tap, map } from 'rxjs/operators';
+import jwt_decode from 'jwt-decode';
+import { User } from './models/user';
 
 @Injectable({
   providedIn: 'root'
@@ -32,7 +34,7 @@ export class AuthService {
   }
 
   signup(email: string, password: string, name: string, phone: string) {
-    return this.http.post<{ token: string }>(`${this.apiUrl}/signup`, { email, password }).pipe(
+    return this.http.post<{ token: string }>(`${this.apiUrl}/signup`, { email, password, name, phone }).pipe(
       tap(response => {
         localStorage.setItem(this.TOKEN_KEY, response.token);
         this._isLoggedIn.next(true);
@@ -40,12 +42,9 @@ export class AuthService {
     );
   }
 
-
-
   logout() {
     localStorage.removeItem(this.TOKEN_KEY);
     this._isLoggedIn.next(false);
-    // If your backend has a logout endpoint, you can also send a request there
   }
 
   checkEmail(email: string) {
@@ -54,5 +53,12 @@ export class AuthService {
     );
   }
 
-  // ... other methods as needed
+  getUser(): User | null {
+    const token = localStorage.getItem(this.TOKEN_KEY);
+    if (token) {
+      const decodedToken = jwt_decode(token) as User;
+      return decodedToken;
+    }
+    return null;
+  }
 }

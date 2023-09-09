@@ -1,0 +1,31 @@
+<div class="banner" [@searchTransition]="searched ? 'searched' : 'initial'"
+  (@searchTransition.done)="animationDone = true">
+  <picture>
+    <source srcset="https://i.imgur.com/NcHcnoa.png" media="(min-width: 860px)">
+    <source srcset="https://d30v2pzvrfyzpo.cloudfront.net/a/hw/img/decoration/bg_hero-mid.jpg"
+      media="(min-width: 600px)">
+    <img srcset="https://d30v2pzvrfyzpo.cloudfront.net/a/hw/img/decoration/bg_hero-narrow.jpg" alt=""
+      class="banner-img">
+  </picture>
+  <div class="banner-content" *ngIf="!animationDone || !searched">
+    <h1 class="search-title">Book Your Driving Lessons Today</h1>
+    <h2 class="search-subtitle  ">Find qualified driving instructors near you</h2>
+    <form [formGroup]="searchForm" (ngSubmit)="onSearchInstructors()"
+      [ngClass]="{ 'search-form': true, 'search-form-initial': !searched, 'search-form-top': searched }">
+      <div class="search-bar">
+        <div class="postcode-field">
+          <label>
+            <input matInput id="postcode" formControlName="postcode" autocomplete="off" #postcodeInput>
+            <span class="search-placeholder">Enter your postcode</span>
+          </label>
+        </div>
+        <button button matSuffix type="submit" class="search-button">
+          <span>Search</span>
+        </button>
+      </div>
+      <div *ngIf="searchForm.get('postcode')?.invalid && searchButtonClicked" class="search-error">
+        Please enter a postcode.
+      </div>
+    </form>
+  </div>
+</div>

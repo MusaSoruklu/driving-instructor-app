@@ -42,13 +42,13 @@ export class InstructorCardComponent implements OnInit, OnChanges {
       instructor: this.instructor,
       date: this.selectedDate!,
       start: this.selectedTime!,
-      end: this.numberToTime(this.timeToNumber(this.selectedTime!) + this.lessonDuration),
+      end: this.numberToTime(this.timeToNumber(this.selectedTime!) + (this.lessonDuration * 60)), // convert hours to minutes
       price: this.getTotalPrice(),
       duration: this.lessonDuration,
       transmission: this.selectedTransmission!
     };
     this.cartService.addToCart(cartItem);
-  }
+  } 
 
   getTotalPrice(): number {
     if (this.instructor && this.lessonDuration) {

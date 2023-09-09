@@ -1,0 +1,59 @@
+.header {
+    background-color: rgb(255, 255, 255);
+    box-shadow: rgba(0, 0, 0, 0.04) 0px 8px 8px 0px, rgba(0, 0, 0, 0.1) 0px 8px 20px -3px, rgba(0, 0, 0, 0.06) 0px 4px 8px -2px;
+    box-sizing: border-box;
+    color: rgb(36, 46, 48);
+    display: block;
+    font-family: JetSansDigital, Arial, sans-serif;
+    font-size: 16px;
+    font-weight: 400;
+    height: 80px;
+    line-height: 24px;
+    min-width: 300px;
+    position: relative;
+  }
+  
+  .header-container {
+    box-sizing: border-box;
+    color: rgb(36, 46, 48);
+    display: flex;
+    font-family: JetSansDigital, Arial, sans-serif;
+    font-size: 16px;
+    font-weight: 400;
+    height: 80px;
+    line-height: 24px;
+    margin: 0 auto;
+    max-width: 1272px;
+    min-height: 80px;
+    padding-left: 32px;
+    padding-right: 32px;
+    position: relative;
+  }
+
+  .logo {
+    height: 50px;
+    width: auto;
+    padding: 16px 8px;
+    justify-content: left;
+  }
+  
+  .navbar {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    justify-content: center;
+    padding: 12px 12px;
+    line-height: 1.5;
+    font-weight: 700;
+    font-size: 16px;
+    color: #242e30;
+    font-family: JetSansDigital, Arial, sans-serif;
+  }
+  
+  .navbar a {
+    text-decoration: none;
+    color: #000;
+    margin: 0 30px;
+  }

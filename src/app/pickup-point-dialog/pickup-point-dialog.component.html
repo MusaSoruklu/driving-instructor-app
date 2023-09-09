@@ -1,0 +1,22 @@
+<mat-dialog-content>
+    <h2 class="dialog-title">Select a Pickup Point</h2>
+    <div class="map-section">
+        <google-map [center]="center" [zoom]="zoom" [options]="{
+        mapTypeControl: false, 
+        fullscreenControl: false,
+        streetViewControl: false,
+        zoomControl: false,
+        clickableIcons: false
+      }" (mapClick)="onMapClick($event)">
+            <map-marker *ngIf="marker" #mapMarker="mapMarker" [position]="marker" [options]="{ 
+          draggable: true, 
+          icon: 'https://maps.google.com/mapfiles/kml/shapes/parking_lot_maps.png' 
+        }" (mapDragend)="onMarkerDragEnd(mapMarker)">
+            </map-marker>
+        </google-map>
+    </div>
+
+    <mat-dialog-actions align="end">
+        <button mat-button color="primary" (click)="confirmSelection()">Confirm</button>
+    </mat-dialog-actions>
+</mat-dialog-content>
