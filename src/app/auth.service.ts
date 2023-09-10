@@ -25,18 +25,16 @@ export class AuthService {
   }
 
   login(email: string, password: string) {
-    return this.http.post<{ token: string }>(`${this.apiUrl}/login`, { email, password }).pipe(
+    return this.http.post<{ message: string }>(`${this.apiUrl}/login`, { email, password }).pipe(
       tap(response => {
-        this._token = response.token; // Store token in in-memory variable
         this._isLoggedIn.next(true);
       })
     );
   }
 
   signup(email: string, password: string, name: string, phone: string) {
-    return this.http.post<{ token: string }>(`${this.apiUrl}/signup`, { email, password, name, phone }).pipe(
+    return this.http.post<{ message: string }>(`${this.apiUrl}/signup`, { email, password, name, phone }).pipe(
       tap(response => {
-        localStorage.setItem(this.TOKEN_KEY, response.token);
         this._isLoggedIn.next(true);
       })
     );
