@@ -41,12 +41,16 @@ import { BannerComponent } from './banner/banner.component';
 import { SidenavComponent } from './sidenav/sidenav.component';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { GoogleMapsModule } from '@angular/google-maps';
-import {MatAutocompleteModule} from '@angular/material/autocomplete';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { PickupPointDialogComponent } from './pickup-point-dialog/pickup-point-dialog.component';
 import { PaymentFormComponent } from './payment-form/payment-form.component';
 import { NgScrollbarModule } from 'ngx-scrollbar';
 import { OrdinalPipe } from './ordinal.pipe';
-import {MatSnackBarModule} from '@angular/material/snack-bar';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { StoreModule } from '@ngrx/store';
+import { provideFirebaseApp, getApp, initializeApp } from '@angular/fire/app';
+import { getFirestore, provideFirestore } from '@angular/fire/firestore';
+import { environment } from '../environments/environment';
 
 @NgModule({
   declarations: [
@@ -97,7 +101,10 @@ import {MatSnackBarModule} from '@angular/material/snack-bar';
     GoogleMapsModule,
     MatAutocompleteModule,
     NgScrollbarModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    StoreModule.forRoot({}, {}),
+    provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
+    provideFirestore(() => getFirestore()),
   ],
   providers: [InstructorService, DatePipe, { provide: MAT_DATE_LOCALE, useValue: 'en-GB' }],
   bootstrap: [AppComponent]
