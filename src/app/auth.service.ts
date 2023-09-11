@@ -1,9 +1,10 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject } from 'rxjs';
 import { tap, map } from 'rxjs/operators';
 import jwt_decode from 'jwt-decode';
 import { User } from './models/user';
+import { Auth } from '@angular/fire/auth';
 
 @Injectable({
   providedIn: 'root'
@@ -13,6 +14,7 @@ export class AuthService {
   private apiUrl = 'http://localhost:3000/auth';
   private _isLoggedIn = new BehaviorSubject<boolean>(false);
   private _token: string | null = null;
+  private auth: Auth = inject(Auth);
 
   constructor(private http: HttpClient) {
     if (this._token) {
