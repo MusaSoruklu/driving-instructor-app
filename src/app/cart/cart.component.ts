@@ -22,8 +22,8 @@ export class CartComponent implements OnInit {
   }
 
   openSignUpLoginDialog(): void {
-    this.authService.isLoggedIn.pipe(take(1)).subscribe(isLoggedIn => {
-      if (isLoggedIn) {
+    this.authService.userData$.pipe(take(1)).subscribe(user => {
+      if (user) {
         // Navigate to the booking page if the user is authenticated
         this.router.navigate(['/booking']);
       } else {
@@ -31,34 +31,21 @@ export class CartComponent implements OnInit {
           width: '400px',
           // other configurations if needed
         });
-    
+
         dialogRef.afterClosed().subscribe(() => {
           console.log('The dialog was closed');
           // Navigate to the booking page if the user is authenticated
-          if (isLoggedIn) {
+          if (user) {
             this.router.navigate(['/booking']);
           }
         });
       }
     });
   }
-  
 
   ngOnInit(): void {
     this.items$ = this.cartService.getItems();
   }
-
-  // navigateToCheckout() {
-  //   if (this.authService.isLoggedIn()) { // Assuming you have an AuthService with an isLoggedIn method
-  //     this.router.navigate(['/checkout']);
-  //   } else {
-  //     // Save the current cart state for after registration
-  //     this.cartService.saveCartState();
-  
-  //     // Navigate to the sign-up/login page
-  //     this.router.navigate(['/signup']);
-  //   }
-  // }
 
   removeFromCart(item: CartItem): void {
     this.cartService.removeFromCart(item);

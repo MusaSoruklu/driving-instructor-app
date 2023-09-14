@@ -52,6 +52,12 @@ import { provideFirebaseApp, getApp, initializeApp } from '@angular/fire/app';
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { getAuth, provideAuth } from '@angular/fire/auth';
 import { environment } from '../environments/environment';
+import { AngularFireModule } from '@angular/fire/compat';
+import { AngularFireAuthModule } from '@angular/fire/compat/auth';
+import { AngularFireStorageModule } from '@angular/fire/compat/storage';
+import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
+import { AngularFireDatabaseModule } from '@angular/fire/compat/database';
+import {MatMenuModule} from '@angular/material/menu';
 
 @NgModule({
   declarations: [
@@ -104,9 +110,14 @@ import { environment } from '../environments/environment';
     NgScrollbarModule,
     MatSnackBarModule,
     StoreModule.forRoot({}, {}),
-    provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
+    AngularFireModule.initializeApp(environment.firebaseConfig),
     provideAuth(() => getAuth()),
     provideFirestore(() => getFirestore()),
+    AngularFireAuthModule,
+    AngularFirestoreModule,
+    AngularFireStorageModule,
+    AngularFireDatabaseModule,
+    MatMenuModule
   ],
   providers: [InstructorService, DatePipe, { provide: MAT_DATE_LOCALE, useValue: 'en-GB' }],
   bootstrap: [AppComponent]

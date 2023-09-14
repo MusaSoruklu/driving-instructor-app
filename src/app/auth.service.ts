@@ -1,63 +1,100 @@
-import { Injectable, inject } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject } from 'rxjs';
-import { tap, map } from 'rxjs/operators';
-import jwt_decode from 'jwt-decode';
+import { Injectable, NgZone } from '@angular/core';
 import { User } from './models/user';
-import { Auth } from '@angular/fire/auth';
+import {
+  AngularFirestore,
+  AngularFirestoreDocument,
+} from '@angular/fire/compat/firestore';
+import { AngularFireAuth } from '@angular/fire/compat/auth';
+import { Router } from '@angular/router';
+import { Observable } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthService {
-  private readonly TOKEN_KEY = 'auth_token';
-  private apiUrl = 'http://localhost:3000/auth';
-  private _isLoggedIn = new BehaviorSubject<boolean>(false);
-  private _token: string | null = null;
-  private auth: Auth = inject(Auth);
+  userData$: Observable<firebase.default.User | null>;
 
-  constructor(private http: HttpClient) {
-    if (this._token) {
-      this._isLoggedIn.next(true);
-    }
+  constructor(
+    private afs: AngularFirestore,
+    private afAuth: AngularFireAuth,
+    private router: Router,
+    private ngZone: NgZone
+  ) {
+    this.userData$ = this.afAuth.authState;
   }
 
-  get isLoggedIn() {
-    return this._isLoggedIn.asObservable();
-  }
-
-  login(email: string, password: string) {
-    return this.http.post<{ message: string }>(`${this.apiUrl}/login`, { email, password }).pipe(
-      tap(response => {
-        this._isLoggedIn.next(true);
+  SignIn(email: string, password: string) {
+    return this.afAuth
+      .signInWithEmailAndPassword(email, password)
+      .then((result) => {
+        this.ngZone.run(() => {
+          this.router.navigate(['dashboard']);
+        });
+        this.SetUserData(result.user);
       })
-    );
+      .catch((error) => {
+        window.alert(error.message);
+      });
   }
 
-  signup(email: string, password: string, name: string, phone: string) {
-    return this.http.post<{ message: string }>(`${this.apiUrl}/signup`, { email, password, name, phone }).pipe(
-      tap(response => {
-        this._isLoggedIn.next(true);
+  SignUp(email: string, password: string) {
+    return this.afAuth
+      .createUserWithEmailAndPassword(email, password)
+      .then((result) => {
+        this.SendVerificationMail();
+        this.SetUserData(result.user);
       })
+      .catch((error) => {
+        window.alert(error.message);
+      });
+  }
+
+  SendVerificationMail() {
+    return this.afAuth.currentUser
+      .then((u: any) => u.sendEmailVerification())
+      .then(() => {
+        this.router.navigate(['verify-email-address']);
+      });
+  }
+
+  ForgotPassword(passwordResetEmail: string) {
+    return this.afAuth
+      .sendPasswordResetEmail(passwordResetEmail)
+      .then(() => {
+        window.alert('Password reset email sent, check your inbox.');
+      })
+      .catch((error) => {
+        window.alert(error);
+      });
+  }
+
+  get isLoggedIn(): boolean {
+    let loggedIn = false;
+    this.userData$.subscribe((user) => {
+      loggedIn = !!user && user.emailVerified;
+    });
+    return loggedIn;
+  }
+
+  SetUserData(user: any) {
+    const userRef: AngularFirestoreDocument<any> = this.afs.doc(
+      `users/${user.uid}`
     );
+    const userData: User = {
+      uid: user.uid,
+      email: user.email,
+      displayName: user.displayName,
+      photoURL: user.photoURL,
+      emailVerified: user.emailVerified,
+    };
+    return userRef.set(userData, {
+      merge: true,
+    });
   }
 
-  logout() {
-    this._token = null; // Clear the in-memory token
-    this._isLoggedIn.next(false);
-  }
-
-  checkEmail(email: string) {
-    return this.http.post<{ exists: boolean }>(`${this.apiUrl}/check-email`, { email }).pipe(
-      map(response => response.exists)
-    );
-  }
-
-  getUser(): User | null {
-    if (this._token) {
-      const decodedToken = jwt_decode(this._token) as User;
-      return decodedToken;
-    }
-    return null;
+  SignOut() {
+    return this.afAuth.signOut().then(() => {
+      this.router.navigate(['sign-in']);
+    });
   }
 }

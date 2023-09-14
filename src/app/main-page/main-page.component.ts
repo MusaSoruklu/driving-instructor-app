@@ -1,10 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { InstructorService } from '../instructor.service';
 import { Instructor, Review } from '../models/instructor';
 import { DatePipe } from '@angular/common';
 import { Router } from '@angular/router';
 import { CartService, CartItem } from '../cart.service';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { ViewChild, ElementRef, Renderer2 } from '@angular/core';
 import { Overlay } from '@angular/cdk/overlay';
 import { AuthService } from '../auth.service';
@@ -17,8 +17,9 @@ import { MatDialog } from '@angular/material/dialog';
   styleUrls: ['./main-page.component.scss'],
   providers: [DatePipe],
 })
-export class MainPageComponent {
+export class MainPageComponent implements OnInit, OnDestroy {
   sortOption: string = 'rating'; // Default sort option
+  private authSubscription!: Subscription;  // Added the '!' post-fix expression
 
   instructors: Instructor[] = [];
   searched: boolean = false;
@@ -45,10 +46,29 @@ export class MainPageComponent {
     public dialog: MatDialog,
   ) {
     this.items$ = this.cartService.getItems();
-    this.authService.isLoggedIn.subscribe(loggedIn => {
-      this.isLoggedIn = loggedIn;
+  }
+
+  ngOnInit(): void {
+    this.authSubscription = this.authService.userData$.subscribe(user => {
+      this.isLoggedIn = !!user;
+      if (user) {
+        this.user = {
+          uid: user.uid,
+          email: user.email || '',  // Handle potential null value
+          displayName: user.displayName || '',
+          photoURL: user.photoURL || '',
+          emailVerified: user.emailVerified
+        };
+      } else {
+        this.user = null;
+      }
     });
   }
+
+  ngOnDestroy(): void {
+    this.authSubscription.unsubscribe();
+  }
+
 
   handleInstructorsFetched(instructors: Instructor[]): void {
     this.searched = true;

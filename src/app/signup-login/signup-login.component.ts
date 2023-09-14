@@ -19,7 +19,6 @@ export class SignupLoginComponent {
     name: '',
     phone: ''
   };
-  isExistingUser: boolean = false;
   showPasswordInput: boolean = false;
   isSignupMode: boolean = false;
 
@@ -59,14 +58,6 @@ export class SignupLoginComponent {
     this.isSignupMode = !this.isSignupMode;
   }
 
-  onContinueWithEmail() {
-    if (this.isSignupMode) {
-      // Handle signup logic here
-    } else {
-      this.checkEmail();
-    }
-  }
-
   getTitle(): string {
     if (this.isSignupMode) return 'Sign Up';
     if (this.showPasswordInput) return 'Enter Password';
@@ -82,53 +73,38 @@ export class SignupLoginComponent {
   }
 
   onSubmit() {
-    if (this.showPasswordInput) {
-      this.login();
-    } else if (this.isSignupMode) {
+    if (this.isSignupMode) {
       this.signup();
+    } else if (this.showPasswordInput) {
+      this.login();
     } else {
-      this.onContinueWithEmail();
+      // If neither signup mode nor password input is shown, show the password input
+      this.showPasswordInput = true;
     }
   }
 
   login() {
-    this.authService.login(this.user.email, this.user.password).subscribe(
+    this.authService.SignIn(this.user.email, this.user.password).then(
       () => {
         console.log('User logged in:', this.user.email);
         this.onSuccess();
       },
       error => {
-        console.error('Login failed:', error);
+        console.error('Login failed:', error.message);
       }
     );
   }
 
   signup() {
-    console.log(this.user.email);
-    console.log(this.user.password);
-    console.log(this.user.name);
-    console.log(this.user.phone);
-
-    this.authService.signup(this.user.email, this.user.password, this.user.name, this.user.phone).subscribe(
+    this.authService.SignUp(this.user.email, this.user.password).then(
       () => {
         console.log('User signed up:', this.user.email);
         this.onSuccess();
       },
       error => {
-        console.error('Signup failed:', error);
+        console.error('Signup failed:', error.message);
       }
     );
-  }
-
-  checkEmail() {
-    const email = this.form.get('email')!.value;
-    this.authService.checkEmail(email).subscribe(exists => {
-      if (exists) {
-        this.showPasswordInput = true;
-      } else {
-        this.isSignupMode = true;
-      }
-    });
   }
 
   onSuccess(): void {
