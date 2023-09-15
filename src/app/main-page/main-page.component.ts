@@ -57,13 +57,15 @@ export class MainPageComponent implements OnInit, OnDestroy {
           email: user.email || '',  // Handle potential null value
           displayName: user.displayName || '',
           photoURL: user.photoURL || '',
-          emailVerified: user.emailVerified
+          emailVerified: user.emailVerified,
+          role: 'student'  // Add this line
         };
       } else {
         this.user = null;
       }
     });
   }
+  
 
   ngOnDestroy(): void {
     this.authSubscription.unsubscribe();

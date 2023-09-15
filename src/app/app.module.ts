@@ -5,7 +5,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { MainPageComponent } from './main-page/main-page.component';
-import { InstructorListComponent } from './instructor-list/instructor-list.component';
 import { InstructorProfileComponent } from './instructor-profile/instructor-profile.component';
 import { BookingPageComponent } from './booking-page/booking-page.component';
 import { InstructorService } from './instructor.service';
@@ -29,7 +28,6 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatSliderModule } from '@angular/material/slider';
-import { TimeSliderComponent } from './time-slider/time-slider.component';
 import { MatCardModule } from '@angular/material/card';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { SignupLoginComponent } from './signup-login/signup-login.component';
@@ -58,18 +56,17 @@ import { AngularFireStorageModule } from '@angular/fire/compat/storage';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 import { AngularFireDatabaseModule } from '@angular/fire/compat/database';
 import {MatMenuModule} from '@angular/material/menu';
+import { FooterComponent } from './footer/footer.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     MainPageComponent,
-    InstructorListComponent,
     InstructorProfileComponent,
     BookingPageComponent,
     InstructorCardComponent,
     CartComponent,
     LoadingOverlayComponent,
-    TimeSliderComponent,
     SignupLoginComponent,
     HeaderComponent,
     BannerComponent,
@@ -77,6 +74,7 @@ import {MatMenuModule} from '@angular/material/menu';
     PickupPointDialogComponent,
     PaymentFormComponent,
     OrdinalPipe,
+    FooterComponent,
   ],
   imports: [
     BrowserModule,

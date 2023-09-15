@@ -1,0 +1,28 @@
+<div class="footer">
+    <div class="footer-container">
+      <!-- Links or Info -->
+      <div class="footer-links">
+        <a routerLink="/">Home</a>
+        <a routerLink="/about">About Us</a>
+        <a routerLink="/contact">Contact</a>
+        <a routerLink="/instructor-signup">Teach Here</a>
+      </div>
+  
+      <!-- Language Selector -->
+      <div class="footer-language">
+        <mat-select class="language-selector" placeholder="Language" [(value)]="selectedLanguage"
+          (selectionChange)="changeLanguage($event.value)">
+          <mat-option value="en">English</mat-option>
+          <mat-option value="fr">French</mat-option>
+        </mat-select>
+      </div>
+  
+      <!-- Social Media Links -->
+      <div class="footer-social">
+        <a href="#"><mat-icon svgIcon="facebook"></mat-icon></a>
+        <a href="#"><mat-icon svgIcon="twitter"></mat-icon></a>
+        <a href="#"><mat-icon svgIcon="instagram"></mat-icon></a>
+      </div>
+    </div>
+  </div>
+  

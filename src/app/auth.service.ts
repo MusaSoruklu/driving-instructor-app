@@ -41,21 +41,21 @@ export class AuthService {
     return this.afAuth
       .createUserWithEmailAndPassword(email, password)
       .then((result) => {
-        this.SendVerificationMail();
-        this.SetUserData(result.user);
+        // this.SendVerificationMail();
+        this.SetUserData(result.user); // Here, we set the user data after signing up
       })
       .catch((error) => {
         window.alert(error.message);
       });
-  }
+  }  
 
-  SendVerificationMail() {
-    return this.afAuth.currentUser
-      .then((u: any) => u.sendEmailVerification())
-      .then(() => {
-        this.router.navigate(['verify-email-address']);
-      });
-  }
+  // SendVerificationMail() {
+  //   return this.afAuth.currentUser
+  //     .then((u: any) => u.sendEmailVerification())
+  //     .then(() => {
+  //       this.router.navigate(['verify-email-address']);
+  //     });
+  // }
 
   ForgotPassword(passwordResetEmail: string) {
     return this.afAuth
@@ -77,15 +77,14 @@ export class AuthService {
   }
 
   SetUserData(user: any) {
-    const userRef: AngularFirestoreDocument<any> = this.afs.doc(
-      `users/${user.uid}`
-    );
+    const userRef: AngularFirestoreDocument<User> = this.afs.doc(`users/${user.uid}`);
     const userData: User = {
       uid: user.uid,
       email: user.email,
-      displayName: user.displayName,
-      photoURL: user.photoURL,
+      displayName: user.displayName || '', // Handle potential null value
+      photoURL: user.photoURL || '', // Handle potential null value
       emailVerified: user.emailVerified,
+      role: 'student'  // Setting the role to 'student' by default
     };
     return userRef.set(userData, {
       merge: true,

@@ -4,6 +4,7 @@ import { SignupLoginComponent } from '../signup-login/signup-login.component';
 import { AuthService } from '../auth.service';
 import { User } from '../models/user';
 import { Subscription } from 'rxjs';
+import { Notification } from '../models/notification';
 
 @Component({
   selector: 'app-header',
@@ -13,12 +14,15 @@ import { Subscription } from 'rxjs';
 export class HeaderComponent implements OnInit, OnDestroy {
   isLoggedIn: boolean = false;
   user: User | null = null;
-  private authSubscription!: Subscription;  // Added the '!' post-fix expression
+  private authSubscription!: Subscription;
+  theme: string = 'light'; // default theme
+  notifications: Notification[] = []; // You'll need to define the Notification type and fetch actual notifications
+  userAchievements: string[] = ['Completed 5 Lessons', 'Top 10% Student', '100 Days Streak'];
 
   constructor(
     public dialog: MatDialog,
     public authService: AuthService,
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.authSubscription = this.authService.userData$.subscribe(user => {
@@ -26,10 +30,11 @@ export class HeaderComponent implements OnInit, OnDestroy {
       if (user) {
         this.user = {
           uid: user.uid,
-          email: user.email || '',  // Handle potential null value
+          email: user.email || '',
           displayName: user.displayName || '',
           photoURL: user.photoURL || '',
-          emailVerified: user.emailVerified
+          emailVerified: user.emailVerified,
+          role: 'student'
         };
       } else {
         this.user = null;
@@ -40,13 +45,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
   openSignUpLoginDialog(): void {
     const dialogRef = this.dialog.open(SignupLoginComponent, {
       width: '400px',
-      // other configurations if needed
     });
 
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed');
-      // Navigate to the booking page if the user is authenticated
-      // this.router.navigate(['/booking']);
     });
   }
 
@@ -56,5 +58,16 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   logout(): void {
     this.authService.SignOut();
+  }
+
+  toggleTheme() {
+    const currentTheme = document.documentElement.getAttribute('data-theme');
+    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', newTheme);
+  }
+
+  hasOngoingLessons(): boolean {
+    // Implement logic to check if user has ongoing lessons
+    return false; // Placeholder
   }
 }
