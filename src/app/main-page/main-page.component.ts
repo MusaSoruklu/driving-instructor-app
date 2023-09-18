@@ -1,15 +1,13 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { InstructorService } from '../instructor.service';
-import { Instructor, Review } from '../models/instructor';
+import { Instructor } from '../models/instructor';
 import { DatePipe } from '@angular/common';
-import { Router } from '@angular/router';
-import { CartService, CartItem } from '../cart.service';
-import { Observable, Subscription } from 'rxjs';
-import { ViewChild, ElementRef, Renderer2 } from '@angular/core';
-import { Overlay } from '@angular/cdk/overlay';
+import { Subscription } from 'rxjs';
+import { ViewChild, ElementRef } from '@angular/core';
 import { AuthService } from '../auth.service';
 import { User } from '../models/user';
 import { MatDialog } from '@angular/material/dialog';
+import { MatSliderModule } from '@angular/material/slider';
+import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-main-page',
@@ -18,34 +16,36 @@ import { MatDialog } from '@angular/material/dialog';
   providers: [DatePipe],
 })
 export class MainPageComponent implements OnInit, OnDestroy {
-  sortOption: string = 'rating'; // Default sort option
-  private authSubscription!: Subscription;  // Added the '!' post-fix expression
-
+  sortOption: string = 'rating';
+  private authSubscription!: Subscription;
+  experience = new FormControl();
+  rating = new FormControl();
   instructors: Instructor[] = [];
   searched: boolean = false;
-  isBookButtonDisabled: boolean = true;
+
   isLoggedIn: boolean = false;
   user: User | null = null;
-  items$: Observable<CartItem[]>;
+
   @ViewChild('postcodeInput') postcodeInput!: ElementRef;
   searchButtonClicked = false;
   filters = {
-    location: '',
-    experience: null,
-    manual: false,
-    automatic: false
+    transmission: '',
+    gender: '',
+    experience: 1,
+    rating: 1,
+    weekdays: false,
+    weekends: false,
+    evenings: false,
+    defensiveDriving: false,
+    nightDriving: false,
+    language: '',
+    price: 10
   };
 
   constructor(
-    private router: Router,
-    private instructorService: InstructorService,
-    private cartService: CartService,
-    private renderer: Renderer2,
-    private overlay: Overlay,
     public authService: AuthService,
     public dialog: MatDialog,
   ) {
-    this.items$ = this.cartService.getItems();
   }
 
   ngOnInit(): void {
@@ -65,18 +65,15 @@ export class MainPageComponent implements OnInit, OnDestroy {
       }
     });
   }
-  
 
   ngOnDestroy(): void {
     this.authSubscription.unsubscribe();
   }
 
-
   handleInstructorsFetched(instructors: Instructor[]): void {
     this.searched = true;
     this.instructors = instructors;
   }
-
 
   sortInstructors(): void {
     switch (this.sortOption) {
@@ -92,36 +89,34 @@ export class MainPageComponent implements OnInit, OnDestroy {
     }
   }
 
-  applyFilters() {
-    // Here you can apply the filters to your list of instructors.
-    // This will depend on how you're fetching and storing that data.
-    this.instructors = this.instructors.filter(instructor => {
-      let matches = true;
+  // applyFilters() {
+  //   // Here you can apply the filters to your list of instructors.
+  //   // This will depend on how you're fetching and storing that data.
+  //   this.instructors = this.instructors.filter(instructor => {
+  //     let matches = true;
 
-      // if (this.filters.location) {
-      //   matches = matches && instructor.location.includes(this.filters.location);
-      // }
+  //     if (this.filters.location) {
+  //       matches = matches && instructor.location.includes(this.filters.location);
+  //     }
 
-      // if (this.filters.experience !== null) {
-      //   matches = matches && instructor.experience >= this.filters.experience;
-      // }
+  //     if (this.filters.experience !== null) {
+  //       matches = matches && instructor.experience >= this.filters.experience;
+  //     }
 
-      // if (this.filters.manual) {
-      //   matches = matches && instructor.teachesManual;
-      // }
+  //     if (this.filters.manual) {
+  //       matches = matches && instructor.teachesManual;
+  //     }
 
-      // if (this.filters.automatic) {
-      //   matches = matches && instructor.teachesAutomatic;
-      // }
+  //     if (this.filters.automatic) {
+  //       matches = matches && instructor.teachesAutomatic;
+  //     }
 
-      return matches;
-    });
-  }
+  //     return matches;
+  //   });
+  // }
 
   onSortOptionChange(sortOption: string): void {
     this.sortOption = sortOption;
     this.sortInstructors();
   }
-
-
 }

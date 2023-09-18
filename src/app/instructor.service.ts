@@ -20,17 +20,8 @@ export class InstructorService {
     return this.http.get<Instructor[]>(`${this.apiUrl}/instructors/near?postcode=${postcode}`);
   }
 
-  fetchInstructorDetails(instructorId: number): Observable<Instructor> {
-    return this.http.get<Instructor>(`${this.apiUrl}/instructors/${instructorId}`);
-  }
-
   fetchInstructorById(instructorId: string): Observable<Instructor> {
     return this.http.get<Instructor>(`${this.apiUrl}/instructors/${instructorId}`);
   }
-
-  bookInstructor(instructorId: string, bookingDetails: { studentId: string, date: Date, time: string }): Observable<any> {
-    return this.http.post(`${this.apiUrl}/instructors/${instructorId}/bookings`, bookingDetails);
-  }  
-
 
 }

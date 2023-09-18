@@ -3,63 +3,68 @@
 <div class="main-content">
   <div class="sidenav-container" *ngIf="searched">
     <div class="sidenav">
-      <div data-v-67ec89c6="" data-v-5bb0d380="" class="c-contentTitle u-showAboveMid">
-        <span data-v-67ec89c6="" class="c-contentTitle-icon c-icon--slidersHorizontal">
-          <svg data-v-67ec89c6="" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 23 15"
-            class="c-ficon c-ficon--sliders">
-            <path data-v-67ec89c6=""
-              d="M.88 3.3a.55.55 0 1 1 0-1.1h4.4a.55.55 0 1 1 0 1.1H.88zm20.9-1.1a.55.55 0 0 1 0 1.1h-11a.55.55 0 0 1 0-1.1h11zm0 8.8a.55.55 0 0 1 0 1.1h-4.4a.55.55 0 1 1 0-1.1h4.4zM.88 12.1a.55.55 0 0 1 0-1.1h11a.55.55 0 0 1 0 1.1h-11zm5.5-11c-.3 0-.55.25-.55.55v2.2c0 .3.25.55.55.55h3.3c.3 0 .55-.25.55-.55v-2.2c0-.3-.24-.55-.55-.55h-3.3zm0-1.1h3.3c.91 0 1.65.74 1.65 1.65v2.2c0 .91-.74 1.65-1.65 1.65h-3.3c-.9 0-1.65-.74-1.65-1.65v-2.2C4.73.74 5.47 0 6.38 0zm6.6 9.9c-.3 0-.55.25-.55.55v2.2c0 .3.25.55.55.55h3.3c.3 0 .55-.25.55-.55v-2.2c0-.3-.24-.55-.55-.55h-3.3zm0-1.1h3.3c.91 0 1.65.74 1.65 1.65v2.2c0 .91-.74 1.65-1.65 1.65h-3.3c-.9 0-1.65-.74-1.65-1.65v-2.2c0-.91.74-1.65 1.65-1.65z">
-            </path>
-          </svg>
-        </span>
-        <p data-v-67ec89c6="" class="c-contentTitle-text">Filters</p>
-        <button data-filter-reset="refine" data-test-id="refine-filter-reset"
-          class="o-btn o-btn--outline o-btn--sizeXSmall">
-          Reset
-        </button>
-      </div>
-      <div class="filter-options">
-        <div data-test-id="filter-pill-component" class="c-filter-pill FilterPill_c-filterPill_3UWXs">
-          <input id="filterPillToggle-manual" type="checkbox" data-test-id="filter-pill-input" tabindex="0"
-            class="is-visuallyHidden">
-          <label for="filterPillToggle-manual" data-test-id="filter-pill-label" tabindex="-1"
-            class="FilterPill_c-filterPill-label_2Pnmz">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 17 12"
-              class="c-ficon c-ficon--tick FilterPill_c-filterPill-icon_2Vk2V tick-icon">
-              <path
-                d="M5.53 10.57L15.65.45a.4.4 0 1 1 .57.57l-10.4 10.4a.4.4 0 0 1-.57 0l-4.8-4.8a.4.4 0 1 1 .57-.57l4.51 4.52z">
-              </path>
-            </svg>
-            <span data-test-id="filter-pill-text" aria-hidden="true"
-              class="FilterPill_c-filterPill-text_2RTiU">Manual</span>
-          </label>
-        </div>
-        <div data-test-id="filter-pill-component" class="c-filter-pill FilterPill_c-filterPill_3UWXs">
-          <input id="filterPillToggle-manual" type="checkbox" data-test-id="filter-pill-input" tabindex="0"
-            class="is-visuallyHidden">
-          <label for="filterPillToggle-manual" data-test-id="filter-pill-label" tabindex="-1"
-            class="FilterPill_c-filterPill-label_2Pnmz">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 17 12"
-              class="c-ficon c-ficon--tick FilterPill_c-filterPill-icon_2Vk2V tick-icon">
-              <path
-                d="M5.53 10.57L15.65.45a.4.4 0 1 1 .57.57l-10.4 10.4a.4.4 0 0 1-.57 0l-4.8-4.8a.4.4 0 1 1 .57-.57l4.51 4.52z">
-              </path>
-            </svg>
-            <span data-test-id="filter-pill-text" aria-hidden="true"
-              class="FilterPill_c-filterPill-text_2RTiU">Automatic</span>
-          </label>
-        </div>
-      </div>
+      <!-- Transmission Type -->
+      <mat-form-field appearance="fill">
+        <mat-label>Transmission Type</mat-label>
+        <mat-select [(value)]="filters.transmission">
+          <mat-option value="manual">Manual</mat-option>
+          <mat-option value="automatic">Automatic</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <!-- Instructor Gender -->
+      <mat-form-field appearance="fill">
+        <mat-label>Instructor Gender</mat-label>
+        <mat-select [(value)]="filters.gender">
+          <mat-option value="male">Male</mat-option>
+          <mat-option value="female">Female</mat-option>
+          <mat-option value="other">Other/Prefer not to say</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <!-- Experience Slider -->
+      <!-- <mat-slider thumbLabel [min]="1" [max]="30" [step]="1" [(ngModel)]="filters.experience"></mat-slider> -->
+      <span>Years of Experience: {{ filters.experience }}</span>
+
+      <!-- Rating Slider -->
+      <!-- <mat-slider thumbLabel [min]="1" [max]="5" [step]="0.1" [(ngModel)]="filters.rating"></mat-slider> -->
+      <span>Rating: {{ filters.rating }}</span>
+
+      <!-- Availability -->
+      <mat-checkbox [(ngModel)]="filters.weekdays">Weekdays</mat-checkbox>
+      <mat-checkbox [(ngModel)]="filters.weekends">Weekends</mat-checkbox>
+      <mat-checkbox [(ngModel)]="filters.evenings">Evenings</mat-checkbox>
+
+      <!-- Specializations -->
+      <h4>Specializations</h4>
+      <mat-checkbox [(ngModel)]="filters.defensiveDriving">Defensive Driving</mat-checkbox>
+      <mat-checkbox [(ngModel)]="filters.nightDriving">Night Driving</mat-checkbox>
+      <!-- Add more checkboxes for other specializations -->
+      <mat-slider></mat-slider>
+      <!-- Languages Spoken -->
+      <mat-form-field appearance="fill">
+        <mat-label>Languages Spoken</mat-label>
+        <mat-select [(value)]="filters.language">
+          <mat-option value="english">English</mat-option>
+          <mat-option value="spanish">Spanish</mat-option>
+          <!-- Add more options for other languages -->
+        </mat-select>
+      </mat-form-field>
+
+      <!-- Price Range Slider -->
+      <!-- <mat-slider thumbLabel [min]="10" [max]="100" [step]="5" [(ngModel)]="filters.price"></mat-slider> -->
+      <span>Price Range: £{{ filters.price }}/Hour</span>
+
+      <!-- Filter Button -->
+      <button mat-raised-button color="primary">Apply Filters</button>
     </div>
     <div class="sidenav-content">
       <div class="container">
         <div class="instructor-container" *ngIf="searched">
           <div class="results-header">
-            <div class="c-resultHeader-titleContainer">
-              <h1 data-test-id="search-results-title" class="c-resultHeader-title">
-                {{ instructors.length }} nearby instructors
-              </h1>
-            </div>
+            <h1>
+              {{ instructors.length }} nearby instructors
+            </h1>
             <div class="sort-options">
               <mat-form-field appearance="fill">
                 <mat-label>Sort by</mat-label>

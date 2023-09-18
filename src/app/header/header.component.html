@@ -23,10 +23,6 @@
 
       <!-- Right Section -->
       <div class="navbar-right">
-        <button mat-raised-button class="instructor-signup-btn" routerLink="/instructor-signup">
-          Teach Here
-        </button>
-
         <button mat-icon-button [matMenuTriggerFor]="notificationMenu">
           <mat-icon>notifications</mat-icon>
         </button>
@@ -63,10 +59,13 @@
             </button>
           </mat-menu>
         </ng-container>
-
         <ng-template #notLoggedIn>
           <button mat-button (click)="openSignUpLoginDialog()">Login</button>
         </ng-template>
+
+        <button mat-raised-button class="instructor-signup-btn" routerLink="/instructor-signup">
+          Teach Here
+        </button>
       </div>
     </div>
 

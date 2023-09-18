@@ -1,72 +1,96 @@
-.container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 2em;
-  height: 100%;
-  background-color: #fafafa;
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
 
-  .calendar-container {
-    margin-top: 2em;
-
-
-    :ng-deep button.mat-calendar-body-cell.green {
-      background-color: green;
-    }
-
-    :ng-deep .yellow.mat-calendar-body-cell {
-      background-color: yellow;
-    }
-
-    :ng-deep .red.mat-calendar-body-cell {
-      background-color: red;
-    }
-
-    ::ng-deep .cal-day-badge {
-      display: none !important;
-    }
-  }
-
+* {
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
 }
 
-.instructor-profile-card {
-  position: relative; // Add this line to establish a positioning context
+button {
+  padding: 1em;
+  border: none;
+  border-radius: 4px;
+  background-color: #1976d2;
+  color: white;
+  font-size: 1em;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  outline: none;
+}
+
+button:hover {
+  background-color: #1565c0;
+}
+
+.instructor-card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-between;
   background-color: #fff;
-  border-radius: 8px;
+  border-radius: 20px; // More curved corners
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  padding: 2em;
-  width: 100%;
-  max-width: 800px;
-  margin-bottom: 2em;
-
-  .button-container {
-    position: absolute;
-    bottom: 1em;
-    right: 1em;
-  }
-
+  padding: 30px; // More space inside the card
+  min-height: 300px;
+  margin-bottom: 20px;
+  width: 700px;
 }
 
 .instructor-info {
   display: flex;
   flex-direction: row;
-  align-items: center;
-  margin-bottom: 1em;
+  align-items: flex-start;
+  width: 100%;
+  justify-content: space-between; // Add this to space out the children
 }
 
-.instructor-image {
-  width: 100px;
-  height: 100px;
-  border-radius: 50%;
-  overflow: hidden;
-  margin-right: 1em;
+.instructor-image-details {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 150px;
 }
 
 .instructor-image img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  border-radius: 50%;
+}
+
+.calendar-container {
+  max-width: 100%;
+}
+
+.transmission-container {
+  width: 176px;
+}
+
+
+.time-container {
+  max-width: 280px;
+}
+
+.lesson-duration {
+  max-width: 250px;
+}
+
+.date-time-container {
+  display: flex;
+  flex-direction: row; // Make the form fields appear side by side
+  align-items: center; // Vertically center the form fields
+  width: 100%; // Take up the full width of the parent
+}
+
+.duration-time-container {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+}
+
+
+mat-card {
+  width: 70%; // Ensure the card takes the full width available
+  margin-top: 20px; // Space between the calendar and the card
 }
 
 .instructor-details {
@@ -83,26 +107,74 @@
 }
 
 .instructor-price {
-  font-size: 1em;
+  font-size: 0.875rem;
+  line-height: 1.43;
   color: #757575;
   margin: 0.5em 0;
+  display: flex;
+  align-items: center; // This will vertically align the items inside the div
+
+  .pound-sign {
+    svg {
+      width: 12px; // Adjust the size of the SVG to match the text size
+      vertical-align: middle; // Align the SVG with the middle of the text line
+      margin-right: 4px; // Add some space between the SVG and the text
+    }
+  }
+
+  .price-number {
+    vertical-align: middle; // Align the text with the middle of the SVG
+    transform: translateY(1px);
+  }
 }
 
+
+
 .instructor-rating {
-  font-size: 1em;
-  color: #757575;
-  margin: 0.5em 0;
+  font-size: 0.875rem;
+  line-height: 1.43;
+  display: flex;
+  align-items: center;
+  padding: 0;
+  white-space: nowrap;
+  margin: 0 0.5rem 0 0;
+}
+
+.rating-icon-wrapper {
+  width: 14px;
+  height: auto;
+  margin-right: 4px;
+}
+
+.is-visuallyHidden {
+  border: 0;
+  clip: rect(0 0 0 0);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  width: 1px;
+}
+
+.rating-mean {
+  font-weight: 700;
+}
+
+.rating-divider {
+  margin: 0 2px;
+  /* Adjust as needed */
+}
+
+.rating-outOf {
+  margin-right: 4px;
 }
 
 .instructor-reviews {
   display: flex;
   align-items: center;
+  cursor: pointer;
   margin-top: 0.5em;
-}
-
-.review-stars {
-  margin-right: 4px;
-  color: #FFC107;
 }
 
 .review-count {
@@ -110,7 +182,35 @@
   color: #757575;
 }
 
-.popup-title {
+// Reviews Popup
+.reviews-popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.reviews-popup-content {
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  padding: 2em;
+  max-width: 400px;
+}
+
+.reviews-popup-close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  cursor: pointer;
+}
+
+.reviews-popup-title {
   font-size: 1.2em;
   font-weight: 600;
   color: #212121;
@@ -134,61 +234,37 @@
   color: #424242;
 }
 
-.slot-buttons {
-  display: flex;
-  flex-wrap: wrap;
-  margin-top: 1em;
+.lesson-summary-card {
+  background-color: #f5f5f5; // A light background
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+  .mat-mdc-card-content {
+    margin-top: 5px;
+  }
+
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  }
+
+  .summary-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1em;
+
+    mat-icon {
+      margin-right: 10px;
+    }
+
+    fa-icon {
+      margin-right: 18px;
+      margin-left: 7px;
+    }
+  }
 }
 
-.slot-button {
-  padding: 0.5em 1em;
-  margin-right: 1em;
-  margin-bottom: 1em;
-  border: none;
-  border-radius: 4px;
-  background-color: #8cb1d4;
-  color: white;
-  font-size: 1em;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-  outline: none;
-}
-
-.slot-button.selected {
-  background-color: #1565c0;
-  border: 2px solid #1976d2;
-}
-
-.slot-button:hover {
-  background-color: #1565c0;
-}
-
-.breadcrumb {
-  padding: 15px 0;
-  list-style: none;
-  background-color: transparent;
-}
-
-.breadcrumb-item {
-  display: inline-block;
-}
-
-.breadcrumb-item+.breadcrumb-item::before {
-  content: "/";
-  padding: 0 10px;
-  color: #6c757d;
-}
-
-.breadcrumb-item a {
-  color: #007bff;
-  text-decoration: none;
-}
-
-.breadcrumb-item a:hover {
-  color: #0056b3;
-  text-decoration: underline;
-}
-
-.breadcrumb-item.active {
-  color: #6c757d;
+::ng-deep .mat-mdc-form-field-subscript-wrapper {
+  display: none;
 }

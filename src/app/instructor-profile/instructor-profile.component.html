@@ -1,64 +1,79 @@
-<div class="container">
-  <nav aria-label="breadcrumb">
-    <ol class="breadcrumb">
-      <li class="breadcrumb-item"><a [routerLink]="['/']">Home</a></li>
-      <li class="breadcrumb-item"><a [routerLink]="['/instructors']">Nearby Instructors</a></li>
-      <li class="breadcrumb-item active" aria-current="page">Instructor Profile</li>
-    </ol>
-  </nav>
-  <div class="instructor-profile-card" *ngIf="instructor">
-    <div class="instructor-info">
-      <div class="instructor-image">
-        <img [src]="instructor.imageUrl" alt="Instructor Image">
+<app-header></app-header>
+<div class="instructor-card">
+  <div class="instructor-info">
+    <div class="calendar-and-summary">
+      <div class="calendar-container">
+        <div class="date-time-container">
+          <mat-form-field>
+            <mat-label>Choose a date</mat-label>
+            <input matInput [matDatepicker]="id" [formControl]="selectedDateControl">
+            <mat-datepicker-toggle matSuffix [for]="id"></mat-datepicker-toggle>
+            <mat-datepicker [dateClass]="dateClass" #id></mat-datepicker>
+          </mat-form-field>
+          <mat-form-field class="transmission-container">
+            <mat-label>Transmission</mat-label>
+            <mat-select [(value)]="selectedTransmission">
+              <mat-option *ngFor="let trans of instructor.transmission" [value]="trans">
+                {{ trans }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
       </div>
-      <div class="instructor-details">
-        <h3 class="instructor-name">{{ instructor.name }}</h3>
-        <p class="instructor-price">Price: £{{ instructor.price }}/hour</p>
-        <p class="instructor-rating">Rating: {{ instructor.rating }}/5</p>
-        <div class="review-item" *ngFor="let review of instructor.reviews">
-          <div class="review-rating">
-            <ng-container *ngFor="let star of reviewRatingStars(review.rating)">&#9733;</ng-container>
+      <div class="duration-time-container">
+        <div class="time-container">
+          <mat-form-field>
+            <mat-label>Select time</mat-label>
+            <mat-select (selectionChange)="onTimeSelected($event)">
+              <mat-option *ngFor="let time of times" [value]="time.label" [disabled]="!time.available"
+                [class.available-time]="time.available">
+                {{ time.label }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <mat-form-field class="lesson-duration">
+          <mat-label>Lesson duration</mat-label>
+          <mat-select [(value)]="lessonDuration">
+            <mat-option *ngFor="let duration of instructor.lessonDuration" [value]="duration">
+              {{ duration }} Hour(s)
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <!-- Lesson Summary Card -->
+      <mat-card *ngIf="selectedTime" class="lesson-summary-card">
+        <mat-card-header>
+          <mat-card-title>Lesson Summary</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="summary-item">
+            <mat-icon aria-hidden="false" aria-label="Lesson Date Icon">today</mat-icon>
+            <span>Lesson Date: {{ selectedDate | date }}</span>
           </div>
-          <p class="review-comment">{{ review.comment }}</p>
-        </div>
-        <div class="instructor-reviews">
-          <span class="review-stars">
-            <ng-container *ngFor="let star of reviewRatingStars(instructor.rating)">&#9733;</ng-container>
-          </span>
-          <span class="review-count">({{ instructor.reviews.length }})</span>
-        </div>
-      </div>
-    </div>
-    <div class="selected-slots" *ngIf="selectedSlots.length > 0">
-      <h2>Selected Slots</h2>
-      <ul>
-        <li *ngFor="let slot of selectedSlots">
-          {{ slot.start }} - {{ slot.end }}
-        </li>
-      </ul>
-    </div>
-    <div>
-      <h3>Select a Date</h3>
-      <mat-form-field>
-        <input matInput [matDatepicker]="datepicker" placeholder="Choose a date" [(ngModel)]="selectedDate"
-          [matDatepickerFilter]="dateFilter">
-        <mat-datepicker-toggle matSuffix [for]="datepicker"></mat-datepicker-toggle>
-        <mat-datepicker #datepicker [dateClass]="dateClass"></mat-datepicker>
-      </mat-form-field>
-
-    </div>
-
-    <!-- Display time slot buttons when a valid date is selected -->
-    <div class="slot-buttons" *ngIf="selectedDate && isDateAvailable(selectedDate)">
-      <button class="slot-button" [class.selected]="isSlotSelected(slot)"
-        *ngFor="let slot of getAvailableSlots(selectedDate)" (click)="toggleSlot(slot)">
-        {{ slot.start }} - {{ slot.end }}
-      </button>
-    </div>
-    <div class="button-container">
-      <button mat-raised-button color="primary" (click)="onBookInstructor()"
-        [disabled]="selectedSlots.length === 0">Book
-        Instructor</button>
+          <div class="summary-item">
+            <mat-icon aria-hidden="false" aria-label="Lesson Time Icon">access_time</mat-icon>
+            <span>Lesson Time: {{ selectedTime }}</span>
+          </div>
+          <div class="summary-item">
+            <mat-icon aria-hidden="false" aria-label="Lesson Duration Icon">timer</mat-icon>
+            <span>Lesson Duration: {{ lessonDuration }} Hour(s)</span>
+          </div>
+          <div class="summary-item">
+            <mat-icon aria-hidden="false" aria-label="Transmission Icon">drive_eta</mat-icon>
+            <span>Transmission: {{ selectedTransmission }}</span>
+          </div>
+          <div class="summary-item">
+            <i class="fa-solid fa-sterling-sign"></i>
+            <fa-icon [icon]="faSterlingSign"></fa-icon>
+            <!-- <mat-icon aria-hidden="false" aria-label="Total Price Icon">currency_pound</mat-icon> -->
+            <span>Total Price: £{{ getTotalPrice() }}</span>
+          </div>
+        </mat-card-content>
+        <mat-card-actions align="end">
+          <button mat-raised-button color="primary" (click)="addToCart()">Add to cart</button>
+        </mat-card-actions>
+      </mat-card>
     </div>
   </div>
 </div>

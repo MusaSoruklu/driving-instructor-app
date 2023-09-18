@@ -1,273 +1,161 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+.instructor-card-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
 
-* {
-    box-sizing: border-box;
-    font-family: 'Poppins', sans-serif;
-}
-
-button {
-    padding: 1em;
-    border: none;
-    border-radius: 4px;
-    background-color: #1976d2;
-    color: white;
-    font-size: 1em;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    outline: none;
-}
-
-button:hover {
-    background-color: #1565c0;
+    &:hover {
+        .instructor-card {
+            box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15);
+            background-color: rgba(240, 240, 240, 0.5);
+            transform: translateY(-5px);
+        }
+    }
 }
 
 .instructor-card {
     display: flex;
-    flex-direction: column;
-    align-items: flex-start;
     justify-content: space-between;
-    background-color: #fff;
-    border-radius: 20px; // More curved corners
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    padding: 30px; // More space inside the card
-    min-height: 300px;
-    margin-bottom: 20px;
-    width: 700px;
-}
+    align-items: center;
+    border: 1px solid #e0e0e0;
+    padding: 16px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-bottom: 16px;
+    transition: box-shadow 0.3s ease, background-color 0.3s ease, transform 0.3s ease;
+    width: 670px;
 
-.instructor-info {
-    display: flex;
-    flex-direction: row;
-    align-items: flex-start;
-    width: 100%;
-    justify-content: space-between; // Add this to space out the children
-}
+    .left-section {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 8px;
+        flex-basis: 50%;
+        max-width: 50%;
 
-.instructor-image-details {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    width: 150px;
-}
+        .instructor-image {
+            width: 100px;
+            height: 100px;
+            overflow: hidden;
+            border-radius: 50%;
+            margin-bottom: 8px;
+            flex: 0 0 100px;
 
-.instructor-image img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-radius: 50%;
-}
+            img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                border-radius: 50%;
+            }
+        }
 
-.calendar-container {
-    max-width: 100%;
-}
+        .info-section {
+            display: flex;
+            flex-direction: column;
+            gap: 8px; // Adjust this gap as needed
+            align-items: flex-start;
+            margin-right: 60px;
+            margin-left: 8px;
 
-.transmission-container {
-    width: 176px;
-}
+            .instructor-name {
+                font-weight: bold;
+                text-align: center;
+                margin-bottom: 8px;
+                display: flex;
+                align-items: center;
+                gap: 4px;
+                white-space: nowrap; // Prevents the text from wrapping to the next line
+                overflow: hidden; // Hides the overflowed text
+                text-overflow: ellipsis;
 
+                .verified-icon {
+                    color: #1DA1F2;
+                    font-size: 16px; // Slightly smaller
+                    vertical-align: middle;
+                    transform: translateY(-2px); // Slightly raised position
+                    flex-shrink: 0;
+                }
+            }
 
-.time-container {
-    max-width: 280px;
-}
+        }
 
-.lesson-duration {
-    max-width: 250px;
-}
+        .rating-section {
+            display: flex;
+            gap: 4px;
+            align-items: center;
 
-.date-time-container {
-    display: flex;
-    flex-direction: row; // Make the form fields appear side by side
-    align-items: center; // Vertically center the form fields
-    width: 100%; // Take up the full width of the parent
-}
+            mat-icon {
+                color: #000000;
+                font-size: 21px;
+                height: 22px;
+                width: 20px;
+            }
 
-.duration-time-container {
-    display: flex;
-    flex-direction: row;
-    width: 100%;
-}
+            .rating {
+                font-size: 16px;
+                font-weight: bold;
+            }
 
+            .reviews {
+                font-size: 14px;
+            }
 
-mat-card {
-    width: 70%; // Ensure the card takes the full width available
-    margin-top: 20px; // Space between the calendar and the card
-}
+            .rating-p {
+                font-size: .875rem;
+                line-height: 1.43;
+                display: flex;
+                align-items: center;
+                padding: 0;
+                white-space: nowrap;
+                margin: 0 8px 0 0;
+            }
+        }
 
-.instructor-details {
-    font-size: 1em;
-    color: #424242;
-    margin: 0.5em 0;
-}
+        .price-section {
+            display: flex;
+            align-items: center;
+            gap: 0px;
 
-.instructor-name {
-    font-size: 1.4em;
-    font-weight: 600;
-    color: #212121;
-    margin-bottom: 0.5em;
-}
+            .mat-icon {
+                font-size: 20px;
+            }
 
-.instructor-price {
-    font-size: 0.875rem;
-    line-height: 1.43;
-    color: #757575;
-    margin: 0.5em 0;
-    display: flex;
-    align-items: center; // This will vertically align the items inside the div
-
-    .pound-sign {
-        svg {
-            width: 12px; // Adjust the size of the SVG to match the text size
-            vertical-align: middle; // Align the SVG with the middle of the text line
-            margin-right: 4px; // Add some space between the SVG and the text
+            span {
+                font-size: 16px;
+            }
         }
     }
 
-    .price-number {
-        vertical-align: middle; // Align the text with the middle of the SVG
-        transform: translateY(1px);
-    }
-}
+    .right-section {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        flex-grow: 1;
+        padding-top: 46px;
 
+        .detail-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
 
+            mat-icon {
+                font-size: 20px;
+                color: #757575;
 
-.instructor-rating {
-    font-size: 0.875rem;
-    line-height: 1.43;
-    display: flex;
-    align-items: center;
-    padding: 0;
-    white-space: nowrap;
-    margin: 0 0.5rem 0 0;
-}
-
-.rating-icon-wrapper {
-    width: 14px;
-    height: auto;
-    margin-right: 4px;
-}
-
-.is-visuallyHidden {
-    border: 0;
-    clip: rect(0 0 0 0);
-    height: 1px;
-    margin: -1px;
-    overflow: hidden;
-    padding: 0;
-    position: absolute;
-    width: 1px;
-}
-
-.rating-mean {
-    font-weight: 700;
-}
-
-.rating-divider {
-    margin: 0 2px;
-    /* Adjust as needed */
-}
-
-.rating-outOf {
-    margin-right: 4px;
-}
-
-.rating-count {
-    /* Styles for the review count */
-}
-
-.instructor-reviews {
-    display: flex;
-    align-items: center;
-    cursor: pointer;
-    margin-top: 0.5em;
-}
-
-.review-count {
-    font-size: 1em;
-    color: #757575;
-}
-
-// Reviews Popup
-.reviews-popup {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: rgba(0, 0, 0, 0.5);
-}
-
-.reviews-popup-content {
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-    padding: 2em;
-    max-width: 400px;
-}
-
-.reviews-popup-close {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    cursor: pointer;
-}
-
-.reviews-popup-title {
-    font-size: 1.2em;
-    font-weight: 600;
-    color: #212121;
-    margin-bottom: 1em;
-}
-
-.review-item {
-    display: flex;
-    align-items: center;
-    margin-bottom: 0.5em;
-}
-
-.review-rating {
-    display: flex;
-    align-items: center;
-    margin-right: 0.5em;
-}
-
-.review-comment {
-    font-size: 1em;
-    color: #424242;
-}
-
-.lesson-summary-card {
-    background-color: #f5f5f5; // A light background
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-
-    .mat-mdc-card-content {
-        margin-top: 5px;
+                &.transmission-icon {
+                    font-size: 22px;
+                    color: #757575;
+                }
+            }
+        }
     }
 
-    &:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-    }
-
-    .summary-item {
+    .cta-section {
         display: flex;
         align-items: center;
-        margin-bottom: 1em;
 
-        mat-icon {
-            margin-right: 10px;
-        }
-        fa-icon {
-            margin-right: 18px;
-            margin-left: 7px;
+        button {
+            color: #757575;
+            border-color: #757575;
         }
     }
-}
-
-::ng-deep .mat-mdc-form-field-subscript-wrapper {
-    display: none;
 }

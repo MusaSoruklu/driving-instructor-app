@@ -34,8 +34,7 @@
               "src/styles.scss",
               "node_modules/angular-calendar/css/angular-calendar.css"
             ],
-            "scripts": [
-            ]
+            "scripts": []
           },
           "configurations": {
             "production": {
@@ -100,8 +99,7 @@
               "src/styles.scss",
               "node_modules/angular-calendar/css/angular-calendar.css"
             ],
-            "scripts": [
-            ]
+            "scripts": []
           }
         }
       }
