@@ -1,5 +1,5 @@
-import { Component, Input, OnInit, OnChanges, SimpleChanges, ChangeDetectorRef } from '@angular/core';
-import { Instructor, Slot } from '../models/instructor';
+import { Component, Input, SimpleChanges, ChangeDetectorRef } from '@angular/core';
+import { Instructor, Slot, Review } from '../models/instructor';
 import { CartService, CartItem } from '../cart.service';
 import { FormControl } from '@angular/forms';
 import { MatCalendarCellClassFunction } from '@angular/material/datepicker';
@@ -8,8 +8,8 @@ import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
 import { InstructorService } from '../instructor.service';
 import { ActivatedRoute } from '@angular/router';
-
-
+import { MatDialog } from '@angular/material/dialog';
+import { PaymentDialogComponent } from '../payment-dialog/payment-dialog.component';
 @Component({
   selector: 'app-instructor-profile',
   templateUrl: './instructor-profile.component.html',
@@ -28,8 +28,35 @@ export class InstructorProfileComponent {
   selectedDateControl = new FormControl();
   times: { label: string, available: boolean }[] = [];
   selectedTime: string | null = null;
-  lessonDuration: number = 1; // Default to 1 hour
+  lessonDuration: number = 1;
   selectedTransmission: string | null = null;
+
+  scheduledLessons = [
+    { date: '2023-10-01', time: '10:00 AM', duration: 1, transmission: 'Automatic' },
+    { date: '2023-10-05', time: '2:00 PM', duration: 2, transmission: 'Manual' },
+    { date: '2023-10-10', time: '5:00 PM', duration: 1, transmission: 'Automatic' },
+
+  ];
+
+  sampleReviews = [
+    {
+      reviewerImage: 'path_to_image1.jpg',
+      reviewerName: 'John Doe',
+      rating: 4.5,
+      comment: 'Great instructor! Learned a lot from the lessons.'
+    },
+    {
+      reviewerImage: 'path_to_image2.jpg',
+      reviewerName: 'Jane Smith',
+      rating: 5,
+      comment: 'Highly recommend! Very patient and knowledgeable.'
+    },
+    // ... add more sample reviews as needed
+  ];
+
+
+
+
   constructor
     (
       private cartService: CartService,
@@ -37,7 +64,8 @@ export class InstructorProfileComponent {
       private matIconRegistry: MatIconRegistry,
       private domSanitizer: DomSanitizer,
       private route: ActivatedRoute,
-      private instructorService: InstructorService
+      private instructorService: InstructorService,
+      private dialog: MatDialog,
     ) {
     const icons = ['star-icon', 'currencygbp'];
     icons.forEach(icon => {
@@ -48,40 +76,19 @@ export class InstructorProfileComponent {
     });
   }
 
+
+
+
   ngOnInit(): void {
-    // Fetch the instructor data based on the URL
+
     const instructorId = this.route.snapshot.paramMap.get('id');
     if (instructorId) {
-        this.instructorService.fetchInstructorById(instructorId).subscribe(data => {
-            this.instructor = data;
-            this.initializeInstructorData();
-        });
+      this.instructorService.fetchInstructorById(instructorId).subscribe(data => {
+        this.instructor = data;
+        this.initializeInstructorData();
+      });
     }
   }
-
-  initializeInstructorData(): void {
-    this.calculateRatingAndReviews();
-    this.setEarliestAvailableDate();
-    this.availableSlots = this.getAvailableSlotsForInstructor(this.instructor, this.selectedDate);
-
-    // Update the selectedDate property whenever the value of the form control changes
-    this.selectedDateControl.valueChanges.subscribe(value => {
-      this.selectedDate = value;
-      this.availableSlots = this.getAvailableSlotsForInstructor(this.instructor, this.selectedDate);
-      this.generateTimesList();
-      this.cdr.detectChanges();
-    });
-    this.generateTimesList();
-
-    if (this.instructor.lessonDuration && this.instructor.lessonDuration.length > 0) {
-      this.lessonDuration = this.instructor.lessonDuration[0]; // Default to the first available duration
-    }
-
-    if (this.instructor.transmission && this.instructor.transmission.length > 0) {
-      this.selectedTransmission = this.instructor.transmission[0]; // Default to the first available transmission
-    }
-  }
-
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['instructor']) {
@@ -91,6 +98,53 @@ export class InstructorProfileComponent {
   }
 
 
+  openPaymentDialog(): void {
+    this.dialog.open(PaymentDialogComponent, {
+      width: '1400px',  // Adjust the width as necessary
+      // ... other dialog configuration ...
+    });
+  }
+
+  getStarCounts(): { rating: number, count: number, percentage: number }[] {
+    const counts = [5, 4, 3, 2, 1].map(star => {
+      const count = this.instructor.reviews.filter(review => review.rating === star).length;
+      const percentage = (count / this.instructor.reviews.length) * 100;
+      return { rating: star, count, percentage };
+    });
+    return counts;
+  }
+
+  getAverageRating(): number {
+    if (!this.instructor.reviews || this.instructor.reviews.length === 0) {
+      return 0;
+    }
+    const totalStars = this.instructor.reviews.reduce((sum, review) => sum + review.rating, 0);
+    return +(totalStars / this.instructor.reviews.length).toFixed(1);
+  }
+
+  initializeInstructorData(): void {
+    this.calculateRatingAndReviews();
+    this.setEarliestAvailableDate();
+    this.availableSlots = this.getAvailableSlotsForInstructor(this.instructor, this.selectedDate);
+
+
+    this.selectedDateControl.valueChanges.subscribe(value => {
+      this.selectedDate = value;
+      this.availableSlots = this.getAvailableSlotsForInstructor(this.instructor, this.selectedDate);
+      this.generateTimesList();
+      this.cdr.detectChanges();
+    });
+    this.generateTimesList();
+
+    if (this.instructor.lessonDuration && this.instructor.lessonDuration.length > 0) {
+      this.lessonDuration = this.instructor.lessonDuration[0];
+    }
+
+    if (this.instructor.transmission && this.instructor.transmission.length > 0) {
+      this.selectedTransmission = this.instructor.transmission[0];
+    }
+  }
+
   timeToNumber(time: string): number {
     const [hours, minutes] = time.split(':').map(Number);
     return hours * 60 + minutes;
@@ -98,8 +152,8 @@ export class InstructorProfileComponent {
 
   onTimeSelected(event: any): void {
     this.selectedTime = event.value;
-    // this.lessonDuration = 1; // Set the lesson duration to 1 hour
-    // Any other logic you want to execute when a time is selected
+
+
   }
 
   addToCart(): void {
@@ -130,20 +184,20 @@ export class InstructorProfileComponent {
   }
 
   bookSelectedTime(): void {
-    // Logic to book the selected time range
-    // You can use the selectedTimeRange property to get the selected time
+
+
   }
 
 
 
   generateTimesList(): void {
     this.times = [];
-    for (let i = 0; i < 24 * 4; i++) { // 24 hours * 4 quarters
+    for (let i = 0; i < 24 * 4; i++) {
       const hour = Math.floor(i / 4);
       const minute = (i % 4) * 15;
       const timeLabel = `${String(hour).padStart(2, '0')}:${String(minute).padStart(2, '0')}`;
       const available = this.isTimeAvailable(timeLabel);
-      if (available) { // Only add the time if it's available
+      if (available) {
         this.times.push({ label: timeLabel, available });
       }
     }
@@ -152,9 +206,9 @@ export class InstructorProfileComponent {
   setEarliestAvailableDate(): void {
     let earliestDate: Date | null = null;
     const today = new Date();
-    today.setHours(0, 0, 0, 0); // Set the time to 00:00:00
+    today.setHours(0, 0, 0, 0);
 
-    // Check up to 365 days from today. You can adjust this number as needed.
+
     for (let i = 0; i < 365; i++) {
       const checkDate = new Date(today);
       checkDate.setDate(today.getDate() + i);
@@ -167,7 +221,7 @@ export class InstructorProfileComponent {
 
     this.selectedDate = earliestDate ? earliestDate : new Date();
     this.selectedDateControl.setValue(this.selectedDate);
-    this.cdr.detectChanges(); // Manually trigger change detection
+    this.cdr.detectChanges();
   }
 
   calculateRatingAndReviews(): void {
@@ -199,22 +253,22 @@ export class InstructorProfileComponent {
     const selectedDate = this.formatDate(date);
     const selectedDay = this.getDayOfWeek(date);
 
-    // Check availability for the specific date first
+
     let availableSlots: Slot[] = instructor.availability[selectedDate] || [];
 
-    // If there are no slots for the specific date, check the weekly availability
+
     if (availableSlots.length === 0) {
       availableSlots = instructor.availability[selectedDay] || [];
     }
 
-    // Sort the available slots based on their start time in ascending order
+
     availableSlots.sort((a, b) => (a.start > b.start ? 1 : -1));
 
     return availableSlots;
   }
 
   dateClass: MatCalendarCellClassFunction<Date> = (cellDate, view) => {
-    // Only highlight dates inside the month view.
+
     if (view === 'month') {
       const availableSlots = this.getAvailableSlotsForInstructor(this.instructor, cellDate);
       return availableSlots.length > 0 && cellDate > new Date() ? 'available-date-class' : '';
@@ -243,6 +297,4 @@ export class InstructorProfileComponent {
     const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
     return days[date.getDay()];
   }
-
-
 }

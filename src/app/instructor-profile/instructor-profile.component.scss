@@ -1,270 +1,470 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
-
-* {
-  box-sizing: border-box;
-  font-family: 'Poppins', sans-serif;
-}
-
-button {
-  padding: 1em;
-  border: none;
-  border-radius: 4px;
-  background-color: #1976d2;
-  color: white;
-  font-size: 1em;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-  outline: none;
-}
-
-button:hover {
-  background-color: #1565c0;
-}
-
-.instructor-card {
+.instructor-profile {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+}
+
+.instructor-header {
+  display: flex;
+  align-items: center;
+  background-color: #f5f5f5;
+  padding: 20px;
+  border-radius: 10px;
+  position: relative;
+
+  .instructor-image-container {
+    position: relative;
+    margin-right: 20px;
+
+    .instructor-image {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+    }
+
+    .online-status {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background-color: #4CAF50;
+      border: 2px solid #ffffff;
+    }
+  }
+
+  .instructor-info {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    h1 {
+      margin-bottom: 10px;
+
+      .verified-icon {
+        color: #1DA1F2;
+        font-size: 16px;
+        vertical-align: middle;
+        transform: translateY(-2px);
+        flex-shrink: 0;
+        margin-right: 10px;
+      }
+    }
+
+    button.message-instructor {
+      color: #333;
+      border: 1px solid #ccc;
+      padding: 3px 8px;
+      font-size: 0.85em;
+      border-radius: 5px;
+      display: flex;
+      align-items: center;
+      align-self: flex-start;
+
+      mat-icon {
+        margin-right: 5px;
+      }
+    }
+  }
+
+  .rating {
+    display: flex;
+    align-items: center;
+
+    mat-icon {
+      margin-right: 5px;
+    }
+  }
+
+  .message-button {
+    position: absolute;
+    bottom: 10px;
+    right: 20px;
+    padding: 5px 15px;
+    font-size: 0.9em;
+  }
+}
+
+.main-content {
+  display: flex;
   justify-content: space-between;
-  background-color: #fff;
-  border-radius: 20px; // More curved corners
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  padding: 30px; // More space inside the card
-  min-height: 300px;
-  margin-bottom: 20px;
-  width: 700px;
+  margin-top: 20px;
 }
 
-.instructor-info {
-  display: flex;
-  flex-direction: row;
-  align-items: flex-start;
-  width: 100%;
-  justify-content: space-between; // Add this to space out the children
-}
-
-.instructor-image-details {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  width: 150px;
-}
-
-.instructor-image img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border-radius: 50%;
-}
-
-.calendar-container {
-  max-width: 100%;
-}
-
-.transmission-container {
-  width: 176px;
-}
-
-
-.time-container {
-  max-width: 280px;
-}
-
-.lesson-duration {
-  max-width: 250px;
-}
-
-.date-time-container {
-  display: flex;
-  flex-direction: row; // Make the form fields appear side by side
-  align-items: center; // Vertically center the form fields
-  width: 100%; // Take up the full width of the parent
-}
-
-.duration-time-container {
-  display: flex;
-  flex-direction: row;
-  width: 100%;
-}
-
-
-mat-card {
-  width: 70%; // Ensure the card takes the full width available
-  margin-top: 20px; // Space between the calendar and the card
+.left-section {
+  flex: 3;
+  margin-right: 20px;
 }
 
 .instructor-details {
-  font-size: 1em;
-  color: #424242;
-  margin: 0.5em 0;
-}
-
-.instructor-name {
-  font-size: 1.4em;
-  font-weight: 600;
-  color: #212121;
-  margin-bottom: 0.5em;
-}
-
-.instructor-price {
-  font-size: 0.875rem;
-  line-height: 1.43;
-  color: #757575;
-  margin: 0.5em 0;
   display: flex;
-  align-items: center; // This will vertically align the items inside the div
-
-  .pound-sign {
-    svg {
-      width: 12px; // Adjust the size of the SVG to match the text size
-      vertical-align: middle; // Align the SVG with the middle of the text line
-      margin-right: 4px; // Add some space between the SVG and the text
-    }
-  }
-
-  .price-number {
-    vertical-align: middle; // Align the text with the middle of the SVG
-    transform: translateY(1px);
-  }
-}
-
-
-
-.instructor-rating {
-  font-size: 0.875rem;
-  line-height: 1.43;
-  display: flex;
-  align-items: center;
-  padding: 0;
-  white-space: nowrap;
-  margin: 0 0.5rem 0 0;
-}
-
-.rating-icon-wrapper {
-  width: 14px;
-  height: auto;
-  margin-right: 4px;
-}
-
-.is-visuallyHidden {
-  border: 0;
-  clip: rect(0 0 0 0);
-  height: 1px;
-  margin: -1px;
-  overflow: hidden;
-  padding: 0;
-  position: absolute;
-  width: 1px;
-}
-
-.rating-mean {
-  font-weight: 700;
-}
-
-.rating-divider {
-  margin: 0 2px;
-  /* Adjust as needed */
-}
-
-.rating-outOf {
-  margin-right: 4px;
-}
-
-.instructor-reviews {
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-  margin-top: 0.5em;
-}
-
-.review-count {
-  font-size: 1em;
-  color: #757575;
-}
-
-// Reviews Popup
-.reviews-popup {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: rgba(0, 0, 0, 0.5);
-}
-
-.reviews-popup-content {
-  background-color: #fff;
-  border-radius: 8px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-  padding: 2em;
-  max-width: 400px;
-}
-
-.reviews-popup-close {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  cursor: pointer;
-}
-
-.reviews-popup-title {
-  font-size: 1.2em;
-  font-weight: 600;
-  color: #212121;
-  margin-bottom: 1em;
-}
-
-.review-item {
-  display: flex;
-  align-items: center;
-  margin-bottom: 0.5em;
-}
-
-.review-rating {
-  display: flex;
-  align-items: center;
-  margin-right: 0.5em;
-}
-
-.review-comment {
-  font-size: 1em;
-  color: #424242;
-}
-
-.lesson-summary-card {
-  background-color: #f5f5f5; // A light background
+  justify-content: space-between;
+  align-items: flex-start;
+  background-color: #f5f5f5;
+  padding: 20px;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
 
-  .mat-mdc-card-content {
-    margin-top: 5px;
+  .bio-section {
+    flex: 2;
+    margin-right: 20px;
+    font-size: 1.1em;
   }
 
-  &:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-  }
-
-  .summary-item {
+  .detail-section {
     display: flex;
-    align-items: center;
-    margin-bottom: 1em;
+    flex-direction: column;
+    flex-basis: 35%;
 
-    mat-icon {
-      margin-right: 10px;
+    .detail-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      /* Adds space between items */
     }
 
-    fa-icon {
-      margin-right: 18px;
-      margin-left: 7px;
+    .detail-item {
+      display: flex;
+      align-items: center;
+      background-color: #f5f5f5;
+      border-radius: 5px;
+      padding: 10px 15px;
+      margin: 6px 0;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+
+      mat-icon {
+        width: 24px;
+        height: 24px;
+        margin-right: 15px;
+        color: #1DA1F2;
+        flex-shrink: 0;
+      }
+
+      strong {
+        margin-right: 5px;
+        color: #333;
+      }
+
+      mat-chip {
+        color: #fff; // Sets the text color to white for all chips
+
+        &.mat-primary {
+          background-color: #e8f4fd; // Subtle blue
+        }
+
+        &.mat-accent {
+          background-color: #fce4ec; // Subtle pink
+        }
+
+        &.mat-warn {
+          background-color: #fff9c4; // Subtle yellow
+        }
+
+        img {
+          width: 20px; // Adjusts the width of the avatar
+          height: 20px; // Adjusts the height of the avatar
+        }
+
+        img {
+          // ... (rest of your existing styles)
+          border-radius: 0; // Removes border-radius to prevent clipping
+        }
+      }
     }
   }
 }
 
-::ng-deep .mat-mdc-form-field-subscript-wrapper {
-  display: none;
+
+
+.cart-section {
+  flex: 1;
+  background-color: #f5f5f5;
+  padding: 20px;
+  border-radius: 10px;
+  border: 1px solid #e0e0e0;
+  display: flex;
+  flex-direction: column;
+  align-self: flex-start;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+
+  .cart-items-container {
+    flex: 1;
+    overflow-y: auto;
+  }
+
+  .cart-header {
+    font-weight: bold;
+    margin-bottom: 10px;
+    font-size: 1.2em;
+  }
+
+  .cart-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #ddd;
+    padding: 10px 0;
+
+    .item-details {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    button[mat-icon-button] {
+      align-self: start;
+      margin-left: 10px;
+    }
+
+    mat-icon {
+      font-size: 20px;
+    }
+
+  }
+
+  .proceed-to-payment-btn {
+    background-color: #4CAF50;
+    color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    margin-top: 20px; // To add some space between the total and the button
+
+    &:hover {
+      background-color: #45a047;
+    }
+
+    mat-icon {
+      margin-right: 5px;
+    }
+  }
+
+  .cart-total {
+    font-weight: bold;
+    margin: 20px 0;
+    font-size: 1.2em;
+  }
+
+}
+
+.booking-section {
+  padding: 20px;
+  background-color: #f5f5f5;
+  border-radius: 10px;
+  margin-top: 20px;
+}
+
+.add-to-cart-btn {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  border-radius: 5px;
+  padding: 8px 20px;
+  font-size: 1em;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  border: 1px solid #1DA1F2;
+  color: #fff !important;
+  background-color: #1DA1F2;
+
+  mat-icon {
+    margin-right: 5px;
+  }
+
+
+
+  &:hover {
+    background-color: #199BDC;
+  }
+}
+
+.calendar-section {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+
+  @media (max-width: 600px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+
+}
+
+mat-form-field {
+  width: 100%;
+  border-radius: 5px;
+}
+
+mat-tab-group {
+  margin-top: 20px;
+  background-color: #f5f5f5;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  border: 1px solid #e0e0e0;
+  min-height: 382px;
+}
+
+.reviews-section {
+  margin-top: 20px;
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+
+  .overview-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .notice {
+    flex: 1;
+    font-size: 14px;
+    color: #777;
+    padding-right: 15px;
+    margin-right: 15px;
+  }
+
+  .rating-box {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #e0e0e0;
+    max-width: 50%;
+    flex: 1;
+
+  }
+
+  .instructor-rating {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1;
+
+    .rating-value {
+      font-size: 2em;
+      font-weight: bold;
+    }
+
+    .stars {
+      display: flex;
+      margin-top: 10px;
+
+      mat-icon {
+        margin-right: 5px;
+      }
+    }
+
+    .review-count {
+      font-size: 0.8em;
+      color: #777;
+    }
+  }
+
+  .divider {
+    width: 1px;
+    height: 100%;
+    background-color: #e0e0e0;
+    margin: 0 15px;
+  }
+
+  .star-breakdown {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+
+
+    .star-row {
+      display: flex;
+      align-items: center;
+
+
+      .star-label {
+        width: 15px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 12px;
+      }
+
+      .bar-container {
+        flex-grow: 1;
+        height: 10px;
+        background-color: #e0e0e0;
+        border-radius: 5px;
+        margin: 0 5px;
+        overflow: hidden;
+        height: 8px;
+
+        .filled-bar {
+          height: 100%;
+          background-color: #1DA1F2;
+          border-radius: 4px;
+        }
+      }
+
+      .count {
+        width: 15px;
+        text-align: right;
+        font-size: 10px;
+      }
+    }
+  }
+
+  .reviews-list {
+    .review {
+      display: flex;
+      margin-top: 20px;
+      border-bottom: 1px solid #e0e0e0;
+      padding-bottom: 20px;
+
+      &:last-child {
+        border-bottom: none;
+      }
+
+      .reviewer-info {
+        flex: 1;
+        display: flex;
+        align-items: center;
+
+        .reviewer-image {
+          width: 50px;
+          height: 50px;
+          border-radius: 50%;
+          margin-right: 10px;
+        }
+
+        .reviewer-name {
+          font-weight: 600;
+        }
+      }
+
+      .review-content {
+        flex: 3;
+
+        .review-rating {
+          display: flex;
+          align-items: center;
+          color: #1DA1F2;
+          font-weight: 600;
+          margin-bottom: 10px;
+
+          mat-icon {
+            margin-right: 5px;
+          }
+        }
+      }
+    }
+  }
 }

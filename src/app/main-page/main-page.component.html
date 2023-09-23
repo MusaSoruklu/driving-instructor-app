@@ -2,62 +2,7 @@
 <app-banner (instructorsFetched)="handleInstructorsFetched($event)"></app-banner>
 <div class="main-content">
   <div class="sidenav-container" *ngIf="searched">
-    <div class="sidenav">
-      <!-- Transmission Type -->
-      <mat-form-field appearance="fill">
-        <mat-label>Transmission Type</mat-label>
-        <mat-select [(value)]="filters.transmission">
-          <mat-option value="manual">Manual</mat-option>
-          <mat-option value="automatic">Automatic</mat-option>
-        </mat-select>
-      </mat-form-field>
-
-      <!-- Instructor Gender -->
-      <mat-form-field appearance="fill">
-        <mat-label>Instructor Gender</mat-label>
-        <mat-select [(value)]="filters.gender">
-          <mat-option value="male">Male</mat-option>
-          <mat-option value="female">Female</mat-option>
-          <mat-option value="other">Other/Prefer not to say</mat-option>
-        </mat-select>
-      </mat-form-field>
-
-      <!-- Experience Slider -->
-      <!-- <mat-slider thumbLabel [min]="1" [max]="30" [step]="1" [(ngModel)]="filters.experience"></mat-slider> -->
-      <span>Years of Experience: {{ filters.experience }}</span>
-
-      <!-- Rating Slider -->
-      <!-- <mat-slider thumbLabel [min]="1" [max]="5" [step]="0.1" [(ngModel)]="filters.rating"></mat-slider> -->
-      <span>Rating: {{ filters.rating }}</span>
-
-      <!-- Availability -->
-      <mat-checkbox [(ngModel)]="filters.weekdays">Weekdays</mat-checkbox>
-      <mat-checkbox [(ngModel)]="filters.weekends">Weekends</mat-checkbox>
-      <mat-checkbox [(ngModel)]="filters.evenings">Evenings</mat-checkbox>
-
-      <!-- Specializations -->
-      <h4>Specializations</h4>
-      <mat-checkbox [(ngModel)]="filters.defensiveDriving">Defensive Driving</mat-checkbox>
-      <mat-checkbox [(ngModel)]="filters.nightDriving">Night Driving</mat-checkbox>
-      <!-- Add more checkboxes for other specializations -->
-      <mat-slider></mat-slider>
-      <!-- Languages Spoken -->
-      <mat-form-field appearance="fill">
-        <mat-label>Languages Spoken</mat-label>
-        <mat-select [(value)]="filters.language">
-          <mat-option value="english">English</mat-option>
-          <mat-option value="spanish">Spanish</mat-option>
-          <!-- Add more options for other languages -->
-        </mat-select>
-      </mat-form-field>
-
-      <!-- Price Range Slider -->
-      <!-- <mat-slider thumbLabel [min]="10" [max]="100" [step]="5" [(ngModel)]="filters.price"></mat-slider> -->
-      <span>Price Range: £{{ filters.price }}/Hour</span>
-
-      <!-- Filter Button -->
-      <button mat-raised-button color="primary">Apply Filters</button>
-    </div>
+    <app-filter-panel (filtersChanged)="handleFiltersChanged($event)"></app-filter-panel>
     <div class="sidenav-content">
       <div class="container">
         <div class="instructor-container" *ngIf="searched">

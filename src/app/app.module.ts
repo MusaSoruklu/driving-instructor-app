@@ -36,7 +36,6 @@ import { MatStepperModule } from '@angular/material/stepper';
 import { MatListModule } from '@angular/material/list';
 import { HeaderComponent } from './header/header.component';
 import { BannerComponent } from './banner/banner.component';
-import { SidenavComponent } from './sidenav/sidenav.component';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { GoogleMapsModule } from '@angular/google-maps';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
@@ -59,7 +58,10 @@ import { MatMenuModule } from '@angular/material/menu';
 import { FooterComponent } from './footer/footer.component';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatGridListModule } from '@angular/material/grid-list';
-
+import { FilterPanelComponent } from './filter-panel/filter-panel.component';
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatChipsModule } from '@angular/material/chips';
+import { PaymentDialogComponent } from './payment-dialog/payment-dialog.component';
 
 @NgModule({
   declarations: [
@@ -73,11 +75,12 @@ import { MatGridListModule } from '@angular/material/grid-list';
     SignupLoginComponent,
     HeaderComponent,
     BannerComponent,
-    SidenavComponent,
     PickupPointDialogComponent,
     PaymentFormComponent,
     OrdinalPipe,
     FooterComponent,
+    FilterPanelComponent,
+    PaymentDialogComponent,
   ],
   imports: [
     BrowserModule,
@@ -120,7 +123,9 @@ import { MatGridListModule } from '@angular/material/grid-list';
     AngularFireDatabaseModule,
     MatMenuModule,
     MatGridListModule,
-    MatTooltipModule
+    MatTooltipModule,
+    MatTabsModule,
+    MatChipsModule
   ],
   providers: [InstructorService, DatePipe, { provide: MAT_DATE_LOCALE, useValue: 'en-GB' }],
   bootstrap: [AppComponent]

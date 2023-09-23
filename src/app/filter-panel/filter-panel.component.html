@@ -1,0 +1,87 @@
+<div class="sidenav">
+    <div class="filter-title">
+        <mat-icon>filter_list</mat-icon>
+        Filters
+    </div>
+
+    <!-- Reset Button -->
+    <button mat-button class="reset-button">
+        <mat-icon>refresh</mat-icon>
+        Reset
+    </button>
+
+    <!-- Rating Slider -->
+    <div class="slider-section">
+        <div class="slider-title">
+            <mat-icon>star_rate</mat-icon>
+            Rating:
+            <span class="slider-value">{{ filters.ratingStart }} - {{ filters.ratingEnd }}</span>
+        </div>
+        <mat-slider [min]="1" [max]="5" [step]="0.1">
+            <input matSliderStartThumb [(ngModel)]="filters.ratingStart">
+            <input matSliderEndThumb [(ngModel)]="filters.ratingEnd">
+        </mat-slider>
+    </div>
+    <mat-divider></mat-divider>
+
+    <!-- Price Range Slider -->
+    <div class="slider-section">
+        <div class="slider-title">
+            <mat-icon>attach_money</mat-icon>
+            Price Range:
+            <span class="slider-value">£{{ filters.priceStart }} - £{{ filters.priceEnd }}/Hour</span>
+        </div>
+        <mat-slider [min]="10" [max]="100" [step]="5">
+            <input matSliderStartThumb [(ngModel)]="filters.priceStart">
+            <input matSliderEndThumb [(ngModel)]="filters.priceEnd">
+        </mat-slider>
+    </div>
+    <mat-divider></mat-divider>
+
+    <!-- Experience Slider -->
+    <div class="slider-section">
+        <div class="slider-title">
+            <mat-icon>school</mat-icon>
+            Years of Experience:
+            <span class="slider-value">{{ filters.experienceStart }} - {{ filters.experienceEnd }} years</span>
+        </div>
+        <mat-slider [min]="1" [max]="30" [step]="1">
+            <input matSliderStartThumb [(ngModel)]="filters.experienceStart">
+            <input matSliderEndThumb [(ngModel)]="filters.experienceEnd">
+        </mat-slider>
+    </div>
+    <mat-divider></mat-divider>
+
+    <!-- Transmission Type -->
+    <mat-form-field appearance="fill">
+        <mat-icon matPrefix>settings</mat-icon>
+        <mat-label>Transmission Type</mat-label>
+        <mat-select [(value)]="filters.transmission" multiple>
+            <mat-option *ngFor="let transmission of transmissions" [value]="transmission.value">
+                {{ transmission.viewValue }}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+
+    <!-- Instructor Gender -->
+    <mat-form-field appearance="fill">
+        <mat-icon matPrefix>person</mat-icon>
+        <mat-label>Instructor Gender</mat-label>
+        <mat-select [(value)]="filters.gender" multiple>
+            <mat-option *ngFor="let gender of genders" [value]="gender.value">
+                {{ gender.viewValue }}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+
+    <!-- Languages Spoken -->
+    <mat-form-field appearance="fill">
+        <mat-icon matPrefix>language</mat-icon>
+        <mat-label>Languages Spoken</mat-label>
+        <mat-select [(value)]="filters.language" multiple>
+            <mat-option *ngFor="let language of languages" [value]="language.value">
+                {{ language.viewValue }}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+</div>

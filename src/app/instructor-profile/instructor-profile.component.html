@@ -1,79 +1,221 @@
 <app-header></app-header>
-<div class="instructor-card">
-  <div class="instructor-info">
-    <div class="calendar-and-summary">
-      <div class="calendar-container">
-        <div class="date-time-container">
-          <mat-form-field>
-            <mat-label>Choose a date</mat-label>
-            <input matInput [matDatepicker]="id" [formControl]="selectedDateControl">
-            <mat-datepicker-toggle matSuffix [for]="id"></mat-datepicker-toggle>
-            <mat-datepicker [dateClass]="dateClass" #id></mat-datepicker>
-          </mat-form-field>
-          <mat-form-field class="transmission-container">
-            <mat-label>Transmission</mat-label>
-            <mat-select [(value)]="selectedTransmission">
-              <mat-option *ngFor="let trans of instructor.transmission" [value]="trans">
-                {{ trans }}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
+<div class="instructor-profile">
+  <div class="instructor-header">
+    <div class="instructor-image-container">
+      <img [src]="instructor.imageUrl" alt="Instructor Name" class="instructor-image">
+      <div class="online-status" *ngIf="instructor"></div>
+    </div>
+    <div class="instructor-info">
+      <h1>
+        {{ instructor.name }}
+        <mat-icon class="verified-icon" matTooltip="Verified Instructor">verified</mat-icon>
+      </h1>
+      <button mat-button class="message-instructor">
+        <mat-icon>mail_outline</mat-icon>
+        Message
+      </button>
+    </div>
+    <div class="rating">
+      <mat-icon>star</mat-icon>
+      4.5/5 {{ instructor.rating }} ({{ instructor.reviews.length }} reviews)
+    </div>
+  </div>
+  <div class="main-content">
+    <div class="left-section">
+      <div class="instructor-details">
+        <div class="bio-section">
+          <h2>About {{ instructor.name }}</h2>
+          <p>With over 10 years of experience on the road, {{ instructor.name }} is
+            passionate about teaching safe and efficient driving techniques.</p>
+        </div>
+        <div class="detail-section">
+          <div class="detail-row">
+            <div class="detail-item">
+            
+              <mat-chip-listbox aria-label="Transmissions">
+                <mat-chip color="primary">
+                  <img matChipAvatar src="./assets/manual-transmission.svg" alt="Manual Icon"> Manual
+                </mat-chip>
+                <mat-chip color="accent">
+                  <img matChipAvatar src="./assets/automatic-transmission (1).svg" alt="Automatic Icon"> Automatic
+                </mat-chip>
+              </mat-chip-listbox>
+            </div>
+            <div class="detail-item">
+              <mat-chip-listbox aria-label="Languages">
+                <mat-chip color="accent">
+                  <img matChipAvatar src="./assets/united-kingdom.svg" alt="English Flag"> English
+                </mat-chip>
+                <mat-chip color="warn">
+                  <img matChipAvatar src="./assets/spain.svg" alt="Spanish Flag"> Spanish
+                </mat-chip>
+              </mat-chip-listbox>
+            </div>
+          </div>
+          <div class="detail-row">
+     
+            <div class="detail-item">
+             
+              <mat-chip-listbox aria-label="Specializations">
+                <mat-chip color="primary">
+                  <img matChipAvatar src="./assets/shield.svg" alt="Defensive Driving Icon"> Defensive
+                  Driving
+                </mat-chip>
+                <mat-chip color="accent">
+                  <img matChipAvatar src="./assets/night.svg" alt="Night Driving Icon"> Night Driving
+                </mat-chip>
+              </mat-chip-listbox>
+            </div>
+          </div>
         </div>
       </div>
-      <div class="duration-time-container">
-        <div class="time-container">
-          <mat-form-field>
-            <mat-label>Select time</mat-label>
-            <mat-select (selectionChange)="onTimeSelected($event)">
-              <mat-option *ngFor="let time of times" [value]="time.label" [disabled]="!time.available"
-                [class.available-time]="time.available">
-                {{ time.label }}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
+
+      <mat-tab-group>
+        <mat-tab>
+          <ng-template mat-tab-label>
+            <mat-icon>event</mat-icon> <!-- 'event' is a calendar icon from Material Icons -->
+            Book a Lesson
+          </ng-template>
+          <div class="booking-section">
+            <div class="calendar-section">
+              <div class="form-group">
+                <mat-form-field appearance="fill">
+                  <mat-label>Choose a date</mat-label>
+                  <input matInput [matDatepicker]="id" [formControl]="selectedDateControl">
+                  <mat-datepicker-toggle matSuffix [for]="id"></mat-datepicker-toggle>
+                  <mat-datepicker [dateClass]="dateClass" #id></mat-datepicker>
+                </mat-form-field>
+              </div>
+              <div class="form-group">
+                <mat-form-field appearance="fill" class="time-container">
+                  <mat-label>Select time</mat-label>
+                  <mat-select (selectionChange)="onTimeSelected($event)">
+                    <mat-option *ngFor="let time of times" [value]="time.label" [disabled]="!time.available">
+                      {{ time.label }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div class="form-group">
+                <mat-form-field appearance="fill" class="transmission-container">
+                  <mat-label>Transmission</mat-label>
+                  <mat-select [(value)]="selectedTransmission">
+                    <mat-option *ngFor="let trans of instructor.transmission" [value]="trans">
+                      {{ trans }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div class="form-group">
+                <mat-form-field appearance="fill" class="lesson-duration">
+                  <mat-label>Lesson duration</mat-label>
+                  <mat-select [(value)]="lessonDuration">
+                    <mat-option *ngFor="let duration of instructor.lessonDuration" [value]="duration">
+                      {{ duration }} Hour(s)
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div class="form-group">
+                <mat-form-field appearance="fill">
+                  <mat-label>Pickup Location</mat-label>
+                  <input matInput placeholder="Enter your pickup location">
+                  <mat-icon matSuffix>location_on</mat-icon>
+                </mat-form-field>
+              </div>
+            </div>
+            <button mat-button class="add-to-cart-btn">
+              <mat-icon>add_shopping_cart</mat-icon> <!-- This is a cart icon from Material Icons -->
+              Add to Cart
+            </button>
+          </div>
+        </mat-tab>
+        <mat-tab>
+          <ng-template mat-tab-label>
+            <mat-icon>shopping_cart</mat-icon> <!-- 'shopping_cart' is a cart icon from Material Icons -->
+            Purchase Bundles
+          </ng-template>
+        </mat-tab>
+      </mat-tab-group>
+      <div class="reviews-section">
+        <h2>Reviews</h2>
+        <div class="overview-section">
+          <div class="notice">
+            Hey there! Just a heads-up: when you see the 'Verified Lyrns User' tag on a review, it means it's from
+            someone
+            who's actually taken a lesson with that instructor. We make sure of it. So, you're getting the real deal on
+            feedback. Drive safe and choose wisely!
+          </div>
+          <div class="rating-box">
+            <div class="instructor-rating">
+              <span class="rating-value">{{ getAverageRating() }}/5</span>
+              <div class="stars">
+                <mat-icon *ngFor="let star of [1,2,3,4,5]">star</mat-icon>
+              </div>
+              <span class="review-count">Based on {{ instructor.reviews.length }} reviews</span>
+            </div>
+            <div class="divider"></div>
+            <div class="star-breakdown">
+              <div *ngFor="let starCount of getStarCounts()" class="star-row">
+                <span class="star-label">{{ starCount.rating }}★</span>
+                <div class="bar-container">
+                  <div class="filled-bar" [style.width.%]="starCount.percentage"></div>
+                </div>
+                <span class="count">{{ starCount.count }}</span>
+              </div>
+            </div>
+          </div>
         </div>
-        <mat-form-field class="lesson-duration">
-          <mat-label>Lesson duration</mat-label>
-          <mat-select [(value)]="lessonDuration">
-            <mat-option *ngFor="let duration of instructor.lessonDuration" [value]="duration">
-              {{ duration }} Hour(s)
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
+        <div class="reviews-list">
+          <div class="review" *ngFor="let review of instructor.reviews">
+            <div class="reviewer-info">
+              <img [src]="instructor.imageUrl" alt="Reviewer Name" class="reviewer-image">
+              <!-- Assuming you might want to display reviewer name in the future -->
+              <!-- <span class="reviewer-name">{{ review.reviewerName }}</span> -->
+            </div>
+            <div class="review-content">
+              <div class="review-rating">
+                <mat-icon>star</mat-icon> {{ review.rating }}/5
+              </div>
+              <p>{{ review.comment }}</p>
+            </div>
+          </div>
+        </div>
       </div>
-      <!-- Lesson Summary Card -->
-      <mat-card *ngIf="selectedTime" class="lesson-summary-card">
-        <mat-card-header>
-          <mat-card-title>Lesson Summary</mat-card-title>
-        </mat-card-header>
-        <mat-card-content>
-          <div class="summary-item">
-            <mat-icon aria-hidden="false" aria-label="Lesson Date Icon">today</mat-icon>
-            <span>Lesson Date: {{ selectedDate | date }}</span>
+
+    </div>
+    <div class="cart-section">
+      <div class="cart-header">Your Cart</div>
+      <div class="cart-items-container">
+        <div class="cart-item">
+          <div class="item-details">
+            <p>Lesson on 20th Oct, 10:00 AM</p>
+            <p>Duration: 1 hour</p>
+            <p>Price: £50</p>
           </div>
-          <div class="summary-item">
-            <mat-icon aria-hidden="false" aria-label="Lesson Time Icon">access_time</mat-icon>
-            <span>Lesson Time: {{ selectedTime }}</span>
+          <button mat-icon-button color="warn">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </div>
+        <div class="cart-item">
+          <div class="item-details">
+            <p>Lesson on 20th Oct, 10:00 AM</p>
+            <p>Duration: 1 hour</p>
+            <p>Price: £50</p>
           </div>
-          <div class="summary-item">
-            <mat-icon aria-hidden="false" aria-label="Lesson Duration Icon">timer</mat-icon>
-            <span>Lesson Duration: {{ lessonDuration }} Hour(s)</span>
-          </div>
-          <div class="summary-item">
-            <mat-icon aria-hidden="false" aria-label="Transmission Icon">drive_eta</mat-icon>
-            <span>Transmission: {{ selectedTransmission }}</span>
-          </div>
-          <div class="summary-item">
-            <i class="fa-solid fa-sterling-sign"></i>
-            <fa-icon [icon]="faSterlingSign"></fa-icon>
-            <!-- <mat-icon aria-hidden="false" aria-label="Total Price Icon">currency_pound</mat-icon> -->
-            <span>Total Price: £{{ getTotalPrice() }}</span>
-          </div>
-        </mat-card-content>
-        <mat-card-actions align="end">
-          <button mat-raised-button color="primary" (click)="addToCart()">Add to cart</button>
-        </mat-card-actions>
-      </mat-card>
+          <button mat-icon-button color="warn">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </div>
+      </div>
+      <div class="cart-total">
+        Total: £140 (2 Hours)
+      </div>
+      <button mat-raised-button class="proceed-to-payment-btn" (click)="openPaymentDialog()">
+        <mat-icon>payment</mat-icon>
+        Proceed to Payment
+      </button>
     </div>
   </div>
 </div>
+<app-footer></app-footer>
