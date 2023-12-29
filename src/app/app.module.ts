@@ -45,15 +45,6 @@ import { NgScrollbarModule } from 'ngx-scrollbar';
 import { OrdinalPipe } from './ordinal.pipe';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { StoreModule } from '@ngrx/store';
-import { provideFirebaseApp, getApp, initializeApp } from '@angular/fire/app';
-import { getFirestore, provideFirestore } from '@angular/fire/firestore';
-import { getAuth, provideAuth } from '@angular/fire/auth';
-import { environment } from '../environments/environment';
-import { AngularFireModule } from '@angular/fire/compat';
-import { AngularFireAuthModule } from '@angular/fire/compat/auth';
-import { AngularFireStorageModule } from '@angular/fire/compat/storage';
-import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
-import { AngularFireDatabaseModule } from '@angular/fire/compat/database';
 import { MatMenuModule } from '@angular/material/menu';
 import { FooterComponent } from './footer/footer.component';
 import { MatTooltipModule } from '@angular/material/tooltip';
@@ -62,6 +53,18 @@ import { FilterPanelComponent } from './filter-panel/filter-panel.component';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatChipsModule } from '@angular/material/chips';
 import { PaymentDialogComponent } from './payment-dialog/payment-dialog.component';
+
+import { AngularFireModule } from '@angular/fire/compat';
+import { AngularFireFunctionsModule } from '@angular/fire/compat/functions';
+
+
+import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
+import { connectFunctionsEmulator, getFunctions, provideFunctions, FunctionsModule } from '@angular/fire/functions';
+import { connectFirestoreEmulator, getFirestore, provideFirestore } from '@angular/fire/firestore';
+import { connectAuthEmulator, getAuth, provideAuth } from '@angular/fire/auth';
+import { environment } from '../environments/environment';
+
+
 
 @NgModule({
   declarations: [
@@ -114,13 +117,34 @@ import { PaymentDialogComponent } from './payment-dialog/payment-dialog.componen
     NgScrollbarModule,
     MatSnackBarModule,
     StoreModule.forRoot({}, {}),
-    AngularFireModule.initializeApp(environment.firebaseConfig),
-    provideAuth(() => getAuth()),
-    provideFirestore(() => getFirestore()),
-    AngularFireAuthModule,
-    AngularFirestoreModule,
-    AngularFireStorageModule,
-    AngularFireDatabaseModule,
+    provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
+    provideFunctions(() => {
+      const functions = getFunctions();
+      if (!environment.production) {
+        // make sure the URL and port match your emulator configuration
+        connectFunctionsEmulator(functions, 'localhost', 5001);
+      }
+      return functions;
+    }),
+    provideFirestore(() => {
+      const firestore = getFirestore();
+      if (!environment.production) {
+        // make sure the host and port match your emulator configuration
+        connectFirestoreEmulator(firestore, 'localhost', 8080);
+      }
+      return firestore;
+    }),
+    provideAuth(() => {
+      const auth = getAuth();
+      if (!environment.production) {
+        // make sure the URL matches your emulator configuration
+        connectAuthEmulator(auth, 'http://localhost:9099');
+      }
+      return auth;
+    }),
+    FunctionsModule,
+    AngularFireModule.initializeApp(environment.firebaseConfig), // Initialize AngularFire
+    AngularFireFunctionsModule, // Import the functions module
     MatMenuModule,
     MatGridListModule,
     MatTooltipModule,

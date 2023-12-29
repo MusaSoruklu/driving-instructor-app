@@ -96,7 +96,7 @@ export class SignupLoginComponent {
   }
 
   signup() {
-    this.authService.SignUp(this.user.email, this.user.password).then(
+    this.authService.SignUp(this.user.email, this.user.password, this.user.name, this.user.phone).then(
       () => {
         console.log('User signed up:', this.user.email);
         this.onSuccess();

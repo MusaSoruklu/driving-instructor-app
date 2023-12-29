@@ -1,4 +1,5 @@
 import { Component, AfterViewInit } from '@angular/core';
+import { loadStripe } from '@stripe/stripe-js';
 
 declare var Stripe: any;
 
@@ -8,7 +9,7 @@ declare var Stripe: any;
   styleUrls: ['./payment-form.component.scss']
 })
 export class PaymentFormComponent implements AfterViewInit {
-
+  
   stripe: any;
   items = [{ price: "price_1Nl0EUFzf8DCq6lRRwdkZpRe", amount: 1 }];
   emailAddress = '';

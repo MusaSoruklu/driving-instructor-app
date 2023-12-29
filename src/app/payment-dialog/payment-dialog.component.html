@@ -1,1 +1,212 @@
-<app-payment-form></app-payment-form>
+<div *ngIf="isSubmitting" class="overlay">
+    <mat-progress-spinner mode="indeterminate" diameter="50" strokeWidth="5"></mat-progress-spinner>
+</div>
+<div class="my-steps">
+
+    <div class="dialog-header">
+        <div class="left">
+            <!-- Back button for other steps -->
+            <button mat-icon-button *ngIf="activeStep > 1" (click)="activeStep = activeStep - 1">
+                <mat-icon>arrow_back</mat-icon>
+            </button>
+        </div>
+        <!-- Title -->
+        <div class="header-title">
+            Confirm Details
+        </div>
+        <!-- Close button -->
+        <div class="right">
+            <button mat-icon-button class="close-button" mat-dialog-close>
+                <mat-icon>close</mat-icon>
+            </button>
+        </div>
+    </div>
+
+    <!-- Step 1: Lessons Summary -->
+    <div *ngIf="activeStep === 1" class="step-1">
+        <!-- <ng-scrollbar class="my-scrollbar"> -->
+        <div class="step-container">
+            <div class="scrollable-content">
+                <div class="lesson-summaries">
+                    <div class="lesson-summary" *ngFor="let lesson of lessons; let i = index">
+                        <button class="close-button">
+                            <img src="./assets/cross.svg" alt="Close" />
+                        </button>
+                        <div class="lesson-details">
+                            <div class="left-column">
+                                <h3> <mat-icon>place</mat-icon>{{ lesson.location }}</h3>
+                                <mat-chip color="primary">
+                                    <img matChipAvatar src="./assets/manual-transmission.svg" alt="Manual Icon">
+                                    Manual
+                                </mat-chip>
+                            </div>
+                            <div class="right-column">
+                                <div class="price">
+                                    {{ lesson.price | currency:'GBP':true }}
+                                </div>
+                                <div class="date-time">
+                                    {{ lesson.date | date:'EEEE'}} {{ lesson.date | date:'d' }}{{ lesson.date |
+                                    date:'MMMM, yyyy'}}
+                                    {{ "10:00" }} - {{ "11:00" }}
+                                </div>
+                            </div>
+                        </div>
+                        <mat-divider></mat-divider>
+                        <div class="instructor-info">
+                            <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="'s Avatar"
+                                class="instructor-avatar" />
+                            <span class="instructor-name">Bartholomew Amarantha </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="fixed-bottom-section">
+            <div class="total-price">
+                <span class="total-text">Total : </span>{{ 140 | currency:'GBP':true }}
+            </div>
+            <div class="lesson-hours">
+                {{ lessons.length }} lessons ({{ totalHours }} hours)
+            </div>
+            <div class="step-navigation">
+                <button mat-raised-button color="primary" (click)="activeStep = 2">Continue</button>
+            </div>
+        </div>
+        <!-- </ng-scrollbar> -->
+    </div>
+
+    <!-- Step 2: Payment -->
+    <div *ngIf="activeStep === 2" class="step-2">
+        <div class="step-container">
+            <!-- Summary Div -->
+            <div class="summary">
+                <!-- Loop through the lessons -->
+                <ng-container *ngFor="let lesson of lessons; let i = index">
+                    <div class="lesson-details">
+                        <div class="left-column">
+                            <h3> <mat-icon>place</mat-icon>{{ lesson.location }}</h3>
+                            <mat-chip color="primary">
+                                <img matChipAvatar src="./assets/manual-transmission.svg" alt="Manual Icon">
+                                Manual
+                            </mat-chip>
+                        </div>
+                        <div class="right-column">
+                            <div class="price">
+                                {{ lesson.price | currency:'GBP':true }}
+                            </div>
+                            <div class="date-time">
+                                {{ lesson.date | date:'EEEE'}} {{ lesson.date | date:'d' }}{{ lesson.date |
+                                date:'MMMM, yyyy'}}
+                                {{ "10:00" }} - {{ "11:00" }}
+                            </div>
+                        </div>
+                    </div>
+                    <mat-divider *ngIf="i < lessons.length - 1"></mat-divider> <!-- Divider -->
+                </ng-container>
+                <!-- Final Divider -->
+                <mat-divider></mat-divider> <!-- Divider -->
+                <div class="total-price">
+                    <span>Total: </span>
+                    <span>£120</span>
+                </div>
+            </div>
+
+        </div>
+        <!-- Prepayment Section -->
+        <div class="prepayment-section">
+            <span>Prepayment</span>
+            <span>£120.00</span>
+        </div>
+
+        <div class="payment-method-section">
+            <span class="payment-method-title">Payment Method</span>
+            <div *ngFor="let method of paymentMethods; let index = index"
+                [class.selected]="selectedMethod.index === index" (click)="selectPaymentMethod('card', index)"
+                class="card-container"> <!-- (click)="onContinueToStep3()" -->
+                <div class="card-info-container">
+                    <img [src]="'assets/card-logos/' + method.card.brand + '.png'" alt="{{ method.card.brand }} logo"
+                        class="card-logo" />
+                    <div class="card-details">
+                        <div class="card-info">
+                            **** <strong>{{ method.card.last4 }}</strong>
+                        </div>
+                        <div class="card-expiry">
+                            Expires: {{ method.card.exp_month }}/{{ method.card.exp_year }}
+                        </div>
+                    </div>
+                </div>
+                <mat-icon class="icon-chevron">chevron_right</mat-icon>
+            </div>
+
+            <!-- Klarna Option -->
+            <div [class.selected]="selectedMethod.type === 'klarna'"
+                (click)="selectPaymentMethod('klarna', paymentMethods.length)" class="klarna-container">
+                <div class="card-info-container">
+                    <img src="assets/card-logos/klarna.png" alt="Klarna logo" class="card-logo" />
+                    <div class="card-details">
+                        <div class="card-info">
+                            Klarna
+                        </div>
+                        <div class="card-expiry">
+                            Pay later with Klarna
+                        </div>
+                    </div>
+                </div>
+                <mat-icon class="icon-chevron">chevron_right</mat-icon>
+            </div>
+        </div>
+
+        <div class="payment-info-container">
+            <div class="payment-breakdown">
+                <div class="payment-now">
+                    <span>To pay now:</span>
+                    <span class="large-price">£63.00</span>
+                </div>
+                <div>
+                    <span>£0.00 later</span>
+                </div>
+            </div>
+            <!-- Add Payment Card Button -->
+            <div class="payment-button-container">
+                <button mat-raised-button color="primary" style="width: 100%; height: 46px;"
+                    (click)="onContinueToStep3()" [innerText]="buttonText"></button>
+                <div class="disclaimer-text">
+                    By booking a lesson, you agree to the Processing of Your Personal Data as well as the Terms of
+                    Service and Cancellation Policy
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Step 3: Confirmation -->
+    <div *ngIf="activeStep === 3">
+        <div class="step-container">
+            <div class="form-container">
+                <h2 class="form-title">Add Payment Card</h2>
+                <p class="form-description">
+                    Please enter your card details below to complete the payment.
+                </p>
+
+                <form (ngSubmit)="handleSubmit()" class="card-form">
+                    <mat-form-field appearance="outline" class="field">
+
+                        <input matInput required name="cardholderName" placeholder="Cardholder name">
+                    </mat-form-field>
+
+                    <div id="payment-form">
+                        <div id="card-number-wrapper" class="input-wrapper">
+                            <input type="text" id="card-number-hidden-input" class="hidden-input" />
+                            <div id="card-element"></div>
+                        </div>
+                    </div>
+
+                    <mat-form-field appearance="outline" class="field">
+                        <input matInput required name="postCode" placeholder="Post code">
+                    </mat-form-field>
+
+                    <button mat-raised-button color="primary" type="submit" class="submit-button">Add Card</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

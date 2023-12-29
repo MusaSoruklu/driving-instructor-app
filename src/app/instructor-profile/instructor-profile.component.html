@@ -31,7 +31,7 @@
         <div class="detail-section">
           <div class="detail-row">
             <div class="detail-item">
-            
+
               <mat-chip-listbox aria-label="Transmissions">
                 <mat-chip color="primary">
                   <img matChipAvatar src="./assets/manual-transmission.svg" alt="Manual Icon"> Manual
@@ -53,9 +53,9 @@
             </div>
           </div>
           <div class="detail-row">
-     
+
             <div class="detail-item">
-             
+
               <mat-chip-listbox aria-label="Specializations">
                 <mat-chip color="primary">
                   <img matChipAvatar src="./assets/shield.svg" alt="Defensive Driving Icon"> Defensive
@@ -123,11 +123,12 @@
                   <mat-icon matSuffix>location_on</mat-icon>
                 </mat-form-field>
               </div>
+              <button mat-button class="add-to-cart-btn">
+                <mat-icon>add_shopping_cart</mat-icon> <!-- This is a cart icon from Material Icons -->
+                Add to Cart
+              </button>
             </div>
-            <button mat-button class="add-to-cart-btn">
-              <mat-icon>add_shopping_cart</mat-icon> <!-- This is a cart icon from Material Icons -->
-              Add to Cart
-            </button>
+
           </div>
         </mat-tab>
         <mat-tab>
@@ -213,7 +214,7 @@
       </div>
       <button mat-raised-button class="proceed-to-payment-btn" (click)="openPaymentDialog()">
         <mat-icon>payment</mat-icon>
-        Proceed to Payment
+        Book
       </button>
     </div>
   </div>

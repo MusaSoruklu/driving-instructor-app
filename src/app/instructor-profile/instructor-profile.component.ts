@@ -51,11 +51,8 @@ export class InstructorProfileComponent {
       rating: 5,
       comment: 'Highly recommend! Very patient and knowledgeable.'
     },
-    // ... add more sample reviews as needed
+
   ];
-
-
-
 
   constructor
     (
@@ -75,9 +72,6 @@ export class InstructorProfileComponent {
       );
     });
   }
-
-
-
 
   ngOnInit(): void {
 
@@ -100,8 +94,8 @@ export class InstructorProfileComponent {
 
   openPaymentDialog(): void {
     this.dialog.open(PaymentDialogComponent, {
-      width: '1400px',  // Adjust the width as necessary
-      // ... other dialog configuration ...
+      width: '800px',
+      height: '800px',
     });
   }
 
@@ -126,8 +120,6 @@ export class InstructorProfileComponent {
     this.calculateRatingAndReviews();
     this.setEarliestAvailableDate();
     this.availableSlots = this.getAvailableSlotsForInstructor(this.instructor, this.selectedDate);
-
-
     this.selectedDateControl.valueChanges.subscribe(value => {
       this.selectedDate = value;
       this.availableSlots = this.getAvailableSlotsForInstructor(this.instructor, this.selectedDate);
@@ -152,8 +144,6 @@ export class InstructorProfileComponent {
 
   onTimeSelected(event: any): void {
     this.selectedTime = event.value;
-
-
   }
 
   addToCart(): void {
@@ -187,8 +177,6 @@ export class InstructorProfileComponent {
 
 
   }
-
-
 
   generateTimesList(): void {
     this.times = [];
@@ -243,7 +231,6 @@ export class InstructorProfileComponent {
       return timeInMinutes >= startInMinutes && timeInMinutes <= endInMinutes && slot.type === 'available';
     });
   }
-
 
   getAvailableSlotsForInstructor(instructor: Instructor | null, date: Date | null): Slot[] {
     if (!date || !instructor) {
