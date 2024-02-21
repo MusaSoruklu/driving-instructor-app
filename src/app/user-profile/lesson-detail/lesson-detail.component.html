@@ -1,0 +1,45 @@
+<div *ngIf="lesson$ | async as lesson" class="lesson-detail-page">
+    <!-- Header with Back Button and Date-Time -->
+    <div class="lesson-header">
+        <button class="back-button" (click)="goBack()"><mat-icon>arrow_back</mat-icon></button>
+        <div class="lesson-date-time-header">
+            <span class="lesson-time">{{ lesson.time }} · </span>
+            <span class="lesson-date">{{ lesson.date | date:'EEE, d MMM' }}</span>
+        </div>
+    </div>
+
+    <!-- Main Content with Instructor Details, Location, Transmission and Timing/Price -->
+    <div class="lesson-main-content">
+        <div class="lesson-instructor-details">
+            <img class="lesson-instructor-image" [src]="lesson.instructorImageUrl" alt="Instructor Image">
+            <div class="lesson-instructor-name-location">
+                <h3>{{ lesson.instructorName }}</h3>
+                <div class="lesson-location-detail">
+                    <mat-icon>place</mat-icon>
+                    <span>{{ lesson.location }}</span>
+                </div>
+                <div class="lesson-transmission-detail">
+                    <img *ngIf="lesson.transmissionType === 'Manual'" src="./assets/manual-transmission.svg"
+                        alt="Manual Icon">
+                    <img *ngIf="lesson.transmissionType === 'Automatic'" src="./assets/automatic-transmission.svg"
+                        alt="Automatic Icon">
+                    <span>{{ lesson.transmissionType }}</span>
+                </div>
+            </div>
+        </div>
+        <div class="lesson-timing-price">
+            <span class="lesson-price">{{ lesson.price | currency:'GBP' }}</span>
+            <span class="lesson-time-range">{{ lesson.time}} - {{ getEndTime(lesson.time,
+                lesson.duration) }}</span>
+        </div>
+    </div>
+
+    <!-- Divider -->
+    <hr class="divider">
+
+    <!-- Action Buttons -->
+    <div class="lesson-actions">
+        <button mat-button class="cancel-button">CANCEL</button>
+        <button mat-button class="change-button">CHANGE</button>
+    </div>
+</div>

@@ -7,7 +7,7 @@ import { AppComponent } from './app.component';
 import { MainPageComponent } from './main-page/main-page.component';
 import { InstructorProfileComponent } from './instructor-profile/instructor-profile.component';
 import { BookingPageComponent } from './booking-page/booking-page.component';
-import { InstructorService } from './instructor.service';
+import { InstructorService } from './services/instructor.service';
 import { HttpClientModule } from '@angular/common/http';
 import { CommonModule, DatePipe } from '@angular/common';
 import { MatDatepickerModule } from '@angular/material/datepicker';
@@ -63,8 +63,21 @@ import { connectFunctionsEmulator, getFunctions, provideFunctions, FunctionsModu
 import { connectFirestoreEmulator, getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { connectAuthEmulator, getAuth, provideAuth } from '@angular/fire/auth';
 import { environment } from '../environments/environment';
+import { UserProfileComponent } from './user-profile/user-profile.component';
+import { LessonsComponent } from './user-profile/lessons/lessons.component';
+import { AccountSettingsComponent } from './user-profile/account-settings/account-settings.component';
+import { ReviewsComponent } from './user-profile/reviews/reviews.component';
+import { PaymentsComponent } from './user-profile/payments/payments.component';
+import { TermsOfServiceComponent } from './user-profile/terms-of-service/terms-of-service.component';
+import { PrivacyPolicyComponent } from './user-profile/privacy-policy/privacy-policy.component';
+import { LessonDetailComponent } from './user-profile/lesson-detail/lesson-detail.component';
+import { ChangeEmailDialogComponent } from './user-profile/account-settings/change-email-dialog/change-email-dialog.component';
+import { ChangePhoneDialogComponent } from './user-profile/account-settings/change-phone-dialog/change-phone-dialog.component';
+import { ChangePasswordDialogComponent } from './user-profile/account-settings/change-password-dialog/change-password-dialog.component';
+import { ChangeAddressDialogComponent } from './user-profile/account-settings/change-address-dialog/change-address-dialog.component';
+import { TeachComponent } from './teach/teach.component';
 
-
+import { SwiperModule } from 'swiper/types/shared';
 
 @NgModule({
   declarations: [
@@ -84,6 +97,19 @@ import { environment } from '../environments/environment';
     FooterComponent,
     FilterPanelComponent,
     PaymentDialogComponent,
+    UserProfileComponent,
+    LessonsComponent,
+    AccountSettingsComponent,
+    ReviewsComponent,
+    PaymentsComponent,
+    TermsOfServiceComponent,
+    PrivacyPolicyComponent,
+    LessonDetailComponent,
+    ChangeEmailDialogComponent,
+    ChangePhoneDialogComponent,
+    ChangePasswordDialogComponent,
+    ChangeAddressDialogComponent,
+    TeachComponent,
   ],
   imports: [
     BrowserModule,

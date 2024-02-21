@@ -1,5 +1,5 @@
 <app-header></app-header>
-<div class="instructor-profile">
+<div *ngIf="instructor" class="instructor-profile">
   <div class="instructor-header">
     <div class="instructor-image-container">
       <img [src]="instructor.imageUrl" alt="Instructor Name" class="instructor-image">
@@ -77,6 +77,23 @@
             Book a Lesson
           </ng-template>
           <div class="booking-section">
+            <!-- Swiper -->
+            <div class="swiper mySwiper" #swiperContainer>
+              <div class="swiper-wrapper">
+                <!-- Slides -->
+                <div class="swiper-slide" data-date="2024-02-18">Sun<br>18</div>
+                <div class="swiper-slide" data-date="2024-02-19">Mon<br>19</div>
+                <div class="swiper-slide" data-date="2024-02-20">Tue<br>20</div>
+                <div class="swiper-slide selected" data-date="2024-02-21">Wed<br>21</div>
+                <div class="swiper-slide" data-date="2024-02-22">Thu<br>22</div>
+                <div class="swiper-slide" data-date="2024-02-23">Fri<br>23</div>
+                <div class="swiper-slide" data-date="2024-02-24">Sat<br>24</div>
+              </div>
+              <!-- Navigation buttons -->
+              <div class="swiper-button-prev"></div>
+              <div class="swiper-button-next"></div>
+            </div>
+
             <div class="calendar-section">
               <div class="form-group">
                 <mat-form-field appearance="fill">

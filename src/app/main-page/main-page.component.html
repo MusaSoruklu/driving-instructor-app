@@ -1,5 +1,5 @@
 <app-header></app-header>
-<app-banner (instructorsFetched)="handleInstructorsFetched($event)"></app-banner>
+<app-banner [searched]="searched" (instructorsFetched)="handleInstructorsFetched($event)"></app-banner>
 <div class="main-content">
   <div class="sidenav-container" *ngIf="searched">
     <app-filter-panel (filtersChanged)="handleFiltersChanged($event)"></app-filter-panel>

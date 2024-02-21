@@ -1,6 +1,6 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { faSterlingSign } from '@fortawesome/free-solid-svg-icons';
-import { CartService, CartItem } from '../cart.service';
+import { CartService, CartItem } from '../services/cart.service';
 import { Observable, map } from 'rxjs';
 import { FormControl } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
@@ -33,7 +33,7 @@ export class BookingPageComponent implements OnInit {
     this.groupedItems$ = this.items$.pipe(
       map((items: CartItem[]) => {
         const grouped = items.reduce((acc: any, item: CartItem) => {
-          const key = item.instructor._id;  // Group by instructor id
+          const key = item.instructor.id;  // Group by instructor id
           acc[key] = acc[key] || { instructor: item.instructor, items: [] };
           acc[key].items.push({
             ...item,

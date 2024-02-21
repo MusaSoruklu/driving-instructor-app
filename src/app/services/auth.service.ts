@@ -1,10 +1,10 @@
 import { Injectable, NgZone } from '@angular/core';
 import { Router } from '@angular/router';
-import { Observable, map } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
+import { BehaviorSubject, Observable, map, of, switchMap } from 'rxjs';
 import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, sendPasswordResetEmail, signOut, onAuthStateChanged, User, Auth } from '@angular/fire/auth';
-import { getFirestore, doc, setDoc } from '@angular/fire/firestore';
 import { getFunctions, httpsCallable, connectFunctionsEmulator } from 'firebase/functions';
+import { doc, getFirestore, onSnapshot } from 'firebase/firestore';
+import { Firestore } from '@angular/fire/firestore';
 
 export interface AppUser {
   uid: string;
@@ -15,22 +15,59 @@ export interface AppUser {
   role: string;
   name?: string; // Optional
   phone?: string; // Optional
+  birthday?: string;
 }
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  userData$: Observable<User | null>;
+  private authState = new BehaviorSubject<User | null>(null);
+  userData$ = this.authState.asObservable();
+  appUserData$: Observable<AppUser | null>;
+
 
   constructor(
     private router: Router,
     private ngZone: NgZone,
-    private http: HttpClient,
-    private auth: Auth
+    private auth: Auth,
+    private firestore: Firestore
   ) {
     this.auth = getAuth();
-    this.userData$ = new Observable(subscriber => onAuthStateChanged(this.auth, subscriber));
+    this.firestore = getFirestore();
+
+    // Update the authState when the authentication state changes
+    onAuthStateChanged(this.auth, (user) => {
+      this.authState.next(user);
+    });
+
+    this.appUserData$ = this.userData$.pipe(
+      switchMap(user => {
+        if (user) {
+          const userDocRef = doc(firestore, 'users', user.uid);
+          return new Observable<AppUser | null>(subscriber => {
+            onSnapshot(userDocRef, docSnapshot => {
+              if (docSnapshot.exists()) {
+                const profile = docSnapshot.data() as AppUser;
+                subscriber.next({
+                  ...profile,
+                  uid: user.uid,
+                  email: profile.email, // Fetch email from Firestore document
+                  displayName: user.displayName!,
+                  photoURL: user.photoURL!,
+                  emailVerified: user.emailVerified,
+                });
+              } else {
+                subscriber.next(null);
+              }
+            });
+          });
+        } else {
+          return of(null);
+        }
+      })
+    );
+
   }
 
   async SignIn(email: string, password: string) {
@@ -73,7 +110,7 @@ export class AuthService {
     const functions = getFunctions();
     // connect to the emulator if necessary
     connectFunctionsEmulator(functions, 'localhost', 5001);
-    
+
     const createUserDocumentFunction = httpsCallable(functions, 'createUserDocument');
     try {
       await createUserDocumentFunction({ uid, name, phone });
@@ -84,7 +121,7 @@ export class AuthService {
   }
 
   async setCustomUserClaims(email: string, name: string, phone: string) {
-    
+
     const functions = getFunctions();
     connectFunctionsEmulator(functions, 'localhost', 5001);
     const setCustomUserClaimsFunction = httpsCallable(functions, 'setCustomUserClaims');
@@ -119,9 +156,7 @@ export class AuthService {
   }
 
   get isLoggedIn(): boolean {
-    let loggedIn = false;
-    this.userData$.subscribe(user => loggedIn = !!user && user.emailVerified);
-    return loggedIn;
+    return !!this.authState.value && this.authState.value.emailVerified;
   }
 
   async SignOut() {

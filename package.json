@@ -44,6 +44,7 @@
     "rxfire": "^6.0.3",
     "rxjs": "~7.8.0",
     "stripe-angular": "^1.9.3",
+    "swiper": "^11.0.6",
     "tslib": "^2.6.2",
     "zone.js": "~0.13.0"
   },

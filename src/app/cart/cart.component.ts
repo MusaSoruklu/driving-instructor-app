@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { CartService, CartItem } from '../cart.service';
+import { CartService, CartItem } from '../services/cart.service';
 import { Observable } from 'rxjs';
 import { faSterlingSign } from '@fortawesome/free-solid-svg-icons';
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { SignupLoginComponent } from '../signup-login/signup-login.component';
-import { AuthService } from '../auth.service';
+import { AuthService } from '../services/auth.service';
 import { take } from 'rxjs/operators';
 
 @Component({

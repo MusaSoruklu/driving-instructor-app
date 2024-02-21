@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { MatDialogRef } from '@angular/material/dialog';
-import { AuthService } from '../auth.service';
+import { AuthService } from '../services/auth.service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 @Component({
@@ -109,6 +109,5 @@ export class SignupLoginComponent {
 
   onSuccess(): void {
     this.dialogRef.close();
-    this.router.navigate(['/booking']);
   }
 }

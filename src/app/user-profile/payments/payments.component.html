@@ -1,0 +1,34 @@
+<div class="payments-container">
+    <h1 class="payments-title">Payments</h1>
+  
+    <div class="toggle-buttons">
+      <button class="toggle-button" [class.active]="activeTab === 'methods'" (click)="setActiveTab('methods')">Payment methods</button>
+      <button class="toggle-button" [class.active]="activeTab === 'history'" (click)="setActiveTab('history')">Payment history</button>
+    </div>
+  
+    <div *ngIf="activeTab === 'methods'">
+      <div *ngFor="let method of paymentMethods; let index = index" class="card-container">
+        <div class="card-info-container">
+          <img [src]="'assets/card-logos/' + method.card.brand + '.png'" alt="{{ method.card.brand }} logo" class="card-logo" />
+          <div class="card-details">
+            <div class="card-info">
+              **** <strong>{{ method.card.last4 }}</strong>
+            </div>
+            <div class="card-expiry">
+              Expires: {{ method.card.exp_month }}/{{ method.card.exp_year }}
+            </div>
+          </div>
+        </div>
+        <mat-icon class="icon-chevron">chevron_right</mat-icon>
+      </div>
+    </div>
+  
+    <div *ngIf="activeTab === 'history'" class="payment-history">
+        <div class="empty-receipts">
+          <img src="assets/receipt-tick.svg" alt="Receipt Icon" class="receipt-icon" />
+          <h3 class="empty-receipts-title">Your Receipts</h3>
+          <p class="empty-receipts-description">Your completed transactions will appear here.</p>
+        </div>
+      </div>      
+  </div>
+  

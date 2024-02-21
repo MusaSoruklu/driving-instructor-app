@@ -1,5 +1,5 @@
 export interface Instructor {
-  _id: string;
+  id: string;
   name: string;
   imageUrl: string;
   rating: number;

@@ -469,3 +469,54 @@
     .klarna-container .card-info {
         color: #111;
     }
+
+    .confirmation-step {
+        .form-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+     
+      
+   .confirmation-icon {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      // You can adjust the font-size here to scale the Font Awesome icon
+      font-size: 4rem; // Or any size you prefer
+      color: green; // This sets the icon color
+      margin-bottom: 20px;
+    }
+      
+          .confirmation-details {
+            text-align: center;
+      
+            h2 {
+              font-size: 1.25rem; // Large and bold title
+              font-weight: bold;
+              margin-bottom: 5px;
+            }
+      
+            .confirmation-date-time {
+              font-size: 1.25rem; // Slightly smaller than the title, but still large and bold
+              font-weight: bold;
+              margin-bottom: 20px;
+            }
+      
+            .confirmation-message {
+              font-size: 1rem; // Regular text size
+              margin-bottom: 70px;
+            }
+          }
+      
+          .confirmation-action {
+            width: 100%; // Button takes the full width of its parent
+      
+            button {
+              width: 100%; // Button width is 100%
+              height: 46px;
+              margin-bottom: 10px;
+            }
+          }
+        }
+      }      

@@ -256,6 +256,62 @@
   background-color: #f5f5f5;
   border-radius: 10px;
   margin-top: 20px;
+
+  .swiper {
+  width: 100%;
+  padding: 10px 0;
+
+  .swiper-wrapper {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .swiper-slide {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: auto;
+    height: 60px;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s;
+
+    &.selected {
+      background-color: #007bff;
+      color: white;
+      transform: scale(1.1);
+    }
+
+    &:not(.selected):hover {
+      background-color: #f0f0f0;
+    }
+  }
+
+  .swiper-button-prev,
+  .swiper-button-next {
+    background-color: #007bff;
+    color: white;
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  .swiper-button-prev {
+    left: 10px;
+  }
+
+  .swiper-button-next {
+    right: 10px;
+  }
+}
 }
 
 .add-to-cart-btn {
@@ -362,6 +418,7 @@ mat-tab-group {
       margin-top: 10px;
 
       mat-icon {
+        color: #1DA1F2;
         margin-right: 5px;
       }
     }
@@ -468,3 +525,5 @@ mat-tab-group {
     }
   }
 }
+
+

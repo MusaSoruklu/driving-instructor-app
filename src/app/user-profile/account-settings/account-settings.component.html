@@ -1,0 +1,96 @@
+<div class="account-settings">
+    <h1 class="title">Account & Settings</h1>
+
+    <section class="account-details" [formGroup]="accountForm">
+        <h2 class="section-title">Account Details</h2>
+
+        <!-- Name Input -->
+        <div class="input-group">
+            <div class="input-wrapper">
+                <input type="text" formControlName="name" placeholder=" " #nameInput
+                    (input)="toggleIconVisibility($event)" (focus)="toggleErrorVisibility(true)"
+                    (blur)="toggleErrorVisibility(false)">
+                <label [class.label-floated]="!isInputEmpty('name')" for="name">First and Last Name</label>
+                <mat-icon class="input-clear" [class.has-text]="showClearIcon"
+                    (click)="clearInputValue('name', nameInput)">close</mat-icon>
+            </div>
+            <div *ngIf="isNameInputError()" class="error-message">
+                First and last name are required
+            </div>
+        </div>
+
+        <!-- Email Input -->
+        <div class="input-group filled">
+            <div class="input-wrapper" (click)="openChangeEmailDialog()">
+                <input type="email" formControlName="email" placeholder=" " readonly required>
+                <label for="email">Email</label>
+                <mat-icon class="input-icon">chevron_right</mat-icon>
+            </div>
+        </div>
+
+        <!-- Phone Input -->
+        <div class="input-group filled">
+            <div class="input-wrapper" (click)="openChangePhoneDialog()">
+                <input type="tel" formControlName="phone" placeholder=" " readonly required>
+                <label for="phone">Phone Number</label>
+                <mat-icon class="input-icon">chevron_right</mat-icon>
+            </div>
+        </div>
+
+
+        <!-- Birthday Input -->
+        <div class="input-group">
+            <div class="input-wrapper">
+                <input type="text" formControlName="birthday" placeholder=" "
+                    (input)="toggleBirthdayIconVisibility($event)" #birthdayInput>
+                <label [class.label-floated]="!isInputEmpty('birthday')" for="birthday">Birthday (DD-MM-YYYY)</label>
+                <mat-icon class="input-clear" [class.has-text]="showBirthdayClearIcon"
+                    (click)="clearInputValue('birthday', birthdayInput)">close</mat-icon>
+            </div>
+        </div>
+
+        <button class="submit-button" *ngIf="showSubmitButton" (click)="submitChanges()">Submit</button>
+
+
+        <!-- Password Change Button -->
+        <div class="input-group filled" (click)="openChangePasswordDialog()">
+            <div class="input-wrapper">
+                <input type="text" readonly disabled [value]="'Change password'">
+                <label for="password">Password</label>
+                <mat-icon class="input-icon">chevron_right</mat-icon>
+            </div>
+        </div>
+
+    </section>
+
+    <section class="pickup-locations">
+        <div class="title-section">
+            <h2 class="section-title">Meeting Locations</h2>
+            <button class="add-location-button" (click)="addNewLocation()" aria-label="Add new location"></button>
+        </div>
+        <div class="location-list">
+            <div *ngFor="let location of pickupLocations" class="location-item">
+                <div class="map-container">
+                    <div class="map-section">
+                        <google-map [center]="{lat: location.coordinates.lat, lng: location.coordinates.lng}"
+                            [zoom]="zoom" [options]="mapOptions">
+                        </google-map>
+                        <div class="map-center-marker">
+                            <img src="assets/map-marker.svg" alt="Center Marker">
+                        </div>
+                    </div>
+                </div>
+               
+                    <button (click)="editLocation(location)">
+
+                        Edit
+                    </button>
+                
+                <div class="location-details">
+                    <span class="label">{{ location.label }}</span>
+                    <span class="address">{{ location.address }}</span>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthService } from '../auth.service';
-import { PaymentService } from '../payment.service';
+import { AuthService } from '../services/auth.service';
+import { PaymentService } from '../services/payment.service';
+import { UserService } from '../services/user.service';
 
 declare var Stripe: any;
 
@@ -18,8 +19,8 @@ export class PaymentDialogComponent implements OnInit {
   paymentMethods: any[] = [];
   lessons = [
     {
-      instructorId: "64f34eef5bf824ab49f34a09", // Instructor's unique ID
-      date: 'Oct 10, 2023',
+      instructorId: "Ylh2ZCFZoaznnW2cg8rE", // Instructor's unique ID
+      date: 'Oct 10, 2024',
       time: '10:00 AM',
       location: '12 Church street, N99OP',
       transmissionType: 'Manual',
@@ -27,16 +28,18 @@ export class PaymentDialogComponent implements OnInit {
       price: 50  // Assuming this is the total price for the slot, adjusted to integer if needed
     },
     // {
+    //   instructorId: "Ylh2ZCFZoaznnW2cg8rE",
     //   date: 'Oct 12, 2023',
     //   time: '02:00 PM',
     //   location: '12 Church street, N99OP',
     //   transmissionType: 'Automatic',
-    //   duration: '1 hour',
-    //   price: '60'
+    //   duration: 1,
+    //   price: 60
     // },
   ];
+  confirmedLesson: any = {}; // This will hold the confirmed lesson details
 
-  constructor(private authService: AuthService, private paymentService: PaymentService) {
+  constructor(private authService: AuthService, private paymentService: PaymentService, private userService: UserService) {
   }
 
   ngOnInit(): void {
@@ -48,9 +51,10 @@ export class PaymentDialogComponent implements OnInit {
         console.error('User not authenticated');
       }
     });
+    this.initializeStripe();
   }
 
-  fetchPaymentMethods(uid: string): Promise<any> {
+  fetchPaymentMethods(uid: string): Promise<any> { //make a loading spinner in dialog when we are fetching this
     return this.paymentService.fetchPaymentMethods(uid)
       .then(response => {
         console.log(response);
@@ -184,17 +188,29 @@ export class PaymentDialogComponent implements OnInit {
 
   async payAndBook() {
     try {
+      console.log('Starting payAndBook process');
       this.isSubmitting = true;
 
+      // Check if this.stripe is defined
+      console.log('this.stripe:', this.stripe);
+
       // Ensure the paymentMethods and selectedMethod are valid
+      console.log('paymentMethods:', this.paymentMethods, 'selectedMethod:', this.selectedMethod);
       if (!this.paymentMethods || this.selectedMethod.index >= this.paymentMethods.length) {
+        console.error('Invalid payment method selected');
         throw new Error('Invalid payment method selected');
       }
 
+      // Log lessons data
+      console.log('Lessons:', this.lessons);
+
       // Step 1: Create a PaymentIntent on the server
+      console.log('Creating PaymentIntent on the server');
       const paymentIntent = await this.paymentService.createPaymentIntent({ items: this.lessons });
+      console.log('PaymentIntent received:', paymentIntent);
 
       if (!paymentIntent.clientSecret) {
+        console.error('Failed to create PaymentIntent on the server');
         throw new Error('Failed to create PaymentIntent on the server');
       }
 
@@ -202,18 +218,21 @@ export class PaymentDialogComponent implements OnInit {
 
       // Retrieve the payment method ID using the selected index
       const paymentMethodId = this.paymentMethods[this.selectedMethod.index].id;
+      console.log('Using paymentMethodId:', paymentMethodId);
 
       // Step 2: Confirm the PaymentIntent
+      console.log('Confirming the PaymentIntent with Stripe');
       const paymentResult = await this.stripe.confirmCardPayment(clientSecret, {
         payment_method: paymentMethodId
       });
+      console.log('Payment result:', paymentResult);
 
       if (paymentResult.error) {
         console.error('Payment failed', paymentResult.error.message);
         // Handle error and show error message to user
       } else {
         console.log('Payment succeeded', paymentResult.paymentIntent?.id);
-        // Handle success: update UI and navigate user to success page
+        this.onPaymentSuccess(this.lessons[0]); // Assuming the first lesson is the confirmed one
       }
     } catch (error) {
       console.error('Payment processing error', error);
@@ -222,6 +241,28 @@ export class PaymentDialogComponent implements OnInit {
       this.isSubmitting = false;
     }
   }
+
+  async onPaymentSuccess(lesson: any) {
+    this.confirmedLesson = lesson;
+    this.activeStep = 4; // Move to confirmation step
+  
+    // Save the lesson to the user's Firestore lessons field
+    if (this.userId) {
+      try {
+        await this.userService.addLessonToUser(this.userId, lesson);
+        console.log('Lesson added to user successfully');
+      } catch (error) {
+        console.error('Failed to add lesson to user:', error);
+        // Handle error (e.g., show an error message to the user)
+      }
+    }
+  }
+  
+
+  showLesson() {
+    // Implement logic to show the lesson details or navigate to the lesson page
+  }
+
 }
 
 interface SelectedMethod {

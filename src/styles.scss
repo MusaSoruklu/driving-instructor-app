@@ -9,6 +9,10 @@
     /* Add other variables as needed */
 }
 
+* {
+    font-family: 'Roboto';
+}
+
 /* Dark theme */
 [data-theme='dark'] {
     --primary-bg-color: #333333;
@@ -18,23 +22,10 @@
 
 body {
     margin: 0;
-    font-family: Roboto, "Helvetica Neue", sans-serif;
     // background-color: #fcfcfc;
     background-color: var(--primary-bg-color);
     color: var(--primary-text-color);
 }
-
-// button.mat-calendar-body-cell.green {
-//     background-color: rgb(156, 236, 156);
-// }
-
-// button.mat-calendar-body-cell.yellow {
-//     background-color: rgb(250, 250, 154);
-// }
-
-// button.mat-calendar-body-cell.red {
-//     background-color: red;
-// }
 
 // add background colour background-color: #fcfcfc; to body 
 

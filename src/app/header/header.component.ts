@@ -1,10 +1,11 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { SignupLoginComponent } from '../signup-login/signup-login.component';
-import { AuthService } from '../auth.service';
+import { AuthService } from '../services/auth.service';
 import { User } from '../models/user';
 import { Subscription } from 'rxjs';
 import { Notification } from '../models/notification';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-header',
@@ -22,6 +23,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   constructor(
     public dialog: MatDialog,
     public authService: AuthService,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
@@ -50,6 +52,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed');
     });
+  }
+
+  goToUserProfile() {
+    this.router.navigate(['/profile']);
   }
 
   ngOnDestroy(): void {

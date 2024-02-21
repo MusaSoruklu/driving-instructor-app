@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AngularFireFunctions } from '@angular/fire/compat/functions';
-import { environment } from '../environments/environment'; // adjust the import statement to your file structure
+import { environment } from '../../environments/environment'; // adjust the import statement to your file structure
 
 @Injectable({
   providedIn: 'root'

@@ -1,0 +1,331 @@
+.dialog-container {
+    background: #fff;
+    border-radius: 8px;
+    margin: auto;
+}
+
+.dialog-header {
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid #e0e0e0;
+    padding: 35px 25px 15px 20px;
+
+    .title {
+        margin: 0;
+    }
+}
+
+.back-button {
+    background: none;
+    border: none;
+    margin-right: 8px;
+    cursor: pointer;
+}
+
+.dialog-content {
+    padding: 20px;
+}
+
+.address-suggestions {
+    padding-bottom: 20px;
+
+    ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+
+        li {
+            display: flex;
+            align-items: center;
+            padding: 16px 24px;
+            cursor: pointer;
+            border-bottom: 1px solid #eee;
+            transition: background-color 100ms linear;
+
+            &:hover {
+                background-color: #f0f0f0;
+            }
+
+            mat-icon {
+                margin-right: 10px;
+            }
+
+            &:last-child {
+                border-bottom: none;
+            }
+
+            .address-text {
+                display: flex;
+                flex-direction: column;
+
+                .main-text {
+                    font-weight: bold;
+                }
+
+                .secondary-text {
+                    // Style as needed, already properly positioned
+                }
+            }
+        }
+    }
+}
+
+.instruction-text {
+    margin-top: 5px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.email-address-title {
+    margin-bottom: 16px;
+    text-align: center;
+    font-size: 1.2rem; // Adjust the font size as needed
+    font-weight: 500; // Adjust the weight as needed
+    // Any other styles you'd like to apply to the heading
+}
+
+.input-group {
+    position: relative;
+    margin-bottom: 15px;
+
+    .input-wrapper {
+        position: relative;
+
+        .icon-input-container {
+            display: flex;
+            align-items: center;
+            border: 1px solid #ebebeb;
+            border-radius: 4px;
+            background-color: #fcfcfc;
+            transition: border-color 0.3s;
+
+            mat-icon {
+                margin-left: 10px; // Adjust as necessary
+                color: #999; // Default icon color
+                display: flex;
+                align-items: center;
+                font-size: 18px;
+                transition: color 0.2s ease;
+            }
+
+            input {
+                flex: 1;
+                padding: 14px;
+                padding-left: 0px;
+                border: none;
+                background-color: transparent;
+
+                &:focus {
+                    outline: none;
+
+                    // Apply styles for label when input is focused
+                    ~label {
+                        color: #403594; // Make label blue when input is focused
+                        top: -8px;
+                        left: 32px;
+                        font-size: 12px;
+                        background-color: #fcfcfc;
+                        padding: 0 4px;
+                        transition: all 0.2s ease;
+                    }
+                }
+
+                // Retain label floating and color change when input is filled, regardless of focus
+                &:not(:placeholder-shown)~label {
+                    top: -8px;
+                    left: 32px;
+                    font-size: 12px;
+                    background-color: #fcfcfc;
+                    padding: 0 4px;
+                    transition: all 0.2s ease;
+                }
+            }
+
+            label {
+                position: absolute;
+                left: 32px; // Adjust based on the icon width
+                top: 14px;
+                transition: all 0.2s ease;
+                pointer-events: none;
+                background-color: transparent;
+                padding: 0 5px;
+                color: #c2c2c2; // Default label color, overridden by focus styles
+                font-size: 16px; // Adjust based on your preference
+                color: #999; // Default label color          
+            }
+        }
+
+        .input-clear {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            cursor: pointer;
+            visibility: hidden;
+            color: #999; // Default color
+            transition: color 0.2s ease;
+
+            &.has-text {
+                visibility: visible;
+            }
+        }
+
+        &:focus-within .icon-input-container {
+            border-color: #403594; // Focus color for the border
+
+            mat-icon {
+                color: #000; // Change icon color to black when input is focused
+            }
+        }
+
+        &:focus-within .input-clear {
+            color: #403594; // Change color when input is focused
+        }
+    }
+
+    .error-message {
+        color: #ff003c;
+        font-size: 12px;
+        position: absolute;
+        left: 0;
+        top: 100%;
+        margin-top: 4px;
+    }
+}
+
+.read-only-input-wrapper,
+.label-input-wrapper {
+    position: relative;
+
+
+    input {
+
+        padding: 14px;
+        border: 1px solid #ebebeb; // Providing a border similar to the original input for consistency
+        border-radius: 4px;
+        background-color: #fcfcfc; // Matching background color
+
+        &:read-only {
+            background-color: #f3f3f3; // A slight background change for read-only to denote it's not editable
+            color: #666; // Dimmed color for read-only text
+        }
+    }
+
+    label {
+        position: absolute;
+        left: 0;
+        top: 14px;
+        font-size: 16px; // Adjust based on your preference
+        color: #999; // Default label color
+        pointer-events: none;
+        transition: all 0.2s ease;
+        background-color: transparent;
+        padding: 0 5px;
+    }
+}
+
+/* Specific styles for the label input to float the label on focus or when the field is filled */
+.label-input-wrapper input:focus+label,
+.label-input-wrapper input:not(:placeholder-shown)+label,
+.label-input-wrapper input:valid+label {
+    top: -8px;
+    left: 10px; // Adjust if the icon or padding differs
+    font-size: 12px; // Smaller font size for the floating label
+    color: #403594; // Highlight color when focused or filled
+}
+
+.inputs-container {
+    padding: 20px;
+    padding-bottom: 0px;
+    // Ensure the container does not affect the full width of its child elements
+    box-sizing: border-box; // This ensures padding does not add to the width
+}
+
+.clear-button {
+    background: none;
+    border: none;
+    position: absolute;
+    right: 10px;
+    cursor: pointer;
+}
+
+.map-section {
+    position: relative; // Ensure this is set
+    width: 100%;
+    max-height: 400px; // Ensure this has a value
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+
+    google-map {
+        display: flex;
+        align-items: center;
+        max-height: 300px;
+    }
+}
+
+.map-center-marker {
+    img {
+        position: absolute;
+        top: 29%;
+        left: 149px;
+        scale: 0.4;
+        transform: translate(-50%, -50%);
+        display: flex;
+        pointer-events: none;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .tooltip {
+        position: absolute;
+        top: 51px; // Adjust as necessary
+        left: 50%;
+        transform: translateX(-50%);
+        background: black;
+        color: white;
+        padding: 8px 12px;
+        border-radius: 4px;
+        white-space: nowrap;
+        font-size: 14px; // Adjust as necessary
+        z-index: 10; // Ensure it's above the marker
+
+        // Add arrow
+        &:after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 50%;
+            transform: translateX(-50%) rotate(45deg);
+            width: 10px; // Adjust as necessary
+            height: 10px; // Adjust as necessary
+            background: black;
+            z-index: -1;
+        }
+    }
+}
+
+.dialog-footer {
+    padding: 0 20px; // Add horizontal padding to the footer
+    box-sizing: border-box; // Ensure padding is included in the width calculation
+
+    .submit-button {
+        padding: 14px;
+        margin-top: 15px;
+        width: 100%; // Adjust width to account for padding if needed
+        background-color: #007bff;
+        border: none;
+        border-radius: 6px;
+        color: white;
+        cursor: pointer;
+        margin-bottom: 20px;
+
+        &:disabled {
+            background-color: #ccc; // Color for disabled state
+            color: #666; // Text color for disabled state
+            cursor: default;
+        }
+    }
+}

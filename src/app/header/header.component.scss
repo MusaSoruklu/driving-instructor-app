@@ -72,7 +72,7 @@
   color: #242e30;
 }
 
-.instructor-signup-btn {  
+.instructor-signup-btn {
   color: #fff;
   margin-left: 20px;
 }
@@ -85,4 +85,55 @@
 
 .achievements mat-icon {
   color: gold;
+}
+
+.navbar-right {
+  .custom-profile-button {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 12px;
+    padding: 8px 12px;
+    border: none;
+    cursor: pointer;
+    background-color: #fff;
+    border-radius: 4px;
+    color: #012532;
+
+    .account-icon {
+      font-size: 30px; // Controls the size of the icon
+      width: 30px; // Fixed width for the icon
+      height: 30px; // Fixed height for the icon
+      margin-right: 6px; // Space between icon and text
+      color: #012532;
+    }
+
+    .button-text {
+      margin: 0 auto;
+    }
+
+    .arrow-icon {
+      margin-left: auto;
+    }
+  }
+
+  .login-button {
+    display: flex;
+    align-items: center; // Aligns items vertically in the center
+    justify-content: center; // Centers content horizontally
+    font-size: 12px;
+    padding: 8px 12px; // Adjust padding for space around content
+    border: none;
+    cursor: pointer;
+    background-color: #fff;
+    border-radius: 4px;
+
+    .account-icon {
+      font-size: 30px; // Controls the size of the icon
+      width: 30px; // Fixed width for the icon
+      height: 30px; // Fixed height for the icon
+      margin-right: 6px; // Space between icon and text
+    }
+  }
+
 }

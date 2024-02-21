@@ -1,17 +1,13 @@
-<div class="banner" [@searchTransition]="searched ? 'searched' : 'initial'"
-  (@searchTransition.done)="animationDone = true">
+<div class="banner" *ngIf="!searched">
   <picture>
     <source srcset="https://i.imgur.com/NcHcnoa.png" media="(min-width: 860px)">
-    <source srcset="https://d30v2pzvrfyzpo.cloudfront.net/a/hw/img/decoration/bg_hero-mid.jpg"
-      media="(min-width: 600px)">
-    <img srcset="https://d30v2pzvrfyzpo.cloudfront.net/a/hw/img/decoration/bg_hero-narrow.jpg" alt=""
-      class="banner-img">
+    <source srcset="https://d30v2pzvrfyzpo.cloudfront.net/a/hw/img/decoration/bg_hero-mid.jpg" media="(min-width: 600px)">
+    <img srcset="https://d30v2pzvrfyzpo.cloudfront.net/a/hw/img/decoration/bg_hero-narrow.jpg" alt="" class="banner-img">
   </picture>
-  <div class="banner-content" *ngIf="!animationDone || !searched">
+  <div class="banner-content">
     <h1 class="search-title">Book Your Driving Lessons Today</h1>
-    <h2 class="search-subtitle  ">Find qualified driving instructors near you</h2>
-    <form [formGroup]="searchForm" (ngSubmit)="onSearchInstructors()"
-      [ngClass]="{ 'search-form': true, 'search-form-initial': !searched, 'search-form-top': searched }">
+    <h2 class="search-subtitle">Find qualified driving instructors near you</h2>
+    <form [formGroup]="searchForm" (ngSubmit)="onSearchInstructors()" class="search-form">
       <div class="search-bar">
         <div class="postcode-field">
           <label>

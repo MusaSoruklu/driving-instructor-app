@@ -1,21 +1,26 @@
-import { Component, Input, SimpleChanges, ChangeDetectorRef } from '@angular/core';
+import { Component, Input, SimpleChanges, ChangeDetectorRef, AfterViewInit, ElementRef, ViewChild } from '@angular/core';
 import { Instructor, Slot, Review } from '../models/instructor';
-import { CartService, CartItem } from '../cart.service';
+import { CartService, CartItem } from '../services/cart.service';
 import { FormControl } from '@angular/forms';
 import { MatCalendarCellClassFunction } from '@angular/material/datepicker';
 import { faSterlingSign } from '@fortawesome/free-solid-svg-icons';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
-import { InstructorService } from '../instructor.service';
+import { InstructorService } from '../services/instructor.service';
 import { ActivatedRoute } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { PaymentDialogComponent } from '../payment-dialog/payment-dialog.component';
+import Swiper from 'swiper';
+
 @Component({
   selector: 'app-instructor-profile',
   templateUrl: './instructor-profile.component.html',
   styleUrls: ['./instructor-profile.component.scss'],
 })
-export class InstructorProfileComponent {
+export class InstructorProfileComponent implements AfterViewInit {
+
+  @ViewChild('swiperContainer') swiperContainer!: ElementRef;
+
 
   faSterlingSign = faSterlingSign;
   @Input() instructor!: Instructor;
@@ -30,6 +35,20 @@ export class InstructorProfileComponent {
   selectedTime: string | null = null;
   lessonDuration: number = 1;
   selectedTransmission: string | null = null;
+
+  ngAfterViewInit(): void {
+    // Initialize Swiper
+    const swiper = new Swiper(this.swiperContainer.nativeElement, {
+      // Swiper options here
+      slidesPerView: 'auto',
+      spaceBetween: 30,
+      centeredSlides: true,
+      navigation: {
+        nextEl: '.swiper-button-next',
+        prevEl: '.swiper-button-prev',
+      },
+    });
+  }
 
   scheduledLessons = [
     { date: '2023-10-01', time: '10:00 AM', duration: 1, transmission: 'Automatic' },
@@ -73,14 +92,17 @@ export class InstructorProfileComponent {
     });
   }
 
-  ngOnInit(): void {
-
+  async ngOnInit(): Promise<void> {
     const instructorId = this.route.snapshot.paramMap.get('id');
     if (instructorId) {
-      this.instructorService.fetchInstructorById(instructorId).subscribe(data => {
+      try {
+        const data = await this.instructorService.fetchInstructorById(instructorId);
         this.instructor = data;
         this.initializeInstructorData();
-      });
+      } catch (error) {
+        console.error('Error fetching instructor data:', error);
+        // Handle the error appropriately
+      }
     }
   }
 
@@ -175,7 +197,6 @@ export class InstructorProfileComponent {
 
   bookSelectedTime(): void {
 
-
   }
 
   generateTimesList(): void {
@@ -209,7 +230,6 @@ export class InstructorProfileComponent {
 
     this.selectedDate = earliestDate ? earliestDate : new Date();
     this.selectedDateControl.setValue(this.selectedDate);
-    this.cdr.detectChanges();
   }
 
   calculateRatingAndReviews(): void {

@@ -1,0 +1,324 @@
+.account-settings {
+    max-width: 600px;
+    padding: 20px;
+
+    .title {
+        font-size: 24px;
+        margin-bottom: 20px;
+        color: #383734;
+    }
+
+    .section-title {
+        margin-bottom: 15px;
+        color: #383734;
+    }
+
+    .input-group {
+        position: relative;
+        margin-bottom: 15px;
+        padding-top: 20px;
+
+        .input-wrapper {
+            position: relative;
+
+            input {
+                width: 100%;
+                padding: 14px;
+                border: 1px solid #ebebeb;
+                border-radius: 4px;
+                box-sizing: border-box;
+                background-color: #fcfcfc;
+                transition: 0.3s ease;
+
+                &:focus {
+                    outline: none;
+                    border-color: #403594;
+
+                    +label {
+                        font-size: 12px;
+                        color: #403594;
+                    }
+
+                    ~.input-clear {
+                        color: #403594;
+                    }
+
+                    ~.error-message {
+                        display: none;
+                    }
+                }
+
+                &:focus+label {
+                    top: -9px;
+                }
+
+                &::placeholder {
+                    color: transparent;
+                }
+
+                &:read-only {
+                    background-color: #fcfcfc;
+
+                    &:not(:placeholder-shown)+label {
+                        top: -9px;
+                        font-size: 12px;
+                        color: #2a2d32;
+                    }
+                }
+
+                &:not(:focus).ng-invalid.ng-touched {
+                    border-color: #ff003c;
+                }
+
+                &:not(:focus):not(:placeholder-shown)+label {
+                    top: -9px;
+                    font-size: 12px;
+                    color: #c2c2c2; // Change this color if needed
+                }
+            }
+
+            label {
+                color: #c2c2c2;
+                position: absolute;
+                pointer-events: none;
+                left: 14px;
+                top: 14px;
+                transition: 0.2s ease all;
+                background-color: #fcfcfc;
+                padding: 0 5px;
+
+                &.label-floated {
+                    top: -9px;
+                    font-size: 12px;
+                    color: #2a2d32;
+                }
+            }
+
+            .input-clear {
+                position: absolute;
+                right: 10px;
+                top: 50%;
+                transform: translateY(-50%);
+                background: none;
+                border: none;
+                cursor: pointer;
+                visibility: hidden; // Initially hidden
+
+                transition: color 0.3s ease; // Transition for color change
+
+                &.has-text {
+                    visibility: visible;
+                    color: #999;
+
+                    input:focus+& {
+                        color: #403594;
+                    }
+                }
+            }
+        }
+
+        .error-message {
+            color: #ff003c; // Red color for error message
+            font-size: 12px;
+            margin-top: 4px;
+            margin-left: 4px;
+            display: block; // Ensure it takes its own line
+        }
+    }
+
+    .input-icon {
+        position: absolute;
+        right: 10px;
+        top: 53%;
+        transform: translateY(-50%);
+        color: #999;
+        font-size: 24px;
+        cursor: pointer;
+        visibility: visible; // Always visible for input-icon
+    }
+
+    .submit-button {
+        width: 100%;
+        padding: 12px 30px;
+        margin-top: 40px;
+        border-radius: 6px;
+        background: #007bff;
+        border: 1px solid #009ead;
+        color: white;
+        cursor: pointer;
+    }
+
+    .input-group.filled {
+        .input-wrapper {
+            cursor: pointer;
+
+            input {
+                pointer-events: none; // Prevents input from capturing the click event
+
+                &:focus {
+                    border-color: #ebebeb;
+                    // Rest of the focus styles
+
+                    // If needed, explicitly handle the label and icon styles on focus
+                    +label {
+                        // Styles for label when input is focused
+                    }
+
+                    ~.input-icon {
+                        // Styles for icon when input is focused
+                    }
+                }
+
+                &:read-only {
+                    // Handle styles for readonly inputs
+                    cursor: pointer;
+
+                    // If you want to keep the border color unchanged on focus for readonly inputs
+                    &:focus {
+                        border-color: #ebebeb; // Or any specific color you want
+                    }
+                }
+            }
+        }
+    }
+
+    .pickup-locations {
+
+        .title-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 30px;
+            margin-bottom: 12px;
+
+            .section-title {
+                color: #383734;
+                margin-bottom: 0px;
+            }
+
+            .add-location-button {
+                background-color: transparent;
+                border: none;
+                cursor: pointer;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+
+                &:before {
+                    content: '+';
+                    font-size: 24px;
+                    color: #999;
+                }
+            }
+        }
+
+        .location-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+
+            .location-item {
+                position: relative;
+                display: flex;
+                flex-direction: column;
+                align-items: stretch; // Stretch items to fill the grid column
+                background: #fff;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+                border: 1px solid #eee;
+                border-radius: 6px;
+                overflow: hidden;
+
+                .map-container {
+                    position: relative;
+                    width: 100%;
+                    height: 150px;
+                    overflow: hidden;
+                    display: flex;
+                    align-items: center;
+                    cursor: default;
+
+                    .map-section {
+                        position: relative; // Ensure this is set
+                        width: 100%;
+                        max-height: 400px; // Ensure this has a value
+                        overflow: hidden;
+                        display: flex;
+                        justify-content: center;
+
+                        google-map {
+                            display: flex;
+                            align-items: center;
+                            max-height: 300px;
+
+                        }
+                    }
+
+                    .map-center-marker {
+                        -webkit-user-select: none;
+                        -ms-user-select: none;
+                        user-select: none;
+
+                        img {
+                            position: absolute;
+                            top: 29%;
+                            left: 103px;
+                            scale: 0.4;
+                            transform: translate(-50%, -50%);
+                            display: flex;
+                            pointer-events: none;
+                            align-items: center;
+                            justify-content: center;
+                        }
+                    }
+                }
+
+                .location-details {
+                    padding: 10px;
+                    display: flex;
+                    flex-direction: column;
+                    gap: 5px;
+
+                    .address,
+                    .label {
+                        margin: 0;
+                    }
+
+                    .label {
+                        font-weight: bold;
+                    }
+
+                    .phone,
+                    .directions {
+                        font-size: 0.9em;
+                        color: #666;
+                    }
+                }
+
+                button {
+                    padding: 5px 10px;
+                    border: none;
+                    border-radius: 5px;
+                    cursor: pointer;
+                    background-color: white;
+                    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+                    color: #007bff;
+                    display: flex;
+                    align-items: center;
+                    gap: 5px; // Space between icon and text
+                    position: absolute;
+                    right: 10px; // Example position
+                    bottom: 30%;
+
+                    // Pseudo-element for the pencil icon
+                    &:before {
+                        content: '\270E'; // Unicode character for pencil
+                        font-size: 1.2em; // Adjust size as needed
+                    }
+                }
+
+            }
+        }
+
+    }
+
+}

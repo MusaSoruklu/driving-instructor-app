@@ -1,32 +1,29 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Instructor } from '../models/instructor';
-import { DatePipe } from '@angular/common';
 import { Subscription } from 'rxjs';
-import { ViewChild, ElementRef } from '@angular/core';
-import { AuthService } from '../auth.service';
+import { AuthService } from '../services/auth.service';
 import { User } from '../models/user';
-import { MatDialog } from '@angular/material/dialog';
 import { FormControl } from '@angular/forms';
+import { InstructorService } from '../services/instructor.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-main-page',
   templateUrl: './main-page.component.html',
-  styleUrls: ['./main-page.component.scss'],
-  providers: [DatePipe],
+  styleUrls: ['./main-page.component.scss']
 })
 export class MainPageComponent implements OnInit, OnDestroy {
   sortOption: string = 'rating';
   private authSubscription!: Subscription;
-  experience = new FormControl();
-  rating = new FormControl();
+  private routeSubscription!: Subscription;
   instructors: Instructor[] = [];
   searched: boolean = false;
-
   isLoggedIn: boolean = false;
   user: User | null = null;
 
-  @ViewChild('postcodeInput') postcodeInput!: ElementRef;
-  searchButtonClicked = false;
+  // Filters
+  experience = new FormControl();
+  rating = new FormControl();
   filters = {
     transmission: '',
     gender: '',
@@ -43,35 +40,57 @@ export class MainPageComponent implements OnInit, OnDestroy {
 
   constructor(
     public authService: AuthService,
-    public dialog: MatDialog,
-  ) {
-  }
+    private instructorService: InstructorService,
+    private route: ActivatedRoute,
+
+  ) {}
 
   ngOnInit(): void {
     this.authSubscription = this.authService.userData$.subscribe(user => {
       this.isLoggedIn = !!user;
-      if (user) {
-        this.user = {
-          uid: user.uid,
-          email: user.email || '',  // Handle potential null value
-          displayName: user.displayName || '',
-          photoURL: user.photoURL || '',
-          emailVerified: user.emailVerified,
-          role: 'student'  // Add this line
-        };
-      } else {
-        this.user = null;
+      this.user = user ? this.createUserObject(user) : null;
+    });
+
+    // Subscribe to route params to fetch instructors based on the search query
+    this.routeSubscription = this.route.params.subscribe(params => {
+      const postcode = params['postcode'];
+      if (postcode) {
+        this.searched = true;
+        this.fetchInstructorsByPostcode(postcode);
       }
     });
   }
 
   ngOnDestroy(): void {
     this.authSubscription.unsubscribe();
+    this.routeSubscription.unsubscribe();
+  }
+
+  private createUserObject(user: any): User {
+    return {
+      uid: user.uid,
+      email: user.email || '',
+      displayName: user.displayName || '',
+      photoURL: user.photoURL || '',
+      emailVerified: user.emailVerified,
+      role: 'student'
+    };
+  }
+
+  private async fetchInstructorsByPostcode(postcode: string): Promise<void> {
+    try {
+      const instructors = await this.instructorService.fetchInstructorsByPostcode(postcode);
+      this.instructors = instructors;
+      this.sortInstructors();
+    } catch (error) {
+      console.error('Error occurred while fetching instructors:', error);
+    }
   }
 
   handleInstructorsFetched(instructors: Instructor[]): void {
     this.searched = true;
     this.instructors = instructors;
+    this.sortInstructors(); // Sort instructors immediately after fetching
   }
 
   sortInstructors(): void {
@@ -88,12 +107,13 @@ export class MainPageComponent implements OnInit, OnDestroy {
     }
   }
 
-  handleFiltersChanged(filters: any): void {
-    // Use the filters to filter the instructors or any other logic
-  }
-
   onSortOptionChange(sortOption: string): void {
     this.sortOption = sortOption;
     this.sortInstructors();
+  }
+
+  handleFiltersChanged(filters: any): void {
+    // Apply the filters to the instructors list
+    // This will depend on how you want to implement the filtering logic
   }
 }

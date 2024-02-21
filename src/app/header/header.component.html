@@ -2,9 +2,8 @@
   <div class="header-container">
     <!-- Logo -->
     <a routerLink="/">
-      <img src="https://i.imgur.com/CSa9SAc.png" alt="Logo" class="logo">
+      <img src='assets\logos\lyrnsLogo.png' alt="Logo" class="logo">
     </a>
-
     <!-- Navigation Links -->
     <div class="navbar">
       <div class="navbar-left">
@@ -20,58 +19,25 @@
           Ongoing Lessons
         </a>
       </div>
-
       <!-- Right Section -->
       <div class="navbar-right">
-        <button mat-icon-button [matMenuTriggerFor]="notificationMenu">
-          <mat-icon>notifications</mat-icon>
-        </button>
-
         <ng-container *ngIf="isLoggedIn; else notLoggedIn">
-          <button mat-icon-button [matMenuTriggerFor]="userMenu">
-            <mat-icon>account_circle</mat-icon>
-            {{ user?.displayName }}
-          </button>
-          <mat-menu #userMenu="matMenu">
-            <button mat-menu-item (click)="toggleTheme()">
-              <mat-icon>brightness_6</mat-icon>
-              Toggle Theme
-            </button>
-            <button mat-menu-item routerLink="/profile">
-              <mat-icon>person</mat-icon>
-              My Profile
-            </button>
-            <button mat-menu-item routerLink="/bookings">
-              <mat-icon>event</mat-icon>
-              My Bookings
-            </button>
-            <button mat-menu-item routerLink="/my-lessons">
-              <mat-icon>book</mat-icon>
-              My Lessons
-            </button>
-            <button mat-menu-item routerLink="/settings">
-              <mat-icon>settings</mat-icon>
-              Settings
-            </button>
-            <button mat-menu-item (click)="logout()">
-              <mat-icon>exit_to_app</mat-icon>
-              Logout
-            </button>
-          </mat-menu>
+          <button class="custom-profile-button" (click)="goToUserProfile()">
+            <mat-icon class="account-icon">account_circle</mat-icon>
+            <span class="button-text">Profile</span>
+            <mat-icon class="arrow-icon">arrow_drop_down</mat-icon>
+          </button>          
         </ng-container>
         <ng-template #notLoggedIn>
-          <button mat-button (click)="openSignUpLoginDialog()">Login</button>
+          <button class="login-button" (click)="openSignUpLoginDialog()">
+            <mat-icon class="account-icon">account_circle</mat-icon>
+            Login / Signup
+          </button>
         </ng-template>
-
-        <button mat-raised-button class="instructor-signup-btn" routerLink="/instructor-signup">
+        <button mat-raised-button class="instructor-signup-btn" routerLink="/teach">
           Teach Here
         </button>
       </div>
     </div>
-
-    <!-- Dropdown Menus -->
-    <mat-menu #notificationMenu="matMenu">
-      <button mat-menu-item *ngFor="let notification of notifications">{{ notification.message }}</button>
-    </mat-menu>
   </div>
 </div>

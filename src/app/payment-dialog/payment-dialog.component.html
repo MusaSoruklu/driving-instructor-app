@@ -5,13 +5,13 @@
 
     <div class="dialog-header">
         <div class="left">
-            <!-- Back button for other steps -->
-            <button mat-icon-button *ngIf="activeStep > 1" (click)="activeStep = activeStep - 1">
+            <!-- Back button for other steps, hidden on step 4 -->
+            <button mat-icon-button *ngIf="activeStep > 1 && activeStep !== 4" (click)="activeStep = activeStep - 1">
                 <mat-icon>arrow_back</mat-icon>
             </button>
         </div>
-        <!-- Title -->
-        <div class="header-title">
+        <!-- Title, hidden on step 4 -->
+        <div class="header-title" *ngIf="activeStep !== 4">
             Confirm Details
         </div>
         <!-- Close button -->
@@ -20,7 +20,7 @@
                 <mat-icon>close</mat-icon>
             </button>
         </div>
-    </div>
+    </div>    
 
     <!-- Step 1: Lessons Summary -->
     <div *ngIf="activeStep === 1" class="step-1">
@@ -206,6 +206,26 @@
 
                     <button mat-raised-button color="primary" type="submit" class="submit-button">Add Card</button>
                 </form>
+            </div>
+        </div>
+    </div>
+    <!-- Step 4: Confirmation -->
+    <div *ngIf="activeStep === 4" class="confirmation-step">
+        <div class="form-container">
+            <div class="confirmation-icon">
+                <i class="far fa-calendar-check"></i> <!-- Font Awesome icon -->
+              </div>              
+            <div class="confirmation-details">
+                <h2>Driving Lesson Booked</h2>
+                <div class="confirmation-date-time">
+                    {{ confirmedLesson.date | date:'mediumDate' }} at {{ confirmedLesson.time }}
+                </div>
+                <div class="confirmation-message">
+                    You're done! We'll send you a text reminder before your lesson.
+                </div>
+            </div>
+            <div class="confirmation-action">
+                <button mat-raised-button color="primary" (click)="showLesson()">Show Lesson</button>
             </div>
         </div>
     </div>

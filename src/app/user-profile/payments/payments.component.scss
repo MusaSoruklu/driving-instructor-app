@@ -1,0 +1,129 @@
+.payments-container {
+    padding: 20px;
+    font-family: 'Arial', sans-serif;
+
+    .payments-title {
+        font-size: 24px;
+        margin-bottom: 20px;
+    }
+
+    .toggle-buttons {
+        display: flex;
+        border: 1px solid #ccc; // Add border around the entire toggle button group
+        border-radius: 20px; // Rounded corners for the group
+        overflow: hidden; // Ensures child elements don't overflow the rounded corners
+        margin-bottom: 20px;
+
+        .toggle-button {
+            flex: 1;
+            padding: 10px 20px;
+            border: none;
+            background-color: #f5f5f5;
+            cursor: pointer;
+            text-align: center;
+            transition: background-color 0.3s ease, color 0.3s ease;
+
+            // The first child has left rounded corners
+            &:first-child {
+                border-top-left-radius: 20px;
+                border-bottom-left-radius: 20px;
+            }
+
+            // The last child has right rounded corners
+            &:last-child {
+                border-top-right-radius: 20px;
+                border-bottom-right-radius: 20px;
+            }
+
+            // Active state styles
+            &.active {
+                background-color: #fff; // Active tab has a different background
+                color: #333; // Active tab text color
+                font-weight: bold; // Make the text bold for active tab
+                box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.1); // Subtle inset shadow to give a "pressed" appearance
+            }
+
+            // Hover effect for interactive feedback
+            &:hover:not(.active) {
+                background-color: #e6e6e6;
+            }
+        }
+    }
+}
+
+.card-container {
+    display: flex;
+    align-items: center;
+    background: #fff; // Use a white background to match the image
+    padding: 10px;
+    border-radius: 8px; // Rounded corners
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); // Subtle shadow for depth
+    margin-bottom: 10px; // Less space between card entries
+    transition: box-shadow 0.2s ease;
+  
+    &:hover {
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2); // Deeper shadow on hover for interactive effect
+    }
+  
+    .card-info-container {
+      display: flex;
+      align-items: center;
+      flex-grow: 1; // Allow this container to grow to fill space
+  
+      .card-logo {
+        width: 40px; // Slightly reduced width
+        margin-right: 15px;
+      }
+  
+      .card-details {
+        display: flex;
+        flex-direction: column; // Stack card number and expiry vertically
+  
+        .card-info {
+          font-size: 0.9em; // Match size in the image
+          color: #333; // Darker color for the text
+          margin-bottom: 4px; // Space between card number and expiry
+        }
+  
+        .card-expiry {
+          font-size: 0.8em; // Smaller size for the expiry date
+          color: #666; // Lighter color for the expiry date
+        }
+      }
+    }
+  
+    .icon-chevron {
+      font-size: 24px; // Ensure the icon is large enough
+      color: #ccc; // Light grey for the icon
+    }
+  }
+  
+
+  .payment-history {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 200px; // Adjust the height as needed
+    text-align: center;
+  
+    .empty-receipts {
+      .receipt-icon {
+        max-width: 100px; // Adjust the size as needed
+        margin-bottom: 20px;
+        opacity: 0.5; // Adjust the opacity as needed
+      }
+  
+      .empty-receipts-title {
+        margin-bottom: 10px;
+        font-size: 1.5em; // Adjust the size as needed
+        color: #333;
+      }
+  
+      .empty-receipts-description {
+        color: #666;
+        font-size: 1em; // Adjust the size as needed
+      }
+    }
+  }
+  

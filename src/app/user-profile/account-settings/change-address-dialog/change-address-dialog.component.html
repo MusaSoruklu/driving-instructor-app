@@ -1,0 +1,90 @@
+<div class="dialog-container">
+    <div class="dialog-header">
+        <button class="back-button" (click)="closeDialog()">
+            <mat-icon>arrow_back</mat-icon>
+        </button>
+        <h2 class="title">Add meeting location</h2>
+    </div>
+    <!-- Ensure formGroup directive is always present -->
+    <form [formGroup]="addressForm" (ngSubmit)="submitNewAddress()">
+        <div class="dialog-content" *ngIf="!selectedAddress">
+            <p class="instruction-text">
+                Add your meeting location
+            </p>
+            <div class="input-group">
+                <div class="input-wrapper">
+                    <div class="icon-input-container">
+                        <mat-icon matPrefix>location_on</mat-icon>
+                        <input type="text" formControlName="newAddress" id="newAddress" placeholder=" "
+                            [class.error-border]="showError" (focus)="resetErrorFlag()" required>
+                        <label for="newAddress">Address</label>
+                    </div>
+                    <mat-icon class="input-clear" *ngIf="showClearIcon()" [class.has-text]="showClearIcon()"
+                        (click)="clearAddress()">close</mat-icon>
+                    <div *ngIf="showError" class="error-message">
+                        {{ getAddressErrorMessage() }}
+                    </div>
+                </div>
+            </div>
+           
+        </div>
+
+        <div class="address-suggestions" *ngIf="!selectedAddress">
+            <ul *ngIf="addressSuggestions.length > 0">
+                <li *ngFor="let suggestion of addressSuggestions"
+                    (click)="selectAddress(suggestion.description, suggestion.placeId)">
+                    <mat-icon>location_on</mat-icon>
+                    <div class="address-text">
+                        <div class="main-text">{{ suggestion.structuredFormatting.main_text }}</div>
+                        <div class="secondary-text">{{ suggestion.structuredFormatting.secondary_text }}</div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Conditional section for when an address is selected -->
+        <div *ngIf="selectedAddress" class="inputs-container">
+            <!-- Readonly input for the selected address -->
+            <div class="input-group filled read-only-input-wrapper">
+                <div class="input-wrapper">
+                    <div class="icon-input-container">
+                        <mat-icon matPrefix>location_on</mat-icon> <!-- Include the location icon -->
+                        <input type="text" formControlName="newAddress" placeholder=" " readonly required>
+                        <label for="newAddress">Address</label>
+                    </div>
+                </div>
+            </div>
+            <!-- Input for adding a label -->
+            <div class="input-group label-input-wrapper">
+                <div class="input-wrapper">
+                    <div class="icon-input-container">
+                        <mat-icon matPrefix>label</mat-icon> <!-- Add an appropriate icon for the label -->
+                        <input type="text" formControlName="addressLabel" placeholder=" ">
+                        <label for="addressLabel">Add a label (e.g., home)</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="map-section" *ngIf="selectedAddress">
+            <google-map [center]="center" [zoom]="zoom" [options]="mapOptions" (idle)="onMapIdle()"
+                (mousedown)="hideTooltip()" (touchstart)="hideTooltip()">
+            </google-map>
+
+            <div class="map-center-marker">
+                <img src="assets/map-marker.svg" alt="Center Marker">
+                <div class="tooltip" *ngIf="showTooltip">Move the pin to your location</div>
+            </div>
+        </div>
+
+
+        <!-- Submit button, conditionally displayed -->
+        <div class="dialog-footer" *ngIf="selectedAddress">
+
+
+            <button class="submit-button" type="submit" [disabled]="isLoadingAddress">
+                Save pickup point
+            </button>
+        </div>
+    </form>
+</div>

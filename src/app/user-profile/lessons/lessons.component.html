@@ -1,0 +1,74 @@
+<div class="lessons-page">
+    <div class="lessons-container">
+        <!-- Upcoming Lessons Section -->
+        <section class="upcoming-lessons">
+            <h2>Upcoming Lessons</h2>
+            <div class="lesson-cards">
+                <div class="lesson-card" *ngFor="let lesson of upcomingLessons" (click)="openLesson(lesson.id)">
+                    <div class="lesson-main-content">
+                        <div class="lesson-left-content">
+                            <div class="lesson-status confirmed">
+                                {{ lesson.status || 'Confirmed' }}
+                            </div>
+                            <div class="lesson-instructor-name">
+                                <h3>{{ lesson.instructorName }}</h3>
+                            </div>
+                            <div class="lesson-header">
+                                <div class="lesson-instructor">
+                                    <img class="lesson-instructor-image" [src]="lesson.instructorImageUrl"
+                                        alt="Instructor Image">
+                                </div>
+                                <div class="lesson-details">
+                                    <p class="lesson-detail">
+                                        <mat-icon>place</mat-icon> {{ lesson.location }}
+                                    </p>
+                                    <p class="lesson-detail">
+                                        <mat-icon>schedule</mat-icon> {{ lesson.duration }} hour(s)
+                                    </p>
+                                    <div class="lesson-transmission">
+                                        <img *ngIf="lesson.transmissionType === 'Manual'"
+                                            src="./assets/manual-transmission.svg" alt="Manual Icon">
+                                        <img *ngIf="lesson.transmissionType === 'Automatic'"
+                                            src="./assets/automatic-transmission.svg" alt="Automatic Icon">
+                                        <span>{{ lesson.transmissionType }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="lesson-date-time">
+                            <div class="lesson-date">
+                                <span class="lesson-month">{{ lesson.date | date:'MMM' }}</span>
+                                <span class="lesson-day">{{ lesson.date | date:'dd' }}</span>
+                            </div>
+                            <div class="lesson-time">
+                                {{ lesson.time }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Past Lessons Section -->
+        <section class="past-lessons">
+            <h2>Past Lessons</h2>
+            <div class="lesson-cards">
+                <!-- Lesson Card -->
+                <div class="lesson-card" *ngFor="let lesson of pastLessons">
+                    <div class="lesson-status cancelled">CANCELLED</div>
+                    <div class="lesson-date">
+                        <span class="lesson-month">{{ lesson.date | date:'MMM' }}</span>
+                        <span class="lesson-day">{{ lesson.date | date:'dd' }}</span>
+                    </div>
+                    <div class="lesson-details">
+                        <h3>{{ lesson.location }}</h3>
+                        <p>Date: {{ lesson.date | date:'fullDate' }}</p>
+                        <p>Time: {{ lesson.time }}</p>
+                        <!-- More details -->
+                        <button class="book-again-btn">Book again</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>
