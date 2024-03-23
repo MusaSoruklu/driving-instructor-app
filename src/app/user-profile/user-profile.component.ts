@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { AuthService, AppUser } from '../services/auth.service';
 @Component({
   selector: 'app-user-profile',
@@ -15,17 +15,20 @@ export class UserProfileComponent implements OnInit {
   ngOnInit(): void {
     this.authService.appUserData$.subscribe((appUser: AppUser | null) => {
       if (appUser) {
-        this.userName = appUser.displayName || appUser.name; // Use whichever is appropriate
+        this.userName = appUser.displayName || appUser.name;
         this.userPhone = appUser.phone;
-        this.userPhotoUrl = appUser.photoURL; // Set the photo URL
+        // Set userPhotoUrl or use a default image if not available
+        this.userPhotoUrl = appUser.photoURL || 'assets/night.svg';
       } else {
-        this.userName = undefined;
-        this.userPhone = undefined;
-        this.userPhotoUrl = undefined; // Reset the photo URL
+        this.userName = 'test';
+        this.userPhone = '1234567890';
+        // Set a default image to avoid undefined URL requests
+        this.userPhotoUrl = 'assets/night.svg';
       }
     });
   }
-
+  
+  
   formatPhoneNumber(phone: string | undefined): string {
     if (!phone) return '';
     // Assuming phone numbers have 10 digits, format as 'xxxxx xxxxx'

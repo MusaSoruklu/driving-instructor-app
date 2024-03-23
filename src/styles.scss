@@ -1,7 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
 @import url('https://fonts.googleapis.com/icon?family=Material+Icons');
 @import '../node_modules/angular-calendar/css/angular-calendar.css';
-
+@import '~swiper/swiper-bundle.css';
 /* Light theme */
 :root {
     --primary-bg-color: #fcfcfc;
@@ -33,3 +33,4 @@ button.available-date-class {
     background: rgb(122, 226, 122); // or any color you want for available dates
     border-radius: 100%;
 }
+

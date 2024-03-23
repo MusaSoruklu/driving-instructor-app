@@ -3,12 +3,12 @@
 <div class="user-profile-container">
     <div class="user-profile-sidebar">
         <div class="user-info">
-            <div class="user-image" [ngStyle]="{'background-image': 'url(' + userPhotoUrl + ')'}"></div>
+            <div class="user-image" [ngStyle]="{'background-image': 'url(' + (userPhotoUrl ? userPhotoUrl : 'assets/night.svg') + ')'}"></div>
             <div class="user-details">
-              <div class="user-name">{{ userName }}</div>
-              <div class="user-phone">{{ formatPhoneNumber(userPhone) }}</div>
+                <div class="user-name">{{ userName }}</div>
+                <div class="user-phone">{{ formatPhoneNumber(userPhone) }}</div>
             </div>
-          </div>          
+        </div>
         <nav class="navigation-menu">
             <a class="menu-item" routerLink="/profile/lessons" routerLinkActive="active"
                 [routerLinkActiveOptions]="{exact: false}">My Lessons</a>
@@ -19,8 +19,7 @@
             <a class="menu-item" routerLink="/profile/payments" routerLinkActive="active">Payments</a>
             <!-- Directing to an external site doesn't use Angular routing -->
             <a class="menu-item" href="https://www.facebook.com" target="_blank">Like us on Facebook</a>
-            <a class="menu-item" routerLink="/profile/terms-of-service" routerLinkActive="active">Terms of
-                Service</a>
+            <a class="menu-item" routerLink="/profile/terms-of-service" routerLinkActive="active">Terms of Service</a>
             <a class="menu-item" routerLink="/profile/privacy-policy" routerLinkActive="active">Privacy Policy</a>
             <!-- Log Out would typically be handled with a method, not navigation -->
             <a class="menu-item logout-button" (click)="logOut()">Log Out</a>

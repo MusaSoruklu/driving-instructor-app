@@ -1,5 +1,8 @@
+import { Overlay } from '@angular/cdk/overlay';
+import { ComponentPortal } from '@angular/cdk/portal';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { LoadingOverlayComponent } from 'src/app/loading-overlay/loading-overlay.component';
 import { AuthService } from 'src/app/services/auth.service';
 import { UserService } from 'src/app/services/user.service';
 
@@ -12,16 +15,22 @@ export class LessonsComponent implements OnInit {
   upcomingLessons: any[] = [];
   pastLessons: any[] = [];
   userId: string | null = null;
+  private overlayRef = this.overlay.create({
+    hasBackdrop: true,
+    positionStrategy: this.overlay.position().global().centerHorizontally().centerVertically(),
+  });
 
-  constructor(private userService: UserService, private authService: AuthService, private router: Router) { }
+  constructor(private userService: UserService, private authService: AuthService, private router: Router, private overlay: Overlay // Inject the Overlay service
+  ) { }
 
   ngOnInit(): void {
+    this.showLoadingOverlay(); // Show loading overlay when component initializes
     this.authService.getCurrentUserId().subscribe(userId => {
-      this.userId = userId;
+      console.log('Current user ID:', userId);
 
-      if (this.userId) {
+      if (userId) {
+        this.userId = userId;
         this.userService.getLessonsForUser(this.userId).subscribe(lessons => {
-          // Filter upcoming and past lessons
           const currentDate = new Date();
           lessons.forEach((lesson: any) => {
             const lessonDate = new Date(lesson.date);
@@ -31,12 +40,27 @@ export class LessonsComponent implements OnInit {
               this.fetchInstructorDetails(lesson, this.pastLessons);
             }
           });
+          this.hideLoadingOverlay(); // Hide loading overlay once lessons are loaded
         });
       } else {
-        console.error('No user ID found'); // Handle the case where no user is logged in
+        console.error('No user ID found');
+        this.hideLoadingOverlay(); // Ensure overlay is hidden if no user ID is found
       }
+    }, error => {
+      console.error('Error fetching current user ID:', error);
+      this.hideLoadingOverlay(); // Ensure overlay is hidden on error
     });
   }
+
+  showLoadingOverlay() {
+    const loadingOverlayPortal = new ComponentPortal(LoadingOverlayComponent);
+    this.overlayRef.attach(loadingOverlayPortal);
+  }
+
+  hideLoadingOverlay() {
+    this.overlayRef.detach();
+  }
+
 
   fetchInstructorDetails(lesson: any, targetArray: any[]) {
     this.userService.getInstructorDetails(lesson.instructorId).subscribe(instructor => {
@@ -59,5 +83,5 @@ export class LessonsComponent implements OnInit {
     console.log('Navigating to lesson with ID:', lessonId);
     this.router.navigate(['/profile/lessons', lessonId]);
   }
-  
+
 }

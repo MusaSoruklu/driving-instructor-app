@@ -77,74 +77,133 @@
             Book a Lesson
           </ng-template>
           <div class="booking-section">
-            <!-- Swiper -->
-            <div class="swiper mySwiper" #swiperContainer>
-              <div class="swiper-wrapper">
-                <!-- Slides -->
-                <div class="swiper-slide" data-date="2024-02-18">Sun<br>18</div>
-                <div class="swiper-slide" data-date="2024-02-19">Mon<br>19</div>
-                <div class="swiper-slide" data-date="2024-02-20">Tue<br>20</div>
-                <div class="swiper-slide selected" data-date="2024-02-21">Wed<br>21</div>
-                <div class="swiper-slide" data-date="2024-02-22">Thu<br>22</div>
-                <div class="swiper-slide" data-date="2024-02-23">Fri<br>23</div>
-                <div class="swiper-slide" data-date="2024-02-24">Sat<br>24</div>
+
+            <!-- Wrapper for date swiper -->
+            <div class="date-swiper-container">
+              
+              <div class="swiper-and-navigation">
+                <!-- Date Swiper (shown only when data is loaded) -->
+                <div class="swiper-button-prev date-prev"></div>
+                <!-- Skeleton Loader for Date Swiper -->
+                <div class="date-swiper-section">
+                  <div class="skeleton-loader dates-loader" [class.loading-complete]="!isLoadingDates">
+                    <div class="fake-date-slide"></div>
+                    <div class="fake-date-slide"></div>
+                    <div class="fake-date-slide"></div>
+                    <div class="fake-date-slide"></div>
+                    <div class="fake-date-slide"></div>
+                    <div class="fake-date-slide"></div>
+                    <div class="fake-date-slide"></div>
+                  </div>
+                  <div class="swiper" #dateSwiperRef>
+                    <div class="swiper-wrapper">
+                      <div class="swiper-slide" *ngFor="let day of calendarDays; let i = index">
+                        <div
+                          [ngClass]="{'slide-content': true, 'empty': day.isEmpty, 'available': day.isAvailable && !day.isEmpty, 'unavailable': !day.isAvailable && !day.isEmpty, 'selected': i === selectedDayIndex && !day.isEmpty}"
+                          (click)="day.isAvailable && !day.isEmpty ? selectDay(i) : null">
+                          <div *ngIf="!day.isEmpty">
+                            <div class="day-name">{{ day.date | date: 'EEE' }}</div>
+                            <div class="day-number">{{ day.date | date: 'd' }}</div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                
+                <div class="swiper-button-next date-next"></div>
               </div>
-              <!-- Navigation buttons -->
-              <div class="swiper-button-prev"></div>
-              <div class="swiper-button-next"></div>
             </div>
 
-            <div class="calendar-section">
-              <div class="form-group">
-                <mat-form-field appearance="fill">
-                  <mat-label>Choose a date</mat-label>
-                  <input matInput [matDatepicker]="id" [formControl]="selectedDateControl">
-                  <mat-datepicker-toggle matSuffix [for]="id"></mat-datepicker-toggle>
-                  <mat-datepicker [dateClass]="dateClass" #id></mat-datepicker>
-                </mat-form-field>
+            <!-- Wrapper for time slots -->
+            <div class="time-slots-container">
+              <!-- Skeleton Loader for Time Slots Swiper -->
+              <div class="skeleton-loader times-loader" [class.loading-complete]="!isLoadingTimes">
+                <div class="fake-slide"></div>
+                <div class="fake-slide"></div>
+                <div class="fake-slide"></div>
+                <div class="fake-slide"></div>
+                <div class="fake-slide"></div>
               </div>
-              <div class="form-group">
-                <mat-form-field appearance="fill" class="time-container">
-                  <mat-label>Select time</mat-label>
-                  <mat-select (selectionChange)="onTimeSelected($event)">
-                    <mat-option *ngFor="let time of times" [value]="time.label" [disabled]="!time.available">
-                      {{ time.label }}
-                    </mat-option>
-                  </mat-select>
-                </mat-form-field>
+
+              <div class="swiper-and-navigation">
+
+                <!-- Time Slots Swiper (shown only when data is loaded) -->
+                <div class="swiper-button-prev time-prev"></div>
+                <div class="swiper time-slots-swiper" #timeSlotsSwiperRef>
+                  <div class="swiper-wrapper">
+
+                  </div>
+                </div>
+                <div class="swiper-button-next time-next"></div>
               </div>
-              <div class="form-group">
-                <mat-form-field appearance="fill" class="transmission-container">
-                  <mat-label>Transmission</mat-label>
-                  <mat-select [(value)]="selectedTransmission">
-                    <mat-option *ngFor="let trans of instructor.transmission" [value]="trans">
-                      {{ trans }}
-                    </mat-option>
-                  </mat-select>
-                </mat-form-field>
-              </div>
-              <div class="form-group">
-                <mat-form-field appearance="fill" class="lesson-duration">
-                  <mat-label>Lesson duration</mat-label>
-                  <mat-select [(value)]="lessonDuration">
-                    <mat-option *ngFor="let duration of instructor.lessonDuration" [value]="duration">
-                      {{ duration }} Hour(s)
-                    </mat-option>
-                  </mat-select>
-                </mat-form-field>
-              </div>
-              <div class="form-group">
-                <mat-form-field appearance="fill">
-                  <mat-label>Pickup Location</mat-label>
-                  <input matInput placeholder="Enter your pickup location">
-                  <mat-icon matSuffix>location_on</mat-icon>
-                </mat-form-field>
-              </div>
-              <button mat-button class="add-to-cart-btn">
-                <mat-icon>add_shopping_cart</mat-icon> <!-- This is a cart icon from Material Icons -->
-                Add to Cart
-              </button>
             </div>
+
+            <!-- Wrapper for Curriculum Swiper -->
+            <div class="curriculum-swiper-container">
+              <div class="heading-container">
+                <h2>Lesson Type</h2>
+
+              </div>
+              <!-- Module Navigation Buttons Container -->
+              <div class="module-navigation-buttons">
+                <button *ngFor="let module of modules; let i = index" (click)="navigateToModule(i)">
+                  {{ module.moduleName }}
+                </button>
+              </div>
+              <div class="swiper-and-navigation">
+                <div class="swiper-button-prev curriculum-prev"></div>
+                <div class="swiper curriculum-swiper" #curriculumSwiperRef>
+
+                  <div class="swiper-wrapper">
+                    <!-- Slides -->
+                  </div>
+                </div>
+                <div class="swiper-button-next curriculum-next"></div>
+              </div>
+            </div>
+
+
+
+            <div class="segmented-control">
+              <div class="segment" [class.active]="!isAutomatic" (click)="setTransmission('manual')">Manual</div>
+              <div class="segment" [class.active]="isAutomatic" (click)="setTransmission('automatic')">Automatic</div>
+            </div>
+
+            <div class="lesson-duration-container">
+              <h2>Lesson Duration</h2>
+              <div class="duration-buttons">
+                <button *ngFor="let duration of instructor.lessonDuration" class="duration-button">
+                  {{ duration }} Hours
+                </button>
+              </div>
+            </div>
+
+            <section class="pickup-locations">
+              <div class="title-section">
+                <h2 class="section-title">Meeting Location</h2>
+                <button class="add-location-button" (click)="addNewLocation()" aria-label="Add new location"></button>
+              </div>
+              <div class="location-list">
+                <div *ngFor="let location of pickupLocations" class="location-item">
+                  <div class="map-container">
+                    <div class="map-section">
+                      <google-map [center]="{lat: location.coordinates.lat, lng: location.coordinates.lng}"
+                        [zoom]="zoom" [options]="mapOptions">
+                      </google-map>
+                      <div class="map-center-marker">
+                        <img src="assets/map-marker.svg" alt="Center Marker">
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="location-details">
+                    <span class="label">{{ location.label }}</span>
+                    <span class="address">{{ location.address }}</span>
+                  </div>
+                </div>
+              </div>
+            </section>
 
           </div>
         </mat-tab>

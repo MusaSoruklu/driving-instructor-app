@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -77,7 +77,10 @@ import { ChangePasswordDialogComponent } from './user-profile/account-settings/c
 import { ChangeAddressDialogComponent } from './user-profile/account-settings/change-address-dialog/change-address-dialog.component';
 import { TeachComponent } from './teach/teach.component';
 
-import { SwiperModule } from 'swiper/types/shared';
+
+import { register } from 'swiper/element/bundle';
+
+register();
 
 @NgModule({
   declarations: [
@@ -178,6 +181,7 @@ import { SwiperModule } from 'swiper/types/shared';
     MatChipsModule
   ],
   providers: [InstructorService, DatePipe, { provide: MAT_DATE_LOCALE, useValue: 'en-GB' }],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class AppModule { }

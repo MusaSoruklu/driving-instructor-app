@@ -252,66 +252,515 @@
 }
 
 .booking-section {
-  padding: 20px;
+  padding: 5px;
   background-color: #f5f5f5;
   border-radius: 10px;
   margin-top: 20px;
+  max-width: 852px;
+
+  @keyframes shimmer {
+    0% {
+      background-position: -1000px 0;
+    }
+
+    100% {
+      background-position: 1000px 0;
+    }
+  }
+
+  .skeleton-loader {
+    height: 100px;
+    margin: 10px 0;
+    position: relative;
+    overflow: hidden;
+    background: #e0e0e0; // Base color
+    transition: opacity 0.2s ease-out;
+
+    &.loading-complete {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    &:before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(to right, #b5b5b500 0%, #f5f5f5 20%, #e0e0e000 40%, #e0e0e000 100%);
+      animation: shimmer 1s infinite linear;
+      background-repeat: no-repeat;
+      background-size: 1000px 100%;
+    }
+
+    &.times-loader {
+      height: 50px;
+    }
+  }
+
+  .date-swiper-container {
+    position: relative;
+    min-height: 100px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #ddd;
+
+    .date-swiper-section {
+      width: 100%;
+      overflow: hidden;
+      position: relative;
+    }
+
+
+    .skeleton-loader {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+    }
+
+    .dates-loader {
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      margin-top: 2px;
+      background-color: transparent;
+
+      .fake-date-slide {
+        height: 80px;
+        width: 100%;
+        margin-right: 19px;
+        background-color: #e0e0e0;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+        &:first-child {
+          margin-left: 4px;
+        }
+
+        &:last-child {
+          margin-right: 4px;
+        }
+      }
+    }
+  }
+
+  .time-slots-container {
+    position: relative;
+    min-height: 100px;
+    margin-top: 10px;
+
+
+    .skeleton-loader {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+    }
+
+    .times-loader {
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      background-color: transparent;
+
+      .fake-slide {
+        height: 45px;
+        width: 152px;
+        margin-right: 15px;
+        margin-left: 5px;
+        background-color: #e0e0e0;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+        &:last-child {
+          margin-right: 0;
+        }
+      }
+    }
+  }
+
+  .curriculum-swiper-container {
+
+    .heading-container {
+      border-bottom: 1px solid #ddd; // Full-width border applied to the container
+      padding-bottom: 5px;
+
+      h2 {
+        margin: 0 0 5px 18px; // Adjust left margin to position the text within the container
+        color: #777777;
+        // Removing border-bottom from h2 since it's now on the container
+      }
+    }
+
+    .module-navigation-buttons {
+      display: inline-flex;
+      justify-content: flex-start;
+      margin-left: 50px;
+      background: rgb(207 207 207 / 38%);
+      border-radius: 15px;
+      margin-top: 10px;
+
+      button {
+        border: none;
+        border-radius: 15px;
+        color: #999;
+        padding: 5px 16px;
+        margin: 5px;
+        font-size: 14px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        background: transparent;
+
+        &:hover {
+          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+          background: #fff;
+        }
+
+        &:focus {
+          outline: none;
+          box-shadow: 0 0 0 2px rgba(70, 144, 255, 0.5);
+        }
+      }
+    }
+
+
+  }
+
+  .swiper-and-navigation {
+    display: flex;
+    align-items: center;
+
+
+
+    .swiper-button-prev {
+      position: relative;
+      margin-right: 16px;
+      padding: 11px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 1px 5px 0 rgba(0, 0, 0, 0.13);
+      border-radius: 8px;
+      transition: all 0.3s ease-in-out;
+      height: 16px;
+    
+
+      // Hover effect
+      &:hover {
+        box-shadow: 0 2px 8px 0 rgb(0 0 0 / 14%); // More prominent box-shadow on hover
+      }
+
+      &::after {
+        font-size: 16px;
+        font-weight: 600;
+        color: #999;
+        line-height: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      &.swiper-button-disabled::after {
+        color: #9b9b9b; // Color for disabled state
+      }
+    }
+
+    .swiper-button-next {
+      position: relative;
+      margin-left: 16px;
+      padding: 11px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 1px 5px 0 rgba(0, 0, 0, 0.13);
+      border-radius: 8px;
+      transition: all 0.3s ease-in-out;
+      height: 16px;
+      width: 27px;
+
+      // Hover effect
+      &:hover {
+        box-shadow: 0 2px 8px 0 rgb(0 0 0 / 14%); // More prominent box-shadow on hover
+      }
+
+      &::after {
+        font-size: 16px;
+        font-weight: 600;
+        color: #999;
+      }
+
+      &.swiper-button-disabled::after {
+        color: #9b9b9b; // Color for disabled state
+      }
+    }
+
+
+  }
 
   .swiper {
-  width: 100%;
-  padding: 10px 0;
 
-  .swiper-wrapper {
-    display: flex;
-    justify-content: space-between;
+    .swiper-wrapper {
+      padding-top: 8px;
+      padding-bottom: 8px;
+
+      .swiper-slide {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        // transition: all 0.3s ease;
+
+        .slide-content {
+          background: #fff;
+          border-radius: 8px;
+          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+          text-align: center;
+          font-size: 1rem;
+          width: 100%;
+          height: 80px; // You may adjust this for the date swiper if needed
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          margin: 5px;
+          transition: all 0.3s ease-in-out;
+
+          .day-name,
+          .day-number {
+            font-size: 0.85rem;
+            color: #999;
+          }
+
+          .day-number {
+            font-size: 1.25rem;
+            font-weight: bold;
+          }
+
+          &.available {
+            cursor: pointer;
+
+            &:hover {
+              &:not(.selected) {
+                background-color: rgba(0, 123, 255, 0.1);
+
+              }
+            }
+          }
+
+          &.selected {
+            background-color: #007bff;
+            color: #fff;
+
+            .day-name,
+            .day-number {
+              color: #fff;
+            }
+          }
+
+          &.unavailable {
+            opacity: 0.5;
+          }
+
+          &.empty {
+            visibility: hidden;
+            height: 0;
+            padding: 0;
+            margin: 0;
+          }
+        }
+      }
+    }
+
   }
 
-  .swiper-slide {
+  .segmented-control {
+    display: flex;
+    border-radius: 8px;
+    overflow: hidden;
+    width: 250px;
+    height: 50px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 10px;
+    background-color: #fff;
+
+    .segment {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: background-color 0.3s ease, color 0.3s ease;
+      color: #999;
+      font-weight: bold;
+      font-size: 16px;
+
+      &:hover {
+        background-color: rgba(0, 123, 255, 0.1); // Slight highlight on hover
+      }
+
+      &.active {
+        color: #ffffff;
+        background-color: #007bff; // Active state color
+      }
+    }
+  }
+
+  .lesson-duration-container {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    width: auto;
-    height: 60px;
-    background: #fff;
-    border-radius: 10px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    cursor: pointer;
-    transition: background-color 0.3s, transform 0.3s;
+    align-items: flex-start;
 
-    &.selected {
-      background-color: #007bff;
-      color: white;
-      transform: scale(1.1);
+    h2 {
+      margin-bottom: 10px; // Adds space between the title and the buttons
+      text-align: center; // Center-aligns the title if desired
     }
 
-    &:not(.selected):hover {
-      background-color: #f0f0f0;
+    .duration-buttons {
+      display: flex; // Aligns buttons in a row
+      justify-content: center; // Centers buttons in the container
+      gap: 20px; // Adds space between buttons
+
+      .duration-button {
+        padding: 15px 35px; // Adjusts button padding for better visibility
+        background-color: rgb(255, 255, 255); // Button background color
+        color: #999; // Text color
+        border: none; // Removes default border
+        border-radius: 8px; // Rounds the corners of the button
+        box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 4px;
+        cursor: pointer; // Changes cursor to pointer on hover
+        transition: background-color 0.3s ease; // Smooth background color transition on hover
+
+        &:hover {
+          background-color: rgba(0, 123, 255, 0.1);
+          ; // Darkens button on hover for feedback
+        }
+
+        &:focus {
+          outline: none; // Removes outline on focus for aesthetics
+          box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.5); // Adds a box-shadow to simulate focus
+        }
+      }
     }
   }
 
-  .swiper-button-prev,
-  .swiper-button-next {
-    background-color: #007bff;
-    color: white;
-    border-radius: 50%;
-    width: 32px;
-    height: 32px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    top: 50%;
-    transform: translateY(-50%);
+
+  .pickup-locations {
+
+    .title-section {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 30px;
+      margin-bottom: 12px;
+
+      .section-title {
+        color: #383734;
+        margin-bottom: 0px;
+      }
+
+      .add-location-button {
+        background-color: transparent;
+        border: none;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        &:before {
+          content: '+';
+          font-size: 24px;
+          color: #999;
+        }
+      }
+    }
+
+    .location-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 20px;
+
+      .location-item {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        align-items: stretch; // Stretch items to fill the grid column
+        background: #fff;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        border: 1px solid #eee;
+        border-radius: 8px;
+        overflow: hidden;
+
+        .map-container {
+          position: relative;
+          width: 100%;
+          height: 150px;
+          overflow: hidden;
+          display: flex;
+          align-items: center;
+          cursor: default;
+
+          .map-section {
+            position: relative; // Ensure this is set
+            width: 100%;
+            max-height: 400px; // Ensure this has a value
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+
+            google-map {
+              display: flex;
+              align-items: center;
+              max-height: 300px;
+
+            }
+          }
+
+          .map-center-marker {
+            -webkit-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+
+            img {
+              position: absolute;
+              top: 29%;
+              left: 103px;
+              scale: 0.4;
+              transform: translate(-50%, -50%);
+              display: flex;
+              pointer-events: none;
+              align-items: center;
+              justify-content: center;
+            }
+          }
+        }
+
+        .location-details {
+          padding: 10px;
+          display: flex;
+          flex-direction: column;
+          gap: 5px;
+
+          .address,
+          .label {
+            margin: 0;
+          }
+
+          .label {
+            font-weight: bold;
+          }
+
+          .phone,
+          .directions {
+            font-size: 0.9em;
+            color: #666;
+          }
+        }
+
+      }
+    }
+
   }
 
-  .swiper-button-prev {
-    left: 10px;
-  }
 
-  .swiper-button-next {
-    right: 10px;
-  }
-}
 }
 
 .add-to-cart-btn {
@@ -337,27 +786,6 @@
   &:hover {
     background-color: #199BDC;
   }
-}
-
-.calendar-section {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 20px;
-
-  @media (max-width: 600px) {
-    grid-template-columns: 1fr;
-  }
-}
-
-.form-group {
-  display: flex;
-  flex-direction: column;
-
-}
-
-mat-form-field {
-  width: 100%;
-  border-radius: 5px;
 }
 
 mat-tab-group {
@@ -525,5 +953,3 @@ mat-tab-group {
     }
   }
 }
-
-

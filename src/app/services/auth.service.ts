@@ -75,7 +75,7 @@ export class AuthService {
       const userCredential = await signInWithEmailAndPassword(getAuth(), email, password);
 
       this.ngZone.run(() => {
-        this.router.navigate(['dashboard']);
+        this.router.navigate(['']);
       });
     } catch (error) {
       if (error instanceof Error) {
